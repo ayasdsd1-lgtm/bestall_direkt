@@ -1,3 +1,28 @@
-.cards_images{
-    width: 300px;
+/*body*/
+
+/*header*/
+
+
+/*navigation*/
+
+
+/*Kategorier*/
+.catering{
+    margin: 0 150px;
 }
+
+.cards_images{
+    width: 100%;
+    height: auto;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+
+}
+
+.card_column{
+    flex: 1;
+}
+
