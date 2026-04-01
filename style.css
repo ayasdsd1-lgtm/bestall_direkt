@@ -1,5 +1,9 @@
 /*body*/
-
+body{
+    margin: 0px
+    /*background color*/
+    /*font family*/
+}
 /*header*/
 
 
@@ -26,3 +30,4 @@
     flex: 1;
 }
 
+/*footer*/
