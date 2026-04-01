@@ -4,8 +4,14 @@ body{
     /*background color*/
     /*font family*/
 }
-/*header*/
 
+/*header*/
+#grid-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 10px 20px;
+}
 
 /*navigation*/
 
@@ -31,3 +37,9 @@ body{
 }
 
 /*footer*/
+#grid-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 10px 20px;
+}
