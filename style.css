@@ -5,6 +5,46 @@
 
 /*navigation*/
 
+nav{
+    height: 30%;
+    display: flex;
+    box-shadow: 0 0 5px #7a7878;
+    padding: 10px;
+     justify-content: center;
+}
+
+nav a{
+    color: black;
+    margin-right: 50px;
+    padding: 15px;
+    border-radius: 15px;
+    text-decoration: none;
+    box-shadow: 0 0 5px 0 #7a7878;
+}
+
+nav a:hover{
+    background-color: rgb(227, 225, 225);
+}
+/*Karta och sökfunktion*/
+.karta {
+    background-image: url(images/Karta_Malmo.jpg);
+    background-size: cover;
+    background-position: center;
+    padding: 100px;
+
+    display: flex;
+    justify-content: center;
+  
+}
+
+.sök {
+    border-radius: 10px;
+    padding: 15px;
+    width: 300px;
+    text-align: center;
+    background-color: white;
+ }
+    
 
 /*Kategorier*/
 .catering{
