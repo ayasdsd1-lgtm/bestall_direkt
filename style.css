@@ -1,7 +1,17 @@
 /*body*/
+body{
+    margin: 0px
+    /*background color*/
+    /*font family*/
+}
 
 /*header*/
-
+#grid-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 10px 20px;
+}
 
 /*navigation*/
 
@@ -66,3 +76,10 @@ nav a:hover{
     flex: 1;
 }
 
+/*footer*/
+#grid-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 10px 20px;
+}
