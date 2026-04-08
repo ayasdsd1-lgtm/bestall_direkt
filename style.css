@@ -1,64 +1,87 @@
 /*body*/
 body{
-    margin: 0px
-    /*background color*/
-    /*font family*/
+    margin: 20px;
+    padding: 20;
+    width: 100;
 }
 
 /*header*/
-#grid-header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: 10px 20px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
 }
+.logo{
+    height: 60px;
+    width: auto;
+}
+.site_name{
+    display: flex;
+    align-items: center; 
+    gap: 10px;           
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(111, 111, 58);
+}
+.login_text{
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(111, 111, 58);
+}
+
 
 /*navigation*/
-
-nav{
-    height: 30%;
-    display: flex;
-    box-shadow: 0 0 5px #7a7878;
-    padding: 10px;
-     justify-content: center;
-}
-
-nav a{
-    color: black;
-    margin-right: 50px;
-    padding: 15px;
-    border-radius: 15px;
-    text-decoration: none;
-    box-shadow: 0 0 5px 0 #7a7878;
-}
-
-nav a:hover{
-    background-color: rgb(227, 225, 225);
-}
-/*Karta och sökfunktion*/
-.karta {
-    background-image: url(images/Karta_Malmo.jpg);
-    background-size: cover;
-    background-position: center;
-    padding: 100px;
-
+.nav ul{
+    list-style: none;
     display: flex;
     justify-content: center;
+}
+
+.nav a {
+    display: block;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: rgb(111, 111, 58);
+}
+
+
+
+/*Sökfält*/
+.background_search {
+    background-image: url(images/dukat.jpg);
+    background-size: auto;
+    background-position: 50% 60%;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 300px;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
   
 }
 
-.sök {
+.search {
     border-radius: 10px;
     padding: 15px;
     width: 300px;
     text-align: center;
     background-color: white;
+    color: rgb(111, 111, 58);
+    text-decoration: none;
+    font-weight: bold;
  }
-    
 
+ 
+
+ 
 /*Kategorier*/
 .catering{
-    margin: 0 150px;
+    padding-top: 30px;
+    margin: 0 50px;
 }
 
 .cards_images{
@@ -75,6 +98,7 @@ nav a:hover{
 .card_column{
     flex: 1;
 }
+
 
 /*footer*/
 #grid-footer {
