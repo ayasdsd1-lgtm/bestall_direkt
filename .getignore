@@ -351,8 +351,17 @@ paket-files/
 **/.cr/personal
 
 # Python Tools for Visual Studio (PTVS)
-**/__pycache__/
+venv/
+env/
+.env
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
 
 # Cake - Uncomment if you are using it
 #tools/**
