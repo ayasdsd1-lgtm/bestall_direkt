@@ -9,11 +9,11 @@
     <body>
         <header class="header">
             <a href="/" class="site_name">
-                <img src="/images/logo.png" alt="kockhatt" class="logo">
+                <img src="{{ url_for('static', filename='/images/logo.') }}" alt="kockhatt" class="logo">
                 <span>Beställ Direkt</span>
             </a>
             <nav class="login_link">
-                <a href="login_company" class="login_text">För företag</a>
+                <a href="{{ url_for('static', filename='login_company') }}" class="login_text">För företag</a>
             </nav>
         </header>
 
@@ -48,7 +48,7 @@
                                 <a href="#"> 
                                     <picture>
                                         <source srcset="/images/sushi.jpg" id="sushi_img">
-                                        <img src="/images/sushi.jpg" alt="Bild på sushi" id="sushi_img" class="cards_images">
+                                        <img src="{{ url_for('static', filename='/images/sushi.jpg') }}" alt="Bild på sushi" id="sushi_img" class="cards_images">
                                     </picture>
                                     <h3>
                                         sushi
