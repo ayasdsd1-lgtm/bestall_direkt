@@ -70,39 +70,6 @@ nav > form {
     color: rgba(0, 0, 0, 0.5);
 }
 
-
-
-/*Sökfält*/
-.background_search {
-    background-image: url(images/dukat.jpg);
-    background-size: auto;
-    background-position: 50% 60%;
-    background-repeat: no-repeat;
-    width: 100%;
-    min-height: 300px;
-    padding: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    box-sizing: border-box;
-  
-}
-
-.search {
-    border-radius: 10px;
-    padding: 15px;
-    width: 300px;
-    text-align: center;
-    background-color: white;
-    color: rgb(111, 111, 58);
-    text-decoration: none;
-    font-weight: bold;
- }
-
- 
-
- 
 /*Kategorier*/
 #h2_category{
     color: rgb(111, 111, 58);
