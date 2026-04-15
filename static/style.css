@@ -33,6 +33,43 @@ nav > form {
     max-width: 900px;
 }
 
+.search {
+    width: 100%;
+    max-width: none;
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    border-radius: 28px;
+    background: #ffffff;
+    transition: background 0.25s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search:focus-within {
+    background: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.search:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.search-input {
+    flex: 1;
+    font-size: 16px;
+    font-family: 'Lexend', sans-serif;
+    color: #333333;
+    margin-left: 14px;
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+.search-input::placeholder, 
+.search-icon {
+    color: rgba(0, 0, 0, 0.5);
+}
+
 
 
 /*Sökfält*/
