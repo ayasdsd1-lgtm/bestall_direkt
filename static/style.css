@@ -139,9 +139,6 @@ main{
 
 /* footer */
 /* skapad av */
-#grid-footer {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
+footer {
   padding: 10px 20px;
 }
