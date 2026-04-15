@@ -137,32 +137,6 @@ main{
     background-color: #6A8FA8;
 }
 
-/* kategorier */
-#h2_category{
-    color: rgb(111, 111, 58);
-}
-
-.catering{
-    padding-top: 35px;
-    margin: 0 0px;
-}
-
-.cards_images{
-    width: 100%;
-    height: auto;
-}
-
-.cards {
-    display: flex;
-    gap: 20px;
-
-}
-
-.card_column{
-    flex: 1;
-}
-
-
 /* footer */
 /* skapad av */
 #grid-footer {
