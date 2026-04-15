@@ -16,8 +16,6 @@ header > img{
     width: auto;
 }
 header > h1{
-    display: flex;
-    align-items: center; 
     gap: 10px;           
     text-decoration: none;
     font-weight: bold;
