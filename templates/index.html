@@ -7,98 +7,78 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
     </head>
     <body>
-        <header class="header">
-            <a href="/" class="site_name">
+        <div id="grid">
+            <!-- header skapare av ... -->
+            <header>
+                <!-- titel -->
                 <img src="{{ url_for('static', filename='/images/logo.') }}" alt="kockhatt" class="logo">
-                <span>Beställ Direkt</span>
-            </a>
-            <nav class="login_link">
-                <a href="{{ url_for('static', filename='login_company') }}" class="login_text">För företag</a>
-            </nav>
-        </header>
+                <h1>Beställ Direkt</h1>
+                <!-- lägg till profil nedan-->
 
-        <nav class="nav">
-            <ul>
-                <li><a href="#">Brunch</a></li>
-                <li><a href="#">Smått & Mingel</a></li>
-                <li><a href="#">Middag & Festmat</a></li>
-                <li><a href="#">Buffé</a></li>
-                <li><a href="#">Bakverk & Sött</a></li>
-            </ul>
-        </nav>
+            </header>
 
-        <main class="main">
+            <!-- nav skapare av ... -->
+            <nav>
+                <!-- lägg till en rubrik för sökfältet nedan -->
 
-            <div class="background_search">
-                <a href="#" class="search">Vad vill du boka?</a>
-            </div>
-            
-
-            <div> <!--Kategorier börjar här-->
-                <section class="catering">
-                    <h2 id="h2_category">
-                        Kategorier
-                    </h2>
-                    <div class="cards">
-                        
-                        <div class="card_column">
-                            <div class="card_content">
-                                <a href="#"> 
-                                    <picture>
-                                        <source srcset="/images/sushi.jpg" id="sushi_img">
-                                        <img src="{{ url_for('static', filename='/images/sushi.jpg') }}" alt="Bild på sushi" id="sushi_img" class="cards_images">
-                                    </picture>
-                                    <h3>
-                                        sushi
-                                    </h3>
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="card_column">
-                            <div class="card_content">
-                                <a href="#"> 
-                                    <picture>
-                                        <source srcset="/images/libanesisk.jpg" id="libanesisk_img">
-                                        <img src="/images/libanesisk.jpg" alt="Bild på libanesisk mat" id="libanesisk_img" class="cards_images">
-                                    </picture>
-                                    <h3>
-                                        Libanesisk
-                                    </h3>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card_column">
-                            <div class="card_content">
-                                <a href="#"> 
-                                    <picture>
-                                        <source srcset="/images/sweets.jpg" id="sweets_img">
-                                        <img src="/images/sweets.jpg" alt="Bild på bakverk" id="sweets_img" class="cards_images">
-                                    </picture>
-                                    <h3>
-                                        Bakverk
-                                    </h3>
-                                </a>
-                            </div>
-                        </div>
-
+                <!-- sökfält -->
+                <form action="/search" method="GET">
+                    <div class="search">
+                        <span class="search-icon material-symbols-outlined">search</span>
+                        <input class="search-input" type="search" name="q" id="search" placeholder="Sök">
                     </div>
+                </form>
+            </nav>
 
-                </section> 
-            </div> <!--Kategorier slutar här-->
-            
+            <!-- main skapare av ... -->
+            <main>
+                <!-- kategorier -->
+                 <section>
+                    <h2>Översikt av kategorier</h2>
+                    <div>
+                        <article class="card">
+                            <a href="">
+                                <img src="" alt="">
+                                <h3>Brunch</h3>
+                            </a>
+                        </article>
 
+                        <article class="card">
+                            <a href="">
+                                <img src="" alt="">
+                                <h3>Smått & mingel</h3>
+                            </a>
+                        </article>
 
+                        <article class="card">
+                            <a href="">
+                                <img src="" alt="">
+                                <h3>Middag & festmat</h3>
+                            </a>
+                        </article>
 
+                        <article class="card">
+                            <a href="">
+                                <img src="" alt="">
+                                <h3>Buffé</h3>
+                            </a>
+                        </article>
 
-        </main>
-        <aside></aside>
-        <footer>
-            <div id= "grid-footer">
-                <h2>Beställ direkt</h2>
+                        <article class="card">
+                            <a href="">
+                                <img src="" alt="">
+                                <h3>Bakverk & sött</h3>
+                            </a>
+                        </article>
+                    </div>
+                 </section>
+            </main>
+
+            <!-- footer skapare av ... -->
+            <footer>
+                <h2>Beställ Direkt</h2>
                 <p>© Beställ direkt 2026</p>
-            </div>
-        </footer>
+            </footer>
+        </div>
     </body>
 </html>
