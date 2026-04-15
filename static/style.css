@@ -13,7 +13,7 @@ header{
     display: flex;
     align-items: center;
     padding: 20px 100px;
-    background: rgb(191, 180, 199);
+    background: #B4D3D9;
 }
 header > img{
     height: 60px;
@@ -89,7 +89,7 @@ main{
 
 /* varje kort i main */
 .card {
-    background: white;
+    background: transparent;
     transition: transform 0.2s ease;
 }
 
