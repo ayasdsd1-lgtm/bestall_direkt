@@ -5,7 +5,7 @@ body{
     margin: 0px;
     padding: 0px;
     font-family: 'Lexend', sans-serif;
-    background: #F2EAE0;
+    background: #FFF8EC;
 }
 
 /*header*/
@@ -13,14 +13,14 @@ header{
     display: flex;
     align-items: center;
     padding: 20px 100px;
-    background: #B4D3D9;
+    background: #DCCCAC;
 }
 header > img{
     height: 60px;
     width: auto;
 }
 header > h1{
-    color: rgb(111, 111, 58);
+    color: #546B41;
 }
 
 /* navigation */
