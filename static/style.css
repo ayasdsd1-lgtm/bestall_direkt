@@ -3,6 +3,7 @@ body{
     width: 100%;
     margin: 0px;
     padding: 0px;
+    font-family: 'Lexend', sans-serif;
 }
 
 /*header*/
@@ -16,9 +17,6 @@ header > img{
     width: auto;
 }
 header > h1{
-    gap: 10px;           
-    text-decoration: none;
-    font-weight: bold;
     color: rgb(111, 111, 58);
 }
 
