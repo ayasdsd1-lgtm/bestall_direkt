@@ -11,7 +11,7 @@ body{
 header{
     display: flex;
     align-items: center;
-    padding: 15px 30px;
+    padding: 20px 100px;
 }
 header > img{
     height: 60px;
@@ -140,5 +140,5 @@ main{
 /* footer */
 /* skapad av */
 footer {
-  padding: 10px 20px;
+  padding: 0px 100px;
 }
