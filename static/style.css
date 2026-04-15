@@ -79,7 +79,7 @@ nav > form{
 /* main */
 /* skapad av ... */
 main{
-    padding: 0 100px; 
+    padding: 10px 100px; 
 }
 
 #grid-cards{
@@ -143,5 +143,10 @@ main{
 /* footer */
 /* skapad av */
 footer {
-  padding: 0px 100px;
+    max-width: 1350px;
+    margin: 40px auto;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    background-color: #99AD7A;
 }
