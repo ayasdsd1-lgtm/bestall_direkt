@@ -15,13 +15,13 @@ T.ex. href="{{ url_for('kategori', namn='Brunch') }}" istället för tomma länk
 
 ## 2. Bilder
 Alla bilder måste laddas via mappen `static/images`.
+
 Exempel:
 `<img src="{{ url_for('static', filename='images/bildnamn.jpg') }}" alt="Beskrivning">`
 
 
 ## 3. Sökfältet
 För att sökfunktionen i `app.py` ska fungera måste formuläret se ut så här:
-<form> har action="/search" och att input-fältet har name="q".
 
 - Form action: `/search`
 - Form method: `GET`
