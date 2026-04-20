@@ -36,6 +36,8 @@ def kategori(namn):
     """
     return f"<h1>Välkommen till {namn}</h1><p>Här kommer vi visa alla tjänster inom {namn}.</p>"
 
+if __name__ == "__main__":
+    app.run(debug=True)
 
 @app.route("/alla-kategorier")
 def alla_kategorier():
@@ -60,7 +62,18 @@ def login():
         return "Inloggad"
     else:
         return "Fel uppgifter"
+    
+@app.route("/register", methods=["POST"])
+def register():
+    namn = request.form["namn"]
+    email = request.form["email"]
+    losenord = request.form["losenord"]
 
+    cursor.execute(
+        "INSERT INTO foretagare (foretagsnamn, email, losenord) VALUES (%s, %s, %s)",
+        (namn, email, losenord)
+    )
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    conn.commit()
+
+    return "Användare skapad!"
