@@ -7,6 +7,7 @@ import os
 load_dotenv() #laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
+app.secret_key = "hemlig_nyckel"
 
 conn = psycopg2.connect(os.getenv("DATABASE_URL")) #Databasanslutning via miljövariabel
 cursor = conn.cursor()
