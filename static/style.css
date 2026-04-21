@@ -23,6 +23,12 @@ header > h1{
     color: #546B41;
 }
 
+#for-foretag{
+    margin-left: auto;
+    text-decoration: none;
+    color: #546B41;
+}
+
 /* navigation */
 /* skapad av ... */
 nav{

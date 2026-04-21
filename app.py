@@ -20,6 +20,13 @@ def home():
     """
     return render_template("index.html")
 
+@app.route("/logga-in")
+def logga_in():
+
+    """
+    Visar inloggningssidan för företagare
+    """
+    return render_template("loggaln.html")
 
 @app.route("/search")
 def search():
@@ -28,7 +35,6 @@ def search():
     """
     query = request.args.get('q')
     return f"<h1>Sökresultat</h1><p>Du söker efter: {query}</p><a href='/'>Tillbaka till start</a>"
-
 
 
 @app.route("/kategori/<namn>")
