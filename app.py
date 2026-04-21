@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import psycopg2
@@ -9,7 +9,7 @@ load_dotenv() #laddar in .env-filen som innehåller databas-info
 app = Flask(__name__)
 app.secret_key = "hemlig_nyckel"
 
-conn = psycopg2.connect(os.getenv("DATABASE_URL")) #Databasanslutning via miljövariabel
+conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require") #Databasanslutning via miljövariabel
 cursor = conn.cursor()
 
 
@@ -52,24 +52,33 @@ def alla_kategorier():
 
 @app.route("/login", methods=["POST"])
 def login():
-    """
-    Hanterar inloggning för företagare.
-    Tar emot email och lösenord via POST, söker efter användaren i
-    databasen och jämför lösenordet mot det hashade värdet.
-    """
     email = request.form["email"]
     password = request.form["password"]
 
-    cursor.execute(
-        "SELECT * FROM foretagare WHERE email = %s AND losenord = %s",
-        (email, password)
-    )
-    user = cursor.fetchone()
+    cursor = conn.cursor()
 
-    if user and check_password_hash(user[2], password):
-        return "Inloggad"
-    else:
-        return "Fel uppgifter"
+    try:
+        # Hämta bara via email
+        cursor.execute(
+            "SELECT * FROM public.foretagare WHERE email = %s",
+            (email,)
+        )
+        user = cursor.fetchone()
+
+        if user:
+            stored_password = user[3]  # rätt index 
+
+            if check_password_hash(stored_password, password):
+                return "Inloggad"
+            else:
+                return "Fel lösenord"
+        else:
+            return "Användare finns inte"
+
+    except Exception as e:
+        conn.rollback()
+        print("FEL:", e)
+        return "Login error"
     
 
 
@@ -86,11 +95,19 @@ def register():
 
     hashat_losenord = generate_password_hash(losenord)
 
-    cursor.execute(
-        "INSERT INTO foretagare (foretagsnamn, email, losenord) VALUES (%s, %s, %s)",
-        (namn, email, hashat_losenord)
-    )
-    conn.commit()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            "INSERT INTO public.foretagare (foretagsnamn, email, losenord) VALUES (%s, %s, %s)",
+            (namn, email, hashat_losenord)
+        )
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Fel vid registrering:{e}")
+        return "Fel vid registrering"
 
     return "Användare skapad!"
 
