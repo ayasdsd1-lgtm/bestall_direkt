@@ -12,7 +12,7 @@
             <!-- header skapare av Aya -->
             <header>
                 <!-- titel -->
-                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
+                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 <!-- lägg till profil nedan-->
 
                 <!-- länk till inlogg-->
@@ -91,11 +91,15 @@
             </main>
 
             <!-- footer skapare av April -->
-            <footer>
+            <section class="footer_box">
                 <h2>Beställ Direkt</h2>
                 <p>© Beställ direkt 2026</p>
+            </section>
+
+            <footer>
+                <img class="footer_img" src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
+                <p>© Beställ direkt 2026</p>
             </footer>
-            
         </div>
         <h2>Logga in</h2>
         <form action="/login" method="POST">
