@@ -26,6 +26,8 @@ header > img{
     margin-left: auto;
     text-decoration: none;
     color: #462009;
+    font-family: 'Rosarivo', serif;
+    font-weight: bold;
 }
 
 
@@ -58,14 +60,11 @@ nav > form{
     max-width: 900px;
 }
 
-<<<<<<< HEAD
 /* sökfält i navigation */
 nav > h2{
     color: #462009;
 }
 
-=======
->>>>>>> 653daba5d84653439db6dd573f4699dd421a88cd
 .search{
     width: 100%;
     max-width: none;
@@ -106,6 +105,13 @@ nav > h2{
 /* main */
 main > section > h2 {
     color: #3B2D29;
+}
+
+.catering_categori{
+    padding-top: 40px;
+    font-family: 'Rosarivo', serif;
+    font-weight: bold;
+
 }
 
 /* skapad av ... */
