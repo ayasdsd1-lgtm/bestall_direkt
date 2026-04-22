@@ -200,4 +200,3 @@ def logga_ut():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
