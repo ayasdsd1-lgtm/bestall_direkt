@@ -63,7 +63,7 @@ def alla_kategorier():
 
 
 # -------------------------------------------------------
-# INLOGGNING OCH REGISTRERING
+# INLOGGNING
 # -------------------------------------------------------
 
 @app.route("/logga-in")
@@ -161,6 +161,21 @@ def register():
 
     # Skicka användaren till inloggningssidan efter lyckad registrering
     return redirect(url_for("logga_in"))
+
+
+
+# -------------------------------------------------------
+# REGISTRERING
+# -------------------------------------------------------
+
+@app.route("/registrering")
+def registrera_sig():
+
+    """
+    Visar registreringssidan för företagare
+    """
+    return render_template("register.html")
+
 
 
 # -------------------------------------------------------
