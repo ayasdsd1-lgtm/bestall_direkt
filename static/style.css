@@ -33,7 +33,7 @@ header > img{
 nav{
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     padding: 0 100px;
     margin-top: 20px;
 }
