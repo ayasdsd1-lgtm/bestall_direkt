@@ -41,6 +41,9 @@ def search():
 # -------------------------------------------------------
 # KATEGORIER
 # -------------------------------------------------------
+@app.route("/kategori/brunch")
+def kategori_brunch():
+    return render_template("kategori_brunch.html")
 
 @app.route("/kategori/<namn>")
 def kategori(namn):
