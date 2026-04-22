@@ -5,7 +5,7 @@ body{
     margin: 0px;
     padding: 0px;
     font-family: 'Lexend', sans-serif;
-    background: #FFF8EC;
+    background: #F7F3EE;
 }
 
 /*header*/
@@ -13,7 +13,7 @@ header{
     display: flex;
     align-items: center;
     padding: 20px 100px;
-    background: #DCCCAC;
+    background: #F7F3EE;
 }
 header > img{
     height: 100px;
@@ -56,11 +56,6 @@ nav > h2{
 nav > form{
     width: 100%;
     max-width: 900px;
-}
-
-/* sökfält i navigation */
-nav > h2{
-    color: #3B2D29;
 }
 
 .search{
