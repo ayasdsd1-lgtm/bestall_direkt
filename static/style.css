@@ -5,7 +5,7 @@ body{
     margin: 0px;
     padding: 0px;
     font-family: 'Lexend', sans-serif;
-    background: white;
+    background: #F7F3EE;
 }
 
 /*header*/
@@ -13,6 +13,7 @@ header{
     display: flex;
     align-items: center;
     padding: 20px 100px;
+    background: #F7F3EE;
 }
 header > img{
     height: 100px;
@@ -31,11 +32,25 @@ header > img{
 /* navigation */
 /* skapad av ... */
 nav{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+    min-height: 350px; 
     padding: 0 100px;
-    margin-top: 20px;
+
+    background-image: url("images/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+nav > h2{
+    font-size: 28px;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2)
 }
 
 nav > form{
@@ -43,11 +58,14 @@ nav > form{
     max-width: 900px;
 }
 
+<<<<<<< HEAD
 /* sökfält i navigation */
 nav > h2{
     color: #462009;
 }
 
+=======
+>>>>>>> 653daba5d84653439db6dd573f4699dd421a88cd
 .search{
     width: 100%;
     max-width: none;
