@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import psycopg2
 import os
 
+
 load_dotenv() # laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
@@ -184,3 +185,4 @@ def logga_ut():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
