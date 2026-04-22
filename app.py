@@ -4,12 +4,12 @@ from dotenv import load_dotenv
 import psycopg2
 import os
 
-load_dotenv() #laddar in .env-filen som innehåller databas-info
+load_dotenv() # laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
 app.secret_key = "hemlig_nyckel"
 
-conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require") #Databasanslutning via miljövariabel
+conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require") # Databasanslutning via miljövariabel (Supabase)
 cursor = conn.cursor()
 
 
@@ -26,7 +26,7 @@ def logga_in():
     """
     Visar inloggningssidan för företagare
     """
-    return render_template("loggaln.html")
+    return render_template("loggaIn.html")
 
 @app.route("/search")
 def search():
@@ -58,6 +58,11 @@ def alla_kategorier():
 
 @app.route("/login", methods=["POST"])
 def login():
+    """
+    Hanterar inloggning för företagare.
+    Tar emot email och lösenord via POST och jämför
+    lösenordet mot det hashade värdet i databasen.
+    """
     email = request.form["email"]
     password = request.form["password"]
 
