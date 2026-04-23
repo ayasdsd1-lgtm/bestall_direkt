@@ -17,6 +17,7 @@
                 <!-- länk till inlogg-->
                 <a class="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
 
+                <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
             </header>
 
             <nav>     
@@ -34,37 +35,40 @@
                  <section>
                     <h2 class="catering_categori">Översikt av kategorier</h2>
                     <div class="grid-cards">
+                    <div id="grid-cards">
+                        
+                        <!-- första kategori-->
                         <article class="card">
-                            <a href="">
-                                <img src="{{ url_for('static', filename='images/brunch.jpeg') }}" alt="">
+                            <a href="{{ url_for('kategori', namn='Brunch') }}">
+                                <img src="{{ url_for('static', filename='images/brunch.jpeg') }}" alt="Brunch kategori omslag">
                                 <h3>Brunch</h3>
                             </a>
                         </article>
 
                         <article class="card">
-                            <a href="">
-                                <img src="{{ url_for('static', filename='images/smattochmingel.jpeg') }}" alt="">
+                            <a href="{{ url_for('kategori', namn='Smatt-och-mingel') }}">
+                                <img src="{{ url_for('static', filename='images/smattochmingel.jpeg') }}" alt="Smått och mingel kategori omslag">
                                 <h3>Smått & mingel</h3>
                             </a>
                         </article>
 
                         <article class="card">
-                            <a href="">
-                                <img src="{{ url_for('static', filename='images/middagochfestmat.jpg') }}" alt="">
+                            <a href="{{ url_for('kategori', namn='Middag-och-festmat') }}">
+                                <img src="{{ url_for('static', filename='images/middagochfestmat.jpg') }}" alt="Middag och festmat kategori omslag">
                                 <h3>Middag & festmat</h3>
                             </a>
                         </article>
 
                         <article class="card">
-                            <a href="">
-                                <img src="{{ url_for('static', filename='images/buffe.jpg') }}" alt="">
+                            <a href="{{ url_for('kategori', namn='Buffe') }}">
+                                <img src="{{ url_for('static', filename='images/buffe.jpg') }}" alt="Buffé kategori omslag">
                                 <h3>Buffé</h3>
                             </a>
                         </article>
 
                         <article class="card">
-                            <a href="">
-                                <img src="{{ url_for('static', filename='images/bakverkochsott.jpg') }}" alt="">
+                            <a href="{{ url_for('kategori', namn='Bakver-och-sott') }}">
+                                <img src="{{ url_for('static', filename='images/bakverkochsott.jpg') }}" alt="Bakverk och sött kategori omslag">
                                 <h3>Bakverk & sött</h3>
                             </a>
                         </article>
@@ -84,9 +88,17 @@
                 <p>Bla bla blah? policy, kontakt, admin/support</p>
             </section>
 
+            <!-- footer skapare av April -->
             <footer>
-                <img class="footer_img" src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
-                <p>© Beställ direkt 2026</p>
+                <section id="footer_box">
+                    <h2>Kontakt / info</h2>
+                    <p>Bla bla blah? policy, kontakt, admin/support</p>
+                </section>
+
+                <div id="footer_bottom">
+                    <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
+                    <p>© Beställ direkt 2026</p>
+                </div>
             </footer>
         </div>
 
