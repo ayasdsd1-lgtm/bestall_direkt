@@ -235,7 +235,7 @@ footer img{
     padding-right: 40px;
 }
 
-form{
+.register-form{
     display: flex;
     flex-direction: column;
     border-radius: 20px;
@@ -243,7 +243,7 @@ form{
     width: 400px;
 }
 
-input{
+.register-input{
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #462009;
