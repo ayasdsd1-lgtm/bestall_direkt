@@ -8,15 +8,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div class="grid">
+        <div id="grid">
             <header>
                 <!-- titel -->
                 <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 <!-- lägg till profil nedan-->
 
                 <!-- länk till inlogg-->
-                <a class="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
-
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
             </header>
 
@@ -34,7 +32,6 @@
                 <!-- kategorier -->
                  <section>
                     <h2 class="catering_categori">Översikt av kategorier</h2>
-                    <div class="grid-cards">
                     <div id="grid-cards">
                         
                         <!-- första kategori-->
@@ -82,11 +79,6 @@
                     </div>
                  </section>
             </main>
-
-            <section class="footer_box">
-                <h2>Kontakt / info</h2>
-                <p>Bla bla blah? policy, kontakt, admin/support</p>
-            </section>
 
             <!-- footer skapare av April -->
             <footer>

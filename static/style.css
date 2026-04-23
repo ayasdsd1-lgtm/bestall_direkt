@@ -20,7 +20,7 @@ header > img{
     width: auto;
 }
 
-.for-foretag{
+#for-foretag{
     margin-left: auto;
     text-decoration: none;
     color: #462009;
@@ -112,7 +112,7 @@ main{
     padding: 10px 100px; 
 }
 
-.grid-cards{
+#grid-cards{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
