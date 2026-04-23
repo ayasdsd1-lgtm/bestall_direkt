@@ -49,7 +49,7 @@ def kategori(namn):
     Länken i HTML ska se ut: {{ url_for('kategori', namn='Brunch') }}
     HTML-sida: kategori.html (ej byggd än)
     """
-    return f"<h1>Välkommen till {namn}</h1><p>Här kommer vi visa alla tjänster inom {namn}.</p>"
+    return render_template("kategori.html", namn=namn)
 
 
 @app.route("/alla-kategorier")
