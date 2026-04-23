@@ -171,36 +171,34 @@ main{
 }
 
 /* footer */
-
-
 /* skapad av */
-.footer_box {
-    max-width: 1350px;
-    margin: 40px auto;
+footer{
+   display: flex;
+   flex-direction: column;
+   align-items: stretch;
+   padding: 0px 40px 40px 40px;
+}
+
+#footer_box {
+    width: 100%;
+    margin: 40px 0;
+    box-sizing: border-box;
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0 5px 13px rgba(0,0,0,0.08);
 }
 
-footer{
-   display: flex;
-   justify-content: space-between;
-   align-items: center; 
-   padding: 0px 40px 40px 40px;
-   
+#footer_bottom{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-footer p{
-    order: 2;
+#footer_bottom > img{
+    width: 150px;
+    height: auto;
 }
-
-footer img{
-    order: 1;
-    height: 50px;
-
-}
-
-
 
 /*----------------------------registreringssidan----------------------------*/
 .container{
