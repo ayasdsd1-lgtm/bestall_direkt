@@ -204,7 +204,12 @@ footer img{
 
 /*----------------------------Logga in sidan----------------------------*/
 
-.login-wrapper{}
+.login-wrapper{
+    display: flex;
+    justify-content: center; /* Centrerar horisontellt (vänster-höger) */
+    align-items: center;     /* Centrerar vertikalt (upp-ner) */
+    min-height: 100vh;
+}
 
 #footer_bottom{ 
     display: flex;
