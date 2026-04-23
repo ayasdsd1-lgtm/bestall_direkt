@@ -20,8 +20,6 @@ header > img{
     width: auto;
 }
 
-
-
 #for-foretag{
     margin-left: auto;
     text-decoration: none;
@@ -29,7 +27,6 @@ header > img{
     font-family: 'Rosarivo', serif;
     font-weight: bold;
 }
-
 
 /* navigation */
 /* skapad av ... */
@@ -61,10 +58,6 @@ nav > form{
 }
 
 /* sökfält i navigation */
-nav > h2{
-    color: #462009;
-}
-
 .search{
     width: 100%;
     max-width: none;
