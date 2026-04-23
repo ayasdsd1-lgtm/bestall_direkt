@@ -4,7 +4,7 @@ body{
     width: 100%;
     margin: 0px;
     padding: 0px;
-    font-family: 'Lexend', sans-serif;
+    font-family: 'Rosarivo', serif;
     background: #F7F3EE;
 }
 
@@ -20,8 +20,6 @@ header > img{
     width: auto;
 }
 
-
-
 #for-foretag{
     margin-left: auto;
     text-decoration: none;
@@ -29,7 +27,6 @@ header > img{
     font-family: 'Rosarivo', serif;
     font-weight: bold;
 }
-
 
 /* navigation */
 /* skapad av ... */
@@ -61,10 +58,6 @@ nav > form{
 }
 
 /* sökfält i navigation */
-nav > h2{
-    color: #462009;
-}
-
 .search{
     width: 100%;
     max-width: none;
@@ -178,11 +171,79 @@ main{
 }
 
 /* footer */
+
+
 /* skapad av */
-footer {
+.footer_box {
     max-width: 1350px;
     margin: 40px auto;
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 13px rgba(0,0,0,0.08);
+}
+
+footer{
+   display: flex;
+   justify-content: space-between;
+   align-items: center; 
+   padding: 0px 40px 40px 40px;
+   
+}
+
+footer p{
+    order: 2;
+}
+
+footer img{
+    order: 1;
+    height: 50px;
+
+}
+
+
+
+/*----------------------------registreringssidan----------------------------*/
+.container{
+    width: 100%;
+
+    margin: 0 auto;
+}
+
+.content-wrapper{
+    display: flex;
+    flex-direction: row;
+    min-height: 80vh;
+    width: 100%;
+}
+
+.form-section {
+    flex: 1;
+    padding-left: 100px;
+    padding-top: 150px;
+
+}
+
+.design-section{ 
+    flex: 1;
+    padding-right: 40px;
+}
+
+.register-form{
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0 5px 13px rgba(0,0,0,0.08);
+    width: 400px;
+}
+
+.register-input{
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #462009;
+    border-radius: 5px;
+}
+
+#design{
+    height: 500px;
+    width: auto;
 }
