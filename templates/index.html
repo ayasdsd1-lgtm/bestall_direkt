@@ -8,33 +8,33 @@
         <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div id="grid">
-            <!-- header skapare av Aya -->
+        <div class="grid">
             <header>
                 <!-- titel -->
                 <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 <!-- lägg till profil nedan-->
 
                 <!-- länk till inlogg-->
+                <a class="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
             </header>
 
-            <!-- nav skapare av April -->
             <nav>     
                 <!-- sökfält från tutorial/Google Fonts -->
                 <form action="/search" method="GET">
                     <div class="search">
                         <span class="search-icon material-symbols-outlined">search</span>
-                        <input class="search-input" type="search" name="q" id="search" placeholder="Vad vill du boka idag?">
+                        <input class="search-input" type="search" name="search" id="search" placeholder="Vad vill du boka idag?">
                     </div>
                 </form>
             </nav>
 
-            <!-- main skapare av Maja L -->
             <main>
                 <!-- kategorier -->
                  <section>
                     <h2 class="catering_categori">Översikt av kategorier</h2>
+                    <div class="grid-cards">
                     <div id="grid-cards">
                         
                         <!-- första kategori-->
@@ -45,7 +45,6 @@
                             </a>
                         </article>
 
-                        <!-- andra kategori -->
                         <article class="card">
                             <a href="{{ url_for('kategori', namn='Smatt-och-mingel') }}">
                                 <img src="{{ url_for('static', filename='images/smattochmingel.jpeg') }}" alt="Smått och mingel kategori omslag">
@@ -53,7 +52,6 @@
                             </a>
                         </article>
 
-                        <!-- tredje kategori -->
                         <article class="card">
                             <a href="{{ url_for('kategori', namn='Middag-och-festmat') }}">
                                 <img src="{{ url_for('static', filename='images/middagochfestmat.jpg') }}" alt="Middag och festmat kategori omslag">
@@ -61,7 +59,6 @@
                             </a>
                         </article>
 
-                        <!-- fjärde kategori -->
                         <article class="card">
                             <a href="{{ url_for('kategori', namn='Buffe') }}">
                                 <img src="{{ url_for('static', filename='images/buffe.jpg') }}" alt="Buffé kategori omslag">
@@ -69,7 +66,6 @@
                             </a>
                         </article>
 
-                        <!-- femte kategori -->
                         <article class="card">
                             <a href="{{ url_for('kategori', namn='Bakver-och-sott') }}">
                                 <img src="{{ url_for('static', filename='images/bakverkochsott.jpg') }}" alt="Bakverk och sött kategori omslag">
@@ -77,7 +73,7 @@
                             </a>
                         </article>
 
-                        <!-- sjätte kategori -->
+                        <!-- sjätte kategori - visa alla kategorier-->
                         <article class="card card-all">
                             <a href="#">
                                 <h3>Visa alla kategorier</h3>
@@ -86,6 +82,11 @@
                     </div>
                  </section>
             </main>
+
+            <section class="footer_box">
+                <h2>Kontakt / info</h2>
+                <p>Bla bla blah? policy, kontakt, admin/support</p>
+            </section>
 
             <!-- footer skapare av April -->
             <footer>
