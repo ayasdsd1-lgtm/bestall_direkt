@@ -206,3 +206,51 @@ footer img{
     height: 50px;
 
 }
+
+
+
+/*----------------------------registreringssidan----------------------------*/
+.container{
+    width: 100%;
+
+    margin: 0 auto;
+}
+
+.content-wrapper{
+    display: flex;
+    flex-direction: row;
+    min-height: 80vh;
+    width: 100%;
+}
+
+.form-section {
+    flex: 1;
+    padding-left: 100px;
+    padding-top: 150px;
+
+}
+
+.design-section{ 
+    flex: 1;
+    padding-right: 40px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0 5px 13px rgba(0,0,0,0.08);
+    width: 400px;
+}
+
+input{
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #462009;
+    border-radius: 5px;
+}
+
+#design{
+    height: 500px;
+    width: auto;
+}
