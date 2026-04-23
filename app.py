@@ -72,9 +72,9 @@ def logga_in():
     """
     Visar inloggningssidan för företagare
     Länken i HTML ska se ut: {{ url_for('logga_in') }}
-    HTML-sida: loggaIn.html
+    HTML-sida: log_in.html
     """
-    return render_template("loggaIn.html")
+    return render_template("log_in.html")
 
 
 @app.route("/login", methods=["POST"])
@@ -86,7 +86,7 @@ def login():
     Vid lyckad inloggning sparas email i sessionen
     och användaren skickas till startsidan.
     Formuläret i HTML ska ha method="POST" och action="/login".
-    HTML-sida: loggaIn.html
+    HTML-sida: log_in.html
     """
     email = request.form["email"]
     password = request.form["password"]
@@ -126,7 +126,7 @@ def register():
     Lösenordet hashas innan det sparas.
     Efter lyckad registrering skickas användaren till inloggningssidan.
     Formuläret i HTML ska ha method="POST" och action="/register".
-    HTML-sida: loggaIn.html
+    HTML-sida: log_in.html
     """
     namn = request.form["namn"]
     email = request.form["email"]
