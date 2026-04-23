@@ -206,8 +206,8 @@ footer img{
 
 .login-wrapper{
     display: flex;
-    justify-content: center; /* Centrerar horisontellt (vänster-höger) */
-    align-items: center;     /* Centrerar vertikalt (upp-ner) */
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
 }
 
