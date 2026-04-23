@@ -8,36 +8,32 @@
         <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
     </head>
     <body>
-        <div id="grid">
-            <!-- header skapare av Aya -->
+        <div class="grid">
             <header>
                 <!-- titel -->
                 <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 <!-- lägg till profil nedan-->
 
                 <!-- länk till inlogg-->
-                <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+                <a class="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
 
             </header>
 
-            <!-- nav skapare av April -->
             <nav>     
                 <!-- sökfält från tutorial/Google Fonts -->
                 <form action="/search" method="GET">
                     <div class="search">
                         <span class="search-icon material-symbols-outlined">search</span>
-                        <input class="search-input" type="search" name="q" id="search" placeholder="Vad vill du boka idag?">
+                        <input class="search-input" type="search" name="search" id="search" placeholder="Vad vill du boka idag?">
                     </div>
                 </form>
             </nav>
 
-            <!-- main skapare av Maja L -->
             <main>
                 <!-- kategorier -->
                  <section>
                     <h2 class="catering_categori">Översikt av kategorier</h2>
-                    <div id="grid-cards">
-                        <!-- första kategori-->
+                    <div class="grid-cards">
                         <article class="card">
                             <a href="">
                                 <img src="{{ url_for('static', filename='images/brunch.jpeg') }}" alt="">
@@ -45,7 +41,6 @@
                             </a>
                         </article>
 
-                        <!-- andra kategori -->
                         <article class="card">
                             <a href="">
                                 <img src="{{ url_for('static', filename='images/smattochmingel.jpeg') }}" alt="">
@@ -53,7 +48,6 @@
                             </a>
                         </article>
 
-                        <!-- tredje kategori -->
                         <article class="card">
                             <a href="">
                                 <img src="{{ url_for('static', filename='images/middagochfestmat.jpg') }}" alt="">
@@ -61,7 +55,6 @@
                             </a>
                         </article>
 
-                        <!-- fjärde kategori -->
                         <article class="card">
                             <a href="">
                                 <img src="{{ url_for('static', filename='images/buffe.jpg') }}" alt="">
@@ -69,7 +62,6 @@
                             </a>
                         </article>
 
-                        <!-- femte kategori -->
                         <article class="card">
                             <a href="">
                                 <img src="{{ url_for('static', filename='images/bakverkochsott.jpg') }}" alt="">
@@ -77,7 +69,7 @@
                             </a>
                         </article>
 
-                        <!-- sjätte kategori -->
+                        <!-- sjätte kategori - visa alla kategorier-->
                         <article class="card card-all">
                             <a href="#">
                                 <h3>Visa alla kategorier</h3>
@@ -87,7 +79,6 @@
                  </section>
             </main>
 
-            <!-- footer skapare av April -->
             <section class="footer_box">
                 <h2>Kontakt / info</h2>
                 <p>Bla bla blah? policy, kontakt, admin/support</p>
