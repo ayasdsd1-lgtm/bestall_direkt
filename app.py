@@ -136,6 +136,8 @@ def register():
 
     cursor = conn.cursor()
 
+    
+
     try:
         # Kolla om emailen redan är registrerad
         cursor.execute(
