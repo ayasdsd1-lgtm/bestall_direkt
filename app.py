@@ -117,26 +117,39 @@ def login():
         return "Login error"
     
 
+# -------------------------------------------------------
+# REGISTRERING
+# -------------------------------------------------------
+
+@app.route("/registrering")
+def registrera_sig():
+
+    """
+    Visar registreringssidan för företagare.
+    Länken i HTML ska se ut: {{ url_for('registrera_sig') }}
+    HTML-sida: register.html
+    """
+    return render_template("register.html")
+
+
 @app.route("/register", methods=["POST"])
 def register():
     """
     Registrerar en ny företagare i databasen.
-    Tar emot företagsnamn, email och lösenord via POST.
+    Tar emot namn, email och lösenord via POST.
     Kollar först om emailen redan finns i databasen.
     Lösenordet hashas innan det sparas.
     Efter lyckad registrering skickas användaren till inloggningssidan.
     Formuläret i HTML ska ha method="POST" och action="/register".
-    HTML-sida: log_in.html
+    HTML-sida: register.html
+
+    OBS: personnummer och mobilnummer läggs till när databasen är redo.
     """
     namn = request.form["namn"]
     email = request.form["email"]
     losenord = request.form["losenord"]
 
-    hashat_losenord = generate_password_hash(losenord)
-
     cursor = conn.cursor()
-
-    
 
     try:
         # Kolla om emailen redan är registrerad
@@ -167,20 +180,6 @@ def register():
 
 
 # -------------------------------------------------------
-# REGISTRERING
-# -------------------------------------------------------
-
-@app.route("/registrering")
-def registrera_sig():
-
-    """
-    Visar registreringssidan för företagare
-    """
-    return render_template("register.html")
-
-
-
-# -------------------------------------------------------
 # UTLOGGNING
 # -------------------------------------------------------
 
@@ -193,7 +192,6 @@ def logga_ut():
     """
     session.clear()      # Raderar minneslappen - användaren är ut utloggad
     return redirect(url_for("home"))
-
 
 
 
