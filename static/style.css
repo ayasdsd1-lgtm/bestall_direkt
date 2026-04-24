@@ -199,8 +199,8 @@ footer{
 footer img{
     order: 1;
     height: 50px;
-
 }
+
 
 /*----------------------------Logga in sidan----------------------------*/
 
@@ -211,13 +211,13 @@ footer img{
     min-height: 100vh;
 }
 
-#footer_bottom{ 
+/*#footer_bottom{ 
     display: flex;
     justify-content: center;
     justify-content: space-between;
     align-items: center;
     min-height: 100vh;
-}
+}*/
 
 .login-box{
     background: white;
