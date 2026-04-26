@@ -63,6 +63,19 @@ def alla_kategorier():
 
 
 # -------------------------------------------------------
+# VIEW
+# -------------------------------------------------------
+@app.route("/view") # /<id> måste läggas till när en tabell i databasen har kopplats
+def view_company(id):
+    """
+    Visar en sidan med mall på företagssidor som visas för kunder när
+    de trycker på en specifik sida.
+    """
+    return render_template("view.html")
+
+
+
+# -------------------------------------------------------
 # INLOGGNING
 # -------------------------------------------------------
 
@@ -200,3 +213,7 @@ def logga_ut():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
