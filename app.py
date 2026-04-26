@@ -8,7 +8,7 @@ import os
 load_dotenv() # laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
-app.secret_key = "hemlig_nyckel"
+app.secret_key = os.getenv("SECRET_KEY")  # Hämtar hemlig nyckel från .env
 
 # Databasanslutning via miljövariabel - Supabase kräver SSL
 conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
@@ -32,7 +32,11 @@ def home():
 @app.route("/search")
 def search():
     """ 
-    Hämtar det användaren skrev i rutan med name="q"
+    Hämtar det användaren skrev i sökrutan (name="q").
+    Formuläret i HTML ska ha method="GET" och action="/search".
+    OBS: input i HTML måste ha name="q" för att detta ska fungera.
+
+    HTML-sida: search.html (ej byggd än)
     """
     query = request.args.get('q')
     return f"<h1>Sökresultat</h1><p>Du söker efter: {query}</p><a href='/'>Tillbaka till start</a>"
@@ -47,7 +51,7 @@ def kategori(namn):
     """
     Visar en sida för en specifik catering-kategori.
     Länken i HTML ska se ut: {{ url_for('kategori', namn='Brunch') }}
-    HTML-sida: kategori.html (ej byggd än)
+    HTML-sida: kategori.html
     """
     return render_template("kategori.html", namn=namn)
 
@@ -102,7 +106,7 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            stored_password = user[3]  # rätt index 
+            stored_password = user[3]
             if check_password_hash(stored_password, password):
                 session["user"] = email # Sparar inloggad användare i sessionen
                 return redirect(url_for("home"))
@@ -148,6 +152,9 @@ def register():
     namn = request.form["namn"]
     email = request.form["email"]
     losenord = request.form["losenord"]
+
+    # personnummer = request.form["identification"]  ← lägg till när databasen är redo
+    # tel = request.form["tel"]                      ← lägg till när databasen är redo
 
     cursor = conn.cursor()
 
