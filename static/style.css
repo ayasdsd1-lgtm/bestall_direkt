@@ -322,6 +322,10 @@ footer img{
     align-items: center;
     padding: 1rem 0;
     width: 100%;
+
+    border-bottom: 2px solid #a79b92;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .nav-wrapper {
@@ -362,7 +366,6 @@ footer img{
 .search-view:hover, .search-view:focus-within {
     width: 200px;
     justify-content: flex-start;
-
 }
 
 
