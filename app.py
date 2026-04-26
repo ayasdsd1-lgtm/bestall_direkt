@@ -8,7 +8,7 @@ import os
 load_dotenv() # laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
-app.secret_key = "hemlig_nyckel"
+app.secret_key = os.getenv("SECRET_KEY")  # Hämtar hemlig nyckel från .env
 
 # Databasanslutning via miljövariabel - Supabase kräver SSL
 conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
@@ -32,7 +32,11 @@ def home():
 @app.route("/search")
 def search():
     """ 
-    Hämtar det användaren skrev i rutan med name="q"
+    Hämtar det användaren skrev i sökrutan (name="q").
+    Formuläret i HTML ska ha method="GET" och action="/search".
+    OBS: input i HTML måste ha name="q" för att detta ska fungera.
+
+    HTML-sida: search.html (ej byggd än)
     """
     query = request.args.get('q')
     return f"<h1>Sökresultat</h1><p>Du söker efter: {query}</p><a href='/'>Tillbaka till start</a>"
@@ -47,7 +51,7 @@ def kategori(namn):
     """
     Visar en sida för en specifik catering-kategori.
     Länken i HTML ska se ut: {{ url_for('kategori', namn='Brunch') }}
-    HTML-sida: kategori.html (ej byggd än)
+    HTML-sida: kategori.html
     """
     return render_template("kategori.html", namn=namn)
 
@@ -60,6 +64,19 @@ def alla_kategorier():
     HTML-sida: alla_kategorier.html (ej byggd än)
     """
     return "<h1>Här listas alla våra catering-kategorier</h1>"
+
+
+# -------------------------------------------------------
+# VIEW
+# -------------------------------------------------------
+@app.route("/view") # /<id> måste läggas till när en tabell i databasen har kopplats
+def view_company():
+    """
+    Visar en sidan med mall på företagssidor som visas för kunder när
+    de trycker på en specifik sida.
+    """
+    return render_template("view.html")
+
 
 
 # -------------------------------------------------------
@@ -102,7 +119,7 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            stored_password = user[3]  # rätt index 
+            stored_password = user[3]
             if check_password_hash(stored_password, password):
                 session["user"] = email # Sparar inloggad användare i sessionen
                 return redirect(url_for("home"))
@@ -117,26 +134,42 @@ def login():
         return "Login error"
     
 
+# -------------------------------------------------------
+# REGISTRERING
+# -------------------------------------------------------
+
+@app.route("/registrering")
+def registrera_sig():
+
+    """
+    Visar registreringssidan för företagare.
+    Länken i HTML ska se ut: {{ url_for('registrera_sig') }}
+    HTML-sida: register.html
+    """
+    return render_template("register.html")
+
+
 @app.route("/register", methods=["POST"])
 def register():
     """
     Registrerar en ny företagare i databasen.
-    Tar emot företagsnamn, email och lösenord via POST.
+    Tar emot namn, email och lösenord via POST.
     Kollar först om emailen redan finns i databasen.
     Lösenordet hashas innan det sparas.
     Efter lyckad registrering skickas användaren till inloggningssidan.
     Formuläret i HTML ska ha method="POST" och action="/register".
-    HTML-sida: log_in.html
+    HTML-sida: register.html
+
+    OBS: personnummer och mobilnummer läggs till när databasen är redo.
     """
     namn = request.form["namn"]
     email = request.form["email"]
     losenord = request.form["losenord"]
 
-    hashat_losenord = generate_password_hash(losenord)
+    # personnummer = request.form["identification"]  ← lägg till när databasen är redo
+    # tel = request.form["tel"]                      ← lägg till när databasen är redo
 
     cursor = conn.cursor()
-
-    
 
     try:
         # Kolla om emailen redan är registrerad
@@ -167,20 +200,6 @@ def register():
 
 
 # -------------------------------------------------------
-# REGISTRERING
-# -------------------------------------------------------
-
-@app.route("/registrering")
-def registrera_sig():
-
-    """
-    Visar registreringssidan för företagare
-    """
-    return render_template("register.html")
-
-
-
-# -------------------------------------------------------
 # UTLOGGNING
 # -------------------------------------------------------
 
@@ -199,6 +218,9 @@ def logga_ut():
 
 
 
-
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+

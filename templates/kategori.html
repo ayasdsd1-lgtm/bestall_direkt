@@ -3,17 +3,21 @@
     <head>
         <meta charset="utf-8">
         <title>Kategori</title>
-        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+        <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
+        <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
     </head>
 
     <body>
 
         <header>
-            <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
+            </a>
             <a id="for-foretag" href="{{ url_for('logga_in') }}">För företag</a>
         </header>
 
-        <nav>
+        <nav class="nav">
             <form action="/search" method="GET">
                 <div class="search">
                     <input class="search-input" type="search" name="q" placeholder="Vad vill du boka idag?">
@@ -72,7 +76,7 @@
         </main>
 
         <footer>
-            <section id="footer_box">
+            <section class="footer_box">
                 <h2>Kontakt / info</h2>
                 <p>Bla bla blah...</p>
             </section>

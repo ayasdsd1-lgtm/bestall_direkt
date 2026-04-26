@@ -11,14 +11,15 @@
         <div id="grid">
             <header>
                 <!-- titel -->
-                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
-                <!-- lägg till profil nedan-->
+                <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
+                </a>
 
                 <!-- länk till inlogg-->
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
             </header>
 
-            <nav>     
+            <nav class="nav">     
                 <!-- sökfält från tutorial/Google Fonts -->
                 <form action="/search" method="GET">
                     <div class="search">
@@ -82,7 +83,7 @@
 
             <!-- footer skapare av April -->
             <footer>
-                <section id="footer_box">
+                <section class="footer_box">
                     <h2>Kontakt / info</h2>
                     <p>Bla bla blah? policy, kontakt, admin/support</p>
                 </section>
