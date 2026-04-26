@@ -1,5 +1,4 @@
-/* body */
-/* skapad av ... */
+/*----------------------------Body----------------------------*/
 body{
     width: 100%;
     margin: 0px;
@@ -34,8 +33,7 @@ header a img{
     margin-bottom: 20px;
 }
 
-/* navigation */
-/* skapad av ... */
+/*----------------------------Navigation----------------------------*/
 .nav{
     position: relative;
     display: flex;
@@ -63,7 +61,7 @@ nav > form{
     max-width: 900px;
 }
 
-/* sökfält i navigation */
+/*----------------------------Sökfält i navigation----------------------------*/
 .search{
     width: 100%;
     max-width: none;
@@ -101,7 +99,7 @@ nav > form{
     color: rgba(0, 0, 0, 0.5);
 }
 
-/* main */
+/*----------------------------Main----------------------------*/
 main > section > h2 {
     color: #3B2D29;
 }
@@ -113,7 +111,6 @@ main > section > h2 {
 
 }
 
-/* skapad av ... */
 main{
     padding: 10px 100px; 
 }
@@ -124,7 +121,7 @@ main{
     gap: 20px;
 }
 
-/* varje kort i main */
+/*----------------------------kort i main----------------------------*/
 .card {
     background: transparent;
     transition: transform 0.2s ease;
@@ -176,8 +173,7 @@ main{
     background-color: #6A8FA8;
 }
 
-/* footer */
-/* skapad av */
+/*----------------------------Footer----------------------------*/
 footer{
    display: flex;
    flex-direction: column;
@@ -208,7 +204,6 @@ footer img{
 
 
 /*----------------------------Logga in sidan----------------------------*/
-
 .login-wrapper{
     display: flex;
     justify-content: center;
