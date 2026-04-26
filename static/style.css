@@ -8,7 +8,7 @@ body{
     background: #F7F3EE;
 }
 
-/*header*/
+/*----------------------------Header----------------------------*/
 header{
     display: flex;
     align-items: center;
@@ -26,6 +26,12 @@ header a img{
     color: #462009;
     font-family: 'Rosarivo', serif;
     font-weight: bold;
+}
+
+.header-border {
+    border-bottom: 2px solid #a79b92;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 /* navigation */
