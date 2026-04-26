@@ -19,6 +19,24 @@
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
             </header>
 
+            <nav class="category-nav">
+                <div class="nav-wrapper">
+                    <ul class="category-list">
+                        <li><a href="{{ url_for('kategori', namn='Brunch') }}">Brunch</a></li>
+                        <li><a href="{{ url_for('kategori', namn='Smatt-och-mingel') }}">Smått & mingel</a></li>
+                        <li><a href="{{ url_for('kategori', namn='Middag-och-festmat') }}">Middag & festmat</a></li>
+                        <li><a href="{{ url_for('kategori', namn='Buffe') }}">Buffé</a></li>
+                        <li><a href="{{ url_for('kategori', namn='Bakver-och-sott') }}">Bakverk & sött</a></li>
+                    </ul>
+
+                    <form action="/search" method="GET">
+                        <div class="search-view">
+                            <span class="search--view-icon material-symbols-outlined">search</span>
+                            <input class="search-input" type="search" name="search" id="search" class="input-view" placeholder="Vad vill du söka på?">
+                        </div>
+                    </form>
+                </div>
+            </nav>
             
 
         </div>
