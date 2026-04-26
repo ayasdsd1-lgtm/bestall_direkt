@@ -69,13 +69,20 @@ def alla_kategorier():
 # -------------------------------------------------------
 # VIEW
 # -------------------------------------------------------
-@app.route("/view") # /<id> måste läggas till när en tabell i databasen har kopplats
-def view_company():
+@app.route("/view/<int:company_id>") # /<id> måste läggas till när en tabell i databasen har kopplats
+def view_company(company_id):
     """
     Visar en sidan med mall på företagssidor som visas för kunder när
     de trycker på en specifik sida.
     """
-    return render_template("view.html")
+    test_data = {
+        "namn": "Aya AB",
+        "adress": "ingenstans 123"
+        
+
+    }
+
+    return render_template("view.html", foretag=test_data)
 
 
 
@@ -214,13 +221,10 @@ def logga_ut():
     return redirect(url_for("home"))
 
 
-
-
-
+# -------------------------------------------------------
+# Decorator
+# -------------------------------------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
 

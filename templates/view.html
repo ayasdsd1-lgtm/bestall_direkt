@@ -2,7 +2,7 @@
 <html lang="sv">
     <head>
         <meta charset="utf-8">
-        <title>Beställ Direkt - {# {{ foretag.namn }} #}</title> <!--DATABAS-->
+        <title>Beställ Direkt - {{ foretag.namn }}</title> <!--DATABAS-->
         <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
         <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
@@ -40,12 +40,12 @@
 
         <main>
             <div>
-                <h1> {# {{ foretag.namn}} #}</h1> <!--DATABAS-->
-                <p> {# {{adress}} #} </p> <!--DATABAS-->
+                <h1>  {{ foretag.namn}} </h1> <!--DATABAS-->
+                <p> {{foretag.adress}} </p> <!--DATABAS-->
             </div>
 
             <section>
-                
+
             </section>
 
             
