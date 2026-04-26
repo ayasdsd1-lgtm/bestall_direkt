@@ -70,7 +70,7 @@ def alla_kategorier():
 # VIEW
 # -------------------------------------------------------
 @app.route("/view") # /<id> måste läggas till när en tabell i databasen har kopplats
-def view_company(id):
+def view_company():
     """
     Visar en sidan med mall på företagssidor som visas för kunder när
     de trycker på en specifik sida.
