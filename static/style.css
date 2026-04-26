@@ -15,7 +15,7 @@ header{
     padding: 20px 100px;
     background: #F7F3EE;
 }
-header > img{
+header a img{
     height: 100px;
     width: auto;
 }
