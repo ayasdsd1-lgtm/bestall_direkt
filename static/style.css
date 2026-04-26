@@ -393,3 +393,26 @@ footer img{
     display: flex;
     align-items: center;
 }
+
+.view-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.left-column, .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.view-img-box {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.logo-box img {
+    max-width: 150px;
+}
+

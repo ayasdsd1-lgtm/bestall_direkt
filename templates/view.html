@@ -37,18 +37,44 @@
             </nav>
         </div>
 
-
         <main>
-            <div>
+            <header>
                 <h1>  {{ foretag.namn}} </h1> <!--DATABAS-->
                 <p> {{foretag.adress}} </p> <!--DATABAS-->
+            </header>
+            <div class="view-container">
+                <div class="left-column">
+                    <section class="view-img-box">
+                        <img src="{{ url_for('static', filename= '')}}" alt="{{ foretag.namn }} logo">
+                    </section>
+                    <section class="view-service-box">
+                        <h2>Våra tjänster</h2>
+                        <ul>
+                            {% for thanst in foretag.tjanster %}
+                            <li>{{ tjanst }}</li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="right-column">
+                    <section class="logo-box"> 
+                        <img src="{{ url_for('static', filename= '')}}" alt="{{ foretag.namn }} logo">
+                    </section>
+
+                    <section>
+                        <h3>Kontakt</h3>
+                        <p>{{ foretag.adress }}</p>
+                        <p>{{ foretag.telefon }}</p>
+                        <p>{{ foretag.epost }}</p>
+                    </section>
+
+                    <section class="view-about-box">
+                        <h3>Om oss</h3>
+                        <p>{{ foretag.beskrivning}}</p>
+                    </section>
+                </div>
             </div>
-
-            <section>
-
-            </section>
-
-            
         </main>
 
 
@@ -61,7 +87,7 @@
             <div id="footer_bottom">
                 <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
                 <p>© Beställ direkt 2026</p>
-            </div>
         </footer>
+
     </body>
 </html>
