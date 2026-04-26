@@ -208,16 +208,10 @@ footer img{
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
-/*#footer_bottom{ 
-    display: flex;
-    justify-content: center;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 100vh;
-}*/
 
 .login-box{
     background: white;
@@ -306,7 +300,6 @@ footer img{
     display: flex;
     flex-direction: column;
     border-radius: 20px;
-    box-shadow: 0 5px 13px rgba(0,0,0,0.08);
     width: 400px;
 }
 
