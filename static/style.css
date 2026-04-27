@@ -202,6 +202,9 @@ footer img{
     height: 50px;
 }
 
+footer section{
+    scroll-margin-top: 80px;
+}
 
 /*----------------------------Logga in sidan----------------------------*/
 .login-wrapper{

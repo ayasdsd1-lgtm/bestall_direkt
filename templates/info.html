@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+        <meta charset="utf-8">
+        <title>Beställ Direkt</title>
+        <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
+        <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div id="grid">
+            <header>
+                <!-- titel -->
+                <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
+                </a>
+
+                <!-- länk till inlogg-->
+                <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+            </header>
+
+            <nav class="nav">     
+                <!-- sökfält från tutorial/Google Fonts -->
+                <form action="/search" method="GET">
+                    <div class="search">
+                        <span class="search-icon material-symbols-outlined">search</span>
+                        <input class="search-input" type="search" name="search" id="search" placeholder="Vad vill du boka idag?">
+                    </div>
+                </form>
+            </nav>
+
+            <main>
+                <section id="policy">
+                    <h2>Vår policy</h2>
+                    <p>Här skriver vi vår policy</p>
+                </section>
+                
+                <section class="om-oss">
+                    <h2>Om Beställ Direkt</h2>
+                    <p>Berätta om oss</p>
+                </section>
+
+                <section id="support">
+                    <h2>Support</h2>
+                    <p>Behöver du teknisk hjälp? kontakta oss??</p>
+                </section>
+
+
+            </main>
+        
+
+
+
+        <footer>
+            <section class="footer_box">
+                <p><a href="{{ url_for('logga_in') }}">Företagsinloggning</a></p>
+                <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
+                <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+                <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
+            </section>
+
+            <div id="footer_bottom">
+                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
+                <p>© Beställ direkt 2026</p>
+            </div>
+        </footer>
+
+    </body>
+</html>
