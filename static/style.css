@@ -506,6 +506,27 @@ footer img{
     display: block;
 }
 
+/*-button-*/
+
+.add-btn {
+    background-color: green;
+    color: whitesmoke;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.add-btn:hover {
+    background-color: yellow;
+}
+
+.total-box {
+    position: sticky;
+    top: 20px;
+}
 
 /*-------------------------------------Info--------------------------------------*/
 #policy p a {
