@@ -54,9 +54,10 @@
                         {% for tjanst in foretag.tjanster %}
                         <div class="view-card">
                             <h3>{{ tjanst.namn }}</h3>
-                            <p class="card-pris"> {{ tjanst.pris }} </p>
+                            <p class="card-pris"><span class="pris-varde">{{ tjanst.pris }}</span> kr</p>
                         </div>
                         {% endfor %}
+
                     </section>
                 </div>
 
@@ -74,6 +75,11 @@
                     <section class="view-about-box">
                         <h3>Om oss</h3>
                         <p>{{ foretag.beskrivning}}</p>
+                    </section>
+
+                    <section class="total-box">
+                        <h3>Prisöversikt</h3>
+                        <p><strong>Totalt:</strong> <span id="total-summa">0</span> kr</p>
                     </section>
                 </div>
             </div>
@@ -93,6 +99,6 @@
                 <p>© Beställ direkt 2026</p>
             </div>
         </footer>
-
+        <script src="{{ url-for('static', filename='script.js') }}"></script>
     </body>
 </html>
