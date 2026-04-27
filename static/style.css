@@ -531,7 +531,7 @@ footer img{
 
 #policy p{
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 0;
 }
 
 #policy ul li {
@@ -540,4 +540,23 @@ footer img{
 
 #policy h2{
     padding-top: 20px;
+}
+
+#om-oss p{
+    padding-left: 50px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+#om-oss h2{
+    padding-top: 30px;
+}
+
+#support {
+    padding-top: 15px;
+}
+
+#support h3, 
+#support p{
+    padding-left: 50px;
 }
