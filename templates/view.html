@@ -67,7 +67,6 @@
 
                     <section>
                         <h3>Kontakt</h3>
-                        <p>{{ foretag.adress }}</p>
                         <p>{{ foretag.telefon }}</p>
                         <p>{{ foretag.epost }}</p>
                     </section>
@@ -83,8 +82,8 @@
 
         <footer>
             <section class="footer_box">
-                <h2>Kontakt / info</h2>
-                <p>Bla bla blah? policy, kontakt, admin/support</p>
+                <p><a href="{{ url_for('logga_in') }}">Företagsinloggning</a></p>
+
             </section>
 
             <div id="footer_bottom">
