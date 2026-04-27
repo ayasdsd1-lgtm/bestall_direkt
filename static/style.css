@@ -201,7 +201,9 @@ footer{
 }
 
 .footer_box a {
-    color: white;
+    color: #462009;
+    text-decoration: none;
+    font-weight: 500;
 }
 
 #footer_bottom{
