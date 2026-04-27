@@ -72,7 +72,7 @@ def alla_kategorier():
 @app.route("/view/<int:company_id>") # /<id> måste läggas till när en tabell i databasen har kopplats
 def view_company(company_id):
     """
-    Visar en sidan med mall på företagssidor som visas för kunder när
+    Visar en sidan på företagssidor som visas för kunder när
     de trycker på en specifik sida.
     """
     test_data = {
@@ -223,6 +223,19 @@ def logga_ut():
     """
     session.clear()      # Raderar minneslappen - användaren är ut utloggad
     return redirect(url_for("home"))
+
+
+# -------------------------------------------------------
+# Info sidan
+# -------------------------------------------------------
+@app.route("/info")
+def info():
+    """
+    Visar info sidan för besökare
+    Länken i HTML ska se ut: {{ url_for('info') }}
+    HTML-sidan: info.html
+    """
+    return render_template("info.html")
 
 
 # -------------------------------------------------------
