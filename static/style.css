@@ -537,3 +537,7 @@ footer img{
 #policy ul li {
     list-style: none;
 }
+
+#policy h2{
+    padding-top: 20px;
+}

@@ -83,16 +83,18 @@
 
             <!-- footer skapare av April -->
             <footer>
-                <section class="footer_box">
-                    <h2>Kontakt / info</h2>
-                    <p>Bla bla blah? policy, kontakt, admin/support</p>
-                </section>
+            <section class="footer_box">
+                <p><a href="{{ url_for('logga_in') }}">Företagsinloggning</a></p>
+                <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
+                <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+                <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
+            </section>
 
-                <div id="footer_bottom">
-                    <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
-                    <p>© Beställ direkt 2026</p>
-                </div>
-            </footer>
+            <div id="footer_bottom">
+                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
+                <p>© Beställ direkt 2026</p>
+            </div>
+        </footer>
         </div>
 
 
