@@ -38,7 +38,7 @@
         </div>
 
         <main>
-            <header>
+            <header class="view-header">
                 <h1>  {{ foretag.namn}} </h1> <!--DATABAS-->
                 <p> {{foretag.adress}} </p> <!--DATABAS-->
             </header>
@@ -47,13 +47,16 @@
                     <section class="view-img-box">
                         <img src="{{ url_for('static', filename= '')}}" alt="{{ foretag.namn }} logo">
                     </section>
+
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
-                        <ul>
-                            {% for thanst in foretag.tjanster %}
-                            <li>{{ tjanst }}</li>
-                            {% endfor %}
-                        </ul>
+
+                        {% for tjanst in foretag.tjanster %}
+                        <div class="view-card">
+                            <h3>{{ tjanst.namn }}</h3>
+                            <p class="card-pris"> {{ tjanst.pris }} </p>
+                        </div>
+                        {% endfor %}
                     </section>
                 </div>
 
