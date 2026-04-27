@@ -82,8 +82,8 @@ def view_company(company_id):
         "epost": "ajabaja@ajabaja.com",
         "beskrivning": "Gottegott gottegott",
         "tjanster":[
-            {"namn": "Dolma", "pris": "10kr st"},
-            {"namn": "Mini cheesecake", "pris": "20kr st"}
+            {"namn": "Dolma", "pris": 10},
+            {"namn": "Mini cheesecake", "pris": 20}
         ]
     }
     return render_template("view.html", foretag=test_data)
