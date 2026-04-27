@@ -173,7 +173,7 @@ main{
     background-color: #6A8FA8;
 }
 
-/*----------------------------Footer----------------------------*/
+/*-------------------------------------Footer------------------------------------*/
 footer{
    display: flex;
    flex-direction: column;
@@ -188,6 +188,20 @@ footer{
     padding: 30px;
     box-shadow: 0 5px 13px rgba(0,0,0,0.08);
     background-color: #EDE7E3;
+
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.footer_box p{
+    margin: 0;
+}
+
+.footer_box a {
+    color: white;
 }
 
 #footer_bottom{
@@ -206,7 +220,7 @@ footer section{
     scroll-margin-top: 80px;
 }
 
-/*----------------------------Logga in sidan----------------------------*/
+/*---------------------------------------Logga in sidan---------------------------------------*/
 .login-wrapper{
     display: flex;
     justify-content: center;
@@ -274,7 +288,7 @@ footer img{
     cursor: pointer;
 }
 
-/*----------------------------registreringssidan----------------------------*/
+/*---------------------------------registreringssidan--------------------------------*/
 .container{
     width: 100%;
 
@@ -319,7 +333,7 @@ footer img{
 }
 
 
-/*----------------------------Mall för view----------------------------*/
+/*-------------------------------------Mall för view--------------------------------------*/
 .category-nav {
     display: flex;
     justify-content: center;
@@ -406,7 +420,7 @@ footer img{
     align-items: center;
 }
 
-/*---------Resten av sidan som kommer efter header och nav-----------*/
+/*-Resten av sidan som kommer efter header och nav-*/
 
 .view-container{
     display: grid;
