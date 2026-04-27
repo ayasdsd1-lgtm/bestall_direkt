@@ -115,13 +115,16 @@ main{
     padding: 10px 100px; 
 }
 
+
+
+/*----------------------------kort i main----------------------------*/
+
 #grid-cards{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
-/*----------------------------kort i main----------------------------*/
 .card {
     background: transparent;
     transition: transform 0.2s ease;
@@ -190,15 +193,13 @@ footer{
     background-color: #EDE7E3;
 
     display: flex;
-    justify-content: center;
+    justify-content: start;
     gap: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
     flex-wrap: wrap;
+    
 }
 
-.footer_box p{
-    margin: 0;
-}
 
 .footer_box a {
     color: #462009;
@@ -206,16 +207,26 @@ footer{
     font-weight: 500;
 }
 
+.footer_box a:hover {
+    text-decoration: underline;
+}
+
 #footer_bottom{
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    border-top: 1px solid #ccc;
+    padding-top: 30px;
 }
 
 footer img{
     order: 1;
     height: 50px;
+}
+
+#footer_bottom p{
+    order: 2;
 }
 
 footer section{
@@ -493,4 +504,36 @@ footer img{
 
 .view-header {
     display: block;
+}
+
+
+/*-------------------------------------Info--------------------------------------*/
+#policy p a {
+    color: #ba574e;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#policy p a:hover {
+    text-decoration: underline;
+}
+
+#policy h3, 
+#policy p,
+#policy ul{
+    padding-left: 50px;
+}
+
+#policy h3{
+    padding-top: 20px;
+    margin-bottom: 5px;
+}
+
+#policy p{
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+#policy ul li {
+    list-style: none;
 }

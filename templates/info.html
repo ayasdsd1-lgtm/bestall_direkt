@@ -10,17 +10,14 @@
     <body>
         <div id="grid">
             <header>
-                <!-- titel -->
                 <a href="{{ url_for('home') }}">
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 </a>
 
-                <!-- länk till inlogg-->
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
             </header>
 
             <nav class="nav">     
-                <!-- sökfält från tutorial/Google Fonts -->
                 <form action="/search" method="GET">
                     <div class="search">
                         <span class="search-icon material-symbols-outlined">search</span>
@@ -29,13 +26,42 @@
                 </form>
             </nav>
 
-            <main>
+            <main class="info-layout">
                 <section id="policy">
                     <h2>Vår policy</h2>
-                    <p>Här skriver vi vår policy</p>
+                    <h3>Integritet och ansvar</h3>
+                    <p>På Beställ Direkt värnar vi om en trygg marknadsplats för både anslutna förteag och våra besökare. 
+                        För att säkerställa en hög standard förväntar vi oss att alla användare följer våra etiska riktlinjer och integritetspolicy. 
+                        Dessa regler finns till för att skydda din data och garantera en säker, transparent och professionell upplevelse för alla parter. 
+                    </p>
+
+                    <h3>Kvalitetskrav och livsmedelssäkerhet</h3>
+                    <p>
+                        Din trygghet är vår prioritet. Därför stället vi strikta krav på vååra samarbetspartners:
+                        <ul>
+                            <li>
+                                <p>
+                                    - certifiering: Vi samarbetar med endast företag som kan uppvisa ett giltligt registreringsbevis från miljöförvaltningen.
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    - Lag: Våra anslutna verksamheter är skyldoga att aktivt följa aktuell livsmedelslagstiftning och hygienkrav.
+                                </p>
+                            </li>
+                        </ul>
+                    </p>
+                    <h3>Rapportering av överträdelse</h3>
+                    <p>
+                        Vi sträver efter att hålla en hög kvalitet på hela plattformen. Om du misstänker att en ansuten aktör bryter mot våra regler, 
+                        livsmedelslagstiftningen eller agerar oetiskt, uppmanar vi dig att kontakta oss. 
+                    </p>
+                    <p>
+                        Du når oss via vår <a href="{{ url_for('info', _anchor='support') }}">Support</a>
+                    </p>
                 </section>
                 
-                <section class="om-oss">
+                <section id="om-oss">
                     <h2>Om Beställ Direkt</h2>
                     <p>Berätta om oss</p>
                 </section>
