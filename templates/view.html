@@ -42,6 +42,7 @@
                 <h1>  {{ foretag.namn}} </h1> <!--DATABAS-->
                 <p> {{foretag.adress}} </p> <!--DATABAS-->
             </header>
+
             <div class="view-container">
                 <div class="left-column">
                     <section class="view-img-box">
@@ -54,7 +55,10 @@
                         {% for tjanst in foretag.tjanster %}
                         <div class="view-card">
                             <h3>{{ tjanst.namn }}</h3>
-                            <p class="card-pris"><span class="pris-varde">{{ tjanst.pris }}</span> kr</p>
+                            <p class="card-pris"><span>{{ tjanst.pris }}</span> kr</p>
+                            <button class="add-btn" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}"> 
+                                Lägg till
+                            </button>
                         </div>
                         {% endfor %}
 
@@ -99,6 +103,6 @@
                 <p>© Beställ direkt 2026</p>
             </div>
         </footer>
-        <script src="{{ url-for('static', filename='script.js') }}"></script>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
     </body>
 </html>

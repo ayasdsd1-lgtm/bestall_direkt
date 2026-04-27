@@ -1,19 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    //här hämtar vi alla priser på sidan
-    const prisElement = document.querySelectorAll(' .pris-varde');
+    let total = 0;
+    const button = document.querySelectorAll(' .add-btn');
     const totalDisplay = document.getElementById('total-summa');
 
-    let total = 0
 
-    //går igenom alla priser och summerar
-    prisElement.forEach(element => {
-        const pris = parseFloat(element.textContent.replace(/\s/g, ''));
-
-        if (!isNaN(pris)) {
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            const pris = parseFloat(this.getAttribute('data-pris'));
+            const namn = this.getAttribute('.add-namn');
             total += pris;
-        }
+            totalDisplay.textContent = total.toLocaleString('sv-SE');
+            console.log('${namn} lades till för ${pris}kr');
+            this.style.backgroundColor = "#4CAF50";
+            this.textContent = "Tillagd!";
+            setTimeout (() => {
+                this.style.backgroundColor = "";
+                this.textContent = "Lägg till";
+            }, 1000);
+        })
     });
-
-    //Här skrivs den totala summan ut
-    totalDisplay,this.textContent = total.toLocaleString('sv-SE')
 })
