@@ -38,6 +38,7 @@ def search():
 
     HTML-sida: search.html (ej byggd än)
     """
+
     """
     # När search.html är byggd, använd det här:
     query = request.args.get('q')
@@ -148,17 +149,21 @@ def login():
         if user:
             stored_password = user[3]
             if check_password_hash(stored_password, password):
-                session["user"] = email # Sparar inloggad användare i sessionen
+                # session: Sparar inloggad användare i sessionen
+                session["user"] = email 
                 return redirect(url_for("home"))
             else:
-                return "Fel lösenord"
+                # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
+                return render_template("log_in.html", fel="Fel lösenord")
         else:
-            return "Användare finns inte"
+            # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
+            return render_template("log_in.html", fel="Användaren finns inte")
 
     except Exception as e:
         conn.rollback()
         print("FEL:", e)
-        return "Login error"
+        # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
+        return render_template("log_in.html", fel="Något gick fel, försök igen")
     
 
 # -------------------------------------------------------
@@ -205,7 +210,8 @@ def register():
             (email,)
         )
         if cursor.fetchone():
-            return "Email redan registrerad"
+            # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
+            return render_template("register.html", fel="Email redan registrerad")
 
         # Hasha lösenordet innan det sparas i databasen
         hashat_losenord = generate_password_hash(losenord)
@@ -219,7 +225,8 @@ def register():
     except Exception as e:
         conn.rollback()
         print(f"Fel vid registrering: {e}")
-        return "Fel vid registrering"
+        # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
+        return render_template("register.html", fel="Något gick fel, försök igen")
 
     # Skicka användaren till inloggningssidan efter lyckad registrering
     return redirect(url_for("logga_in"))
