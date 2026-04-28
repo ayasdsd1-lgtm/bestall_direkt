@@ -22,6 +22,12 @@
             <main class="login-wrapper">
                 <div class="login-box">
                     <h2 class="title"> Registrera ny Företagare </h2>
+                    
+                    <!-- ← LAGT TILL: visas bara om ett felmeddelande skickas från app.py -->
+                    {% if fel %}
+                        <p class="fel-meddelande">{{ fel }}</p>
+                    {% endif %}
+
                     <form class="register-form" action="/register" method="POST"> 
                         <label for="name">Namn</label>
                         <input type="text" id="name" name="namn" placeholder="Ditt fullständiga namn.." class="register-input">
