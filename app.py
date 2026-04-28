@@ -38,7 +38,17 @@ def search():
 
     HTML-sida: search.html (ej byggd än)
     """
+    """
+    # När search.html är byggd, använd det här:
     query = request.args.get('q')
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM public.foretagare WHERE foretagsnamn ILIKE %s",
+        (f"%{query}%",)
+    )
+    resultat = cursor.fetchall()
+    return render_template("search.html", resultat=resultat, query=query)
+    """
     return f"<h1>Sökresultat</h1><p>Du söker efter: {query}</p><a href='/'>Tillbaka till start</a>"
 
 
@@ -53,7 +63,13 @@ def kategori(namn):
     Länken i HTML ska se ut: {{ url_for('kategori', namn='Brunch') }}
     HTML-sida: kategori.html
     """
-    return render_template("kategori.html", namn=namn)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM public.foretagare WHERE kategori = %s",
+        (namn,)
+    )
+    foretag = cursor.fetchall()
+    return render_template("kategori.html", namn=namn, foretag=foretag)
 
 
 @app.route("/alla-kategorier")
