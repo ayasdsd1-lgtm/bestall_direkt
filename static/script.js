@@ -1,5 +1,6 @@
 
 //-----------------------------------View.html-----------------------------------//
+        //===========Prisöversikt och lägg till knapparna===========//
 document.addEventListener('DOMContentLoaded', function() {
     let totalSumma = 0;
     let totalAntal = 0;
@@ -8,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalDisplay = document.getElementById('total-summa');
     const antalDisplay = document.getElementById('antal-produkter');
     const listaDisplay = document.getElementById('produkt-lista');
+
+    const checkoutForm = document.getElementById('checkout-form');
+    const orderDataInput = document.getElementById('order_data_input');
+    const totalPrisInput = document.getElementById('total_pris_input');
+
 
     function laggTillVara(namn, pris, index) {
             totalSumma += pris;
@@ -99,11 +105,26 @@ document.addEventListener('DOMContentLoaded', function() {
             listaDisplay.appendChild(li);
 
         }
+        //===========formuäret===========//
     }
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function(e) {
+            if(Object.keys(varukorg).length === 0) {
+                e.preventDefault();
+                alert("Din Varukorg är tom!");
+                return;
+
+            }
+            let cartDataText= "";
+            for (const [namn, data] of Object.entries(varukorg)) {
+                cartDataText += `${namn} (${data.antal} st), `;
+            }
+
+            orderDataInput.value = cartDataText;
+            totalPrisInput.value = totalSumma;
+        });
+    }    
 });
-
-
-
 
 
 

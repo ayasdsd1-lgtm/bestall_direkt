@@ -559,7 +559,7 @@ footer img{
 }
 
 
-/*-button-*/
+/*-knappar för lägg till och ta bort-*/
 
 .stepper-control {
     background-color: #462009;
@@ -615,6 +615,76 @@ footer img{
     user-select: none;
     color: #ffffff;
 }
+
+/*-formulär boxen-*/
+.order-form-box{
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid #eee;
+}
+
+.order-form-box h4{
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+}
+
+.input-group label{
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background-color: #fff;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #8f512b;
+    box-shadow: 0 0 0 2px rgba(143, 81, 43, 0.1);
+}
+
+.submit-btn {
+    width: 70%;
+    background-color: #462009;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #8f512b;
+}
+
+.submit-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+
 
 /*-------------------------------------Info--------------------------------------*/
 #policy p a {

@@ -106,6 +106,44 @@ def view_company(company_id):
     return render_template("view.html", foretag=test_data)
 
 
+@app.route('/skapa_bestallning', methods=['POST'])
+def skapa_bestallning():
+    """"
+    tar emot kundesn beställning från formuläret.
+    Sparar ner kunduppgifter och orderdetaljer i tabellen 'bestallningar' i databasen som skapades för just formuläret.
+    """
+    
+    kund_namn = request.form.get('kund_namn')
+    hemadress = request.form.get('hemadress')
+    epost = request.form.get('epost')
+    telefonnummer = request.form.get('telefonnummer') 
+
+    order_detaljer = request.form.get('order_data')
+    total_pris = request.form.get('total_pris')
+
+    cursor = conn.cursor()
+
+    try:
+        query = """
+        INSERT INTO bestallningar
+        (kund_namn, hemadress, epost, telefonnummer, order_detaljer, total_pris)
+        VALUES (%s, %s, %s, %s, %s, %s)
+        """
+        cursor.execute(query, (
+            kund_namn,
+            hemadress,
+            epost,
+            telefonnummer,
+            order_detaljer,
+            total_pris
+        ))
+
+        conn.commit()
+        return f"<h1> Tack för din bestallning, {kund_namn}!</h1>"
+    except Exception as e:
+        conn.rollback()
+        print(f"Fel vid beställning: {e}")
+        return "Beställningen gick inte igenom. Försök igen senare."
 
 # -------------------------------------------------------
 # INLOGGNING

@@ -98,6 +98,39 @@
                             <p>Antal varor: <span id="antal-produkter">0</span> st</p>
                             <p><strong>Totalt:</strong> <span id="total-summa">0</span> kr</p>
                         </div>
+
+                        <div id="order-form-container" class="order-form-box">
+                            <h4>Slutför beställning</h4>
+                            <form action="{{ url_for('skapa_bestallning') }}" method="POST" id="checkout-form">
+                                
+                                <div class="input-group">
+                                <label for="kund_namn">Fullständigt namn</label>
+                                <input type="text" name="kund_namn" placeholder="Fullständigt namn" required>
+                                </div>
+
+                                <div class="input-group">
+                                <label for="hemadress">Hemadress</label>
+                                <input type="text" name="hemadress" placeholder="Hemadress" required>
+                                </div>
+
+                                <div class="input-group">
+                                <label for="epost">E-postadress</label>
+                                <input type="email" name="epost" placeholder="E-postadress" required>
+                                </div>
+
+                                <div class="input-group">
+                                <label for="telefonnummer">Telefonnummer</label>
+                                <input type="tel" name="telefonnummer" placeholder="Telefonnummer">
+                                </div>
+
+                                <input type="hidden" name="order_data" id="order_data_input">
+                                <input type="hidden" name="total_pris" id="total_pris_input">
+
+                                <div class="submit-container">
+                                    <button type="submit" class="submit-btn">Beställ</button>
+                                </div>
+                            </form>
+                        </div>
                     </section>
                 </div>
             </div>
