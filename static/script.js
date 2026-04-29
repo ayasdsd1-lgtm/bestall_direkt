@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
             totalAntal += 1;
 
             if (varukorg[namn]) {
-                varukorg[namn] += 1;
+                varukorg[namn].antal += 1;
             } else {
                 varukorg[namn] = {
                     antal: 1,
@@ -29,11 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             uppdateraPrisoversikt();
+            const originalText = this.textContent
             this.style.backgroundColor = "#4CAF50";
             this.textContent = "Tillagd!";
             setTimeout (() => {
                 this.style.backgroundColor = "";
-                this.textContent = "Lägg till";
+                this.textContent = originalText;
             }, 800);
         });
     });
@@ -45,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function() {
             totalSumma -= prisPerEnhet;
             totalAntal -= 1;
             varukorg[namn].antal -=1;
+
+            if (totalSumma < 0) totalSumma = 0;
+            if (totalAntal < 0) totalSumma = 0;
 
             if (varukorg[namn].antal <= 0) {
                 delete varukorg[namn];
@@ -69,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             li.innerHTML = `
                 <span>${namn} (${data.antal} st) </span>
-                <button class="remove-btn" style="background: #ff4d4d; color: white; border: none; border-radius: 4px; padding: 2px 8px; cusor: pointer;">
+                <button class="remove-btn" style="background: #8f512b; color: white; border: none; border-radius: 4px; padding: 2px 8px; cusor: pointer;">
                 Ta bort
                 </button>                
                 `;

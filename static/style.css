@@ -541,7 +541,7 @@ footer img{
 /*-button-*/
 
 .add-btn {
-    background-color: #2c3e50;
+    background-color: #462009;
     color: #ffffff;
     border: none;
     padding: 12px 20px;
@@ -558,7 +558,7 @@ footer img{
 }
 
 .add-btn:hover {
-    background-color: #34495e;
+    background-color: #8f512b;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
