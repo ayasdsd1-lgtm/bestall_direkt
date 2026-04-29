@@ -39,8 +39,8 @@
 
         <main>
             <header class="view-header">
-                <h1>  {{ foretag.namn}} </h1> <!--DATABAS-->
-                <p> {{foretag.adress}} </p> <!--DATABAS-->
+                <h1>  {{ foretag.namn}} </h1> 
+                <p> {{foretag.adress}} </p> 
             </header>
 
             <div class="view-container">
@@ -54,12 +54,20 @@
                         {% for tjanst in foretag.tjanster %}
                         <div class="view-card" data-namn="{{tjanst.namn}}">
                             <h3>{{ tjanst.namn }}</h3>
+
+                            <p class="card-service-desc">{{ tjanst.beskrivning }}</p>
                             <p class="card-pris"><span>{{ tjanst.pris }}</span> kr</p>
 
                             <div class="stepper-control">
-                                <button class="remove-btn-small" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}">-</button>
-                                <span class="item-count" id="count-{{ tjanst.namn }}">0</span>
-                                <button class="add-btn-stepper" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}">+</button>
+                                <button class="remove-btn-small" 
+                                        data-pris="{{ tjanst.pris }}" 
+                                        data-namn="{{ tjanst.namn }}"
+                                        data-index="{{ loop.index }}">-</button>
+                                <span class="item-count" id="count-{{ loop.index }}">0</span>
+                                <button class="add-btn-stepper" 
+                                        data-pris="{{ tjanst.pris }}" 
+                                        data-namn="{{ tjanst.namn }}"
+                                        data-index="{{ loop.index }}">+</button>
                             </div>
                         </div>
                         {% endfor %}
