@@ -99,8 +99,8 @@ def view_company(company_id):
         "epost": "ajabaja@ajabaja.com",
         "beskrivning": "Gottegott gottegott",
         "tjanster":[
-            {"namn": "Dolma", "pris": 10},
-            {"namn": "Mini cheesecake", "pris": 20}
+            {"namn": "Dolma", "beskrivning": "Vinblad fyllda med ris, köttfärs och kryddor" ,"pris": 10},
+            {"namn": "Mini cheesecake", "beskrivning": "Bakverk innehållande färskost" ,"pris": 20}
         ]
     }
     return render_template("view.html", foretag=test_data)

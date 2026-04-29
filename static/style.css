@@ -346,7 +346,7 @@ footer img{
 }
 
 
-/*-------------------------------------Mall för view--------------------------------------*/
+/*-------------------------------------View--------------------------------------*/
 .category-nav {
     display: flex;
     justify-content: center;
@@ -540,36 +540,56 @@ footer img{
 
 /*-button-*/
 
-.add-btn {
+.stepper-control {
     background-color: #462009;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+    margin-top: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    width: 70%;
+}
+
+.stepper-control button{
+    background: transparent;
+    color: white;
     border: none;
     padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    font: 1.2rem;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.01);
-    width: 100%;
-    margin-top: 10px;
-    display: block;
+    transition: background-color 0.2s;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.add-btn:hover {
+.stepper-control button:hover {
     background-color: #8f512b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-.add-btn:active {
-    transform: translateY(0);
+.item-count {
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+    user-select: none;
 }
 
-.total-box {
-    position: sticky;
-    top: 20px;
+.stepper-control:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stepper-control .item-count{
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+    user-select: none;
+    color: #ffffff;
 }
 
 /*-------------------------------------Info--------------------------------------*/

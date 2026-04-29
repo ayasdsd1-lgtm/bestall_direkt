@@ -56,10 +56,10 @@
                             <h3>{{ tjanst.namn }}</h3>
                             <p class="card-pris"><span>{{ tjanst.pris }}</span> kr</p>
 
-                            <div class="counter-controls">
+                            <div class="stepper-control">
                                 <button class="remove-btn-small" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}">-</button>
                                 <span class="item-count" id="count-{{ tjanst.namn }}">0</span>
-                                <button class="add-btn" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}">Lägg till</button>
+                                <button class="add-btn-stepper" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}">+</button>
                             </div>
                         </div>
                         {% endfor %}

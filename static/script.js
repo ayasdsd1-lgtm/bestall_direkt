@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // plus knappen//
-    document.querySelectorAll(' .add-btn').forEach(button => {
+    document.querySelectorAll(' .add-btn-stepper').forEach(button => {
         button.addEventListener('click', function() {
             const pris = parseFloat(this.getAttribute('data-pris'));
             const namn = this.getAttribute('data-namn');
@@ -71,6 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const countSpan = document.getElementById(`count-${namn}`);
             if (countSpan) {
                 countSpan.textContent = data.antal;
+                countSpan.style.color = "#ffffff"; 
+                countSpan.style.opacity = data.antal > 0 ? "1" : "0.5"
             }
         }
 
