@@ -52,12 +52,15 @@
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
                         {% for tjanst in foretag.tjanster %}
-                        <div class="view-card">
+                        <div class="view-card" data-namn="{{tjanst.namn}}">
                             <h3>{{ tjanst.namn }}</h3>
                             <p class="card-pris"><span>{{ tjanst.pris }}</span> kr</p>
-                            <button class="add-btn" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}"> 
-                                Lägg till
-                            </button>
+
+                            <div class="counter-controls">
+                                <button class="remove-btn-small" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}">-</button>
+                                <span class="item-count" id="count-{{ tjanst.namn }}">0</span>
+                                <button class="add-btn" data-pris="{{ tjanst.pris }}" data-namn="{{ tjanst.namn }}">Lägg till</button>
+                            </div>
                         </div>
                         {% endfor %}
                     </section>
