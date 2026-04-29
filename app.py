@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import psycopg2
 import os
+from flask import jsonify
 
 
 load_dotenv() # laddar in .env-filen som innehåller databas-info
@@ -129,6 +130,7 @@ def skapa_bestallning():
         (kund_namn, hemadress, epost, telefonnummer, order_detaljer, total_pris)
         VALUES (%s, %s, %s, %s, %s, %s)
         """
+
         cursor.execute(query, (
             kund_namn,
             hemadress,
@@ -137,13 +139,12 @@ def skapa_bestallning():
             order_detaljer,
             total_pris
         ))
-
         conn.commit()
-        return f"<h1> Tack för din bestallning, {kund_namn}!</h1>"
+        return jsonify({"success": True, "message": f"Tack för din beställning, {kund_namn}!"})
+    
     except Exception as e:
         conn.rollback()
-        print(f"Fel vid beställning: {e}")
-        return "Beställningen gick inte igenom. Försök igen senare."
+        return jsonify({"success": False, "message": f"Beställningen gick inte igenom. "}), 500
 
 # -------------------------------------------------------
 # INLOGGNING

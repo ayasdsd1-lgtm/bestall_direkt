@@ -109,19 +109,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
             if(Object.keys(varukorg).length === 0) {
-                e.preventDefault();
                 alert("Din Varukorg är tom!");
                 return;
-
             }
+
             let cartDataText= "";
             for (const [namn, data] of Object.entries(varukorg)) {
                 cartDataText += `${namn} (${data.antal} st), `;
             }
-
             orderDataInput.value = cartDataText;
             totalPrisInput.value = totalSumma;
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then( response => response.json())
+            .then(data => {
+
+                if(data.success) {
+                    document.getElementById('order-form-container').innerHTML = `
+                        <div class="success-message">
+                            <h4>Skickat!</h4>
+                            <p>${data.message}</p>
+                            <button onclick="location.reload()" class="submit-btn" style="width:100%">Gör en ny beställning</button>
+                        </div>
+                    `;
+                } else {
+                    alert("Ett fel uppstod")
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Kunde inte kontakta servern. ");
+            });
         });
     }    
 });

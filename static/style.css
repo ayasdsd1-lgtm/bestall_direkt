@@ -670,6 +670,7 @@ footer img{
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+    font-family: inherit;
     transition: background-color 0.3s;
     margin-top: 10px;
 }
@@ -683,8 +684,21 @@ footer img{
     justify-content: center;
     width: 100%;
 }
+/*-jsonify-*/
+.success-message {
+    background-color: #f9f9f9;
+    border: 2px solid #8f512b;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    color: #462009;
+    animation: fadeIn 0.5s ease;
+}
 
-
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px); }
+    to {opacity: 1; transform: translateY(0); }
+}
 
 /*-------------------------------------Info--------------------------------------*/
 #policy p a {
