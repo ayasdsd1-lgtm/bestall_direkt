@@ -23,29 +23,82 @@
                 <div class="login-box">
                     <h2 class="title"> Registrera ny Företagare </h2>
                     
-                    <!-- ← LAGT TILL: visas bara om ett felmeddelande skickas från app.py -->
-                    {% if fel %}
-                        <p class="fel-meddelande">{{ fel }}</p>
+
+                    <!-- NY LAGT TILL: visas bara om ett felmeddelande skickas från app.py -->
+                    {% if fel and fel.general %}
+                        <p class="fel-general">{{ fel.general }}</p>
                     {% endif %}
-
-                    <form class="register-form" action="/register" method="POST"> 
-                        <label for="name">Namn</label>
-                        <input type="text" id="name" name="namn" placeholder="Ditt fullständiga namn.." class="register-input">
-
-                        <label for="identification">Personnummer</label>
-                        <input type="text" id="identification" name="identification" placeholder="xxxx-xx-xx" class="register-input"></input>
-                        
-                        <label for="email">E-post</label>
-                        <input type="email" id="email" name="email" placeholder="E-post.." class="register-input">
-
-                        <label for="tel">Mobilnummer</label>
-                        <input type="tel" name="tel" id="tel" placeholder="Mobilnummer.." class="register-input">
-                        
-                        <label for="password">Lösenord</label>
-                        <input type="password" name="losenord" id="tel" placeholder="Lösenord" class="register-input"></input>
-
+ 
+                    <form class="register-form" action="/register" method="POST">
+ 
+                        <!-- Namn -->
+                        <label for="namn">Namn *</label>
+                        <input  type="text"
+                                id="namn"
+                                name="namn"
+                                placeholder="Ditt fullständiga namn"
+                                class="register-input {% if fel and fel.namn %}fel-border{% endif %}"
+                                value="{{ prev.namn if prev else '' }}"
+                                required>
+                        {% if fel and fel.namn %}
+                            <span class="falt-fel">{{ fel.namn }}</span>
+                        {% endif %}
+ 
+                        <!-- Personnummer -->
+                        <label for="personnummer">Personnummer *</label>
+                        <input  type="text"
+                                id="personnummer"
+                                name="personnummer"
+                                placeholder="YYYYMMDD-XXXX"
+                                class="register-input {% if fel and fel.personnummer %}fel-border{% endif %}"
+                                value="{{ prev.personnummer if prev else '' }}"
+                                required>
+                        {% if fel and fel.personnummer %}
+                            <span class="falt-fel">{{ fel.personnummer }}</span>
+                        {% endif %}
+ 
+                        <!-- E-post -->
+                        <label for="email">E-post *</label>
+                        <input  type="email"
+                                id="email"
+                                name="email"
+                                placeholder="E-postadress"
+                                class="register-input {% if fel and fel.email %}fel-border{% endif %}"
+                                value="{{ prev.email if prev else '' }}"
+                                required>
+                        {% if fel and fel.email %}
+                            <span class="falt-fel">{{ fel.email }}</span>
+                        {% endif %}
+ 
+                        <!-- Mobilnummer -->
+                        <label for="tel">Mobilnummer *</label>
+                        <input  type="tel"
+                                id="tel"
+                                name="tel"
+                                placeholder="0701234567"
+                                class="register-input {% if fel and fel.tel %}fel-border{% endif %}"
+                                value="{{ prev.tel if prev else '' }}"
+                                required>
+                        {% if fel and fel.tel %}
+                            <span class="falt-fel">{{ fel.tel }}</span>
+                        {% endif %}
+ 
+                        <!-- Lösenord -->
+                        <label for="losenord">Lösenord * <small>(minst 8 tecken)</small></label>
+                        <input  type="password"
+                                id="losenord"
+                                name="losenord"
+                                placeholder="Lösenord"
+                                class="register-input {% if fel and fel.losenord %}fel-border{% endif %}"
+                                required>
+                        {% if fel and fel.losenord %}
+                            <span class="falt-fel">{{ fel.losenord }}</span>
+                        {% endif %}
+ 
                         <button class="login-button" type="submit">Registrera</button>
                     </form>
+                    <!-- NY TILL LAGDA SLUT-->
+
 
                     <h3>Har du redan ett konto?</h3>
                     <a id="lank-till-registrering" href="{{ url_for('logga_in') }}"> Logga in</a>

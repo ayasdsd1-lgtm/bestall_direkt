@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import psycopg2
 import os
+import re      # Används för formatvalidering vid registrering
 from flask import jsonify
 
 
@@ -13,6 +14,7 @@ app.secret_key = os.getenv("SECRET_KEY")  # Hämtar hemlig nyckel från .env
 
 # Databasanslutning via miljövariabel - Supabase kräver SSL
 conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
+
 
 # -------------------------------------------------------
 # STARTSIDAN
@@ -87,11 +89,13 @@ def alla_kategorier():
 # -------------------------------------------------------
 # VIEW
 # -------------------------------------------------------
+
 @app.route("/view/<int:company_id>") # /<id> måste läggas till när en tabell i databasen har kopplats
 def view_company(company_id):
     """
-    Visar en sidan på företagssidor som visas för kunder när
-    de trycker på en specifik sida.
+    Visar företagssidan för ett specifikt företag baserat på company_id i URL:en.
+    OBS: Använder testdata tills företagstabellen i databasen är kopplad.
+    HTML-sida: view.html
     """
     test_data = {
         "namn": "Ajabaja AB",
@@ -109,9 +113,11 @@ def view_company(company_id):
 
 @app.route('/skapa_bestallning', methods=['POST'])
 def skapa_bestallning():
-    """"
-    tar emot kundesn beställning från formuläret.
-    Sparar ner kunduppgifter och orderdetaljer i tabellen 'bestallningar' i databasen som skapades för just formuläret.
+    """
+    Tar emot kunduppgifter och orderdetaljer via POST och sparar dem i tabellen 'bestallningar'.
+    Returnerar JSON med success: True vid lyckad beställning, annars success: False och statuskod 500.
+    Formuläret i HTML ska ha method="POST" och action="{{ url_for('skapa_bestallning') }}".
+    HTML-sida: view.html
     """
     
     kund_namn = request.form.get('kund_namn')
@@ -145,6 +151,7 @@ def skapa_bestallning():
     except Exception as e:
         conn.rollback()
         return jsonify({"success": False, "message": f"Beställningen gick inte igenom. "}), 500
+
 
 # -------------------------------------------------------
 # INLOGGNING
@@ -186,7 +193,7 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            stored_password = user[3]
+            stored_password = user[0]
             if check_password_hash(stored_password, password):
                 # session: Sparar inloggad användare i sessionen
                 session["user"] = email 
@@ -230,46 +237,93 @@ def register():
     Efter lyckad registrering skickas användaren till inloggningssidan.
     Formuläret i HTML ska ha method="POST" och action="/register".
     HTML-sida: register.html
-
-    OBS: personnummer och mobilnummer läggs till när databasen är redo.
     """
-    namn = request.form["namn"]
-    email = request.form["email"]
-    losenord = request.form["losenord"]
+    namn          = request.form.get("namn", "").strip()
+    personnummer  = request.form.get("personnummer", "").strip()
+    email         = request.form.get("email", "").strip()
+    tel           = request.form.get("tel", "").strip()
+    losenord      = request.form.get("losenord", "")
 
-    # personnummer = request.form["identification"]  ← lägg till när databasen är redo
-    # tel = request.form["tel"]                      ← lägg till när databasen är redo
+    # Samla alla fältfel i en ordbok så HTML kan visa dem per fält
+    fel = {}
+
+    # Namn
+    if not namn:
+        fel["namn"] = "Namn är obligatoriskt."
+    elif len(namn) < 2:
+        fel["namn"] = "Namnet är för kort."
+
+    # Personnummer – format YYYYMMDD-XXXX eller YYYYMMDDXXXX
+    if not personnummer:
+        fel["personnummer"] = "Personnummer är obligatoriskt."
+    elif not re.fullmatch(r"\d{8}-?\d{4}", personnummer):
+        fel["personnummer"] = "Ange personnummer i format YYYYMMDD-XXXX."
+
+    # E-post
+    if not email:
+        fel["email"] = "E-postadress är obligatorisk."
+    elif not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
+        fel["email"] = "Ange en giltig e-postadress."
+
+    # Mobilnummer – 10 siffror, får börja med +46
+    if not tel:
+        fel["tel"] = "Mobilnummer är obligatoriskt."
+    elif not re.fullmatch(r"(\+46|0)\d{9}", tel.replace(" ", "").replace("-", "")):
+        fel["tel"] = "Ange ett giltigt mobilnummer (t.ex. 0701234567)."
+
+    # Lösenord
+    if not losenord:
+        fel["losenord"] = "Lösenord är obligatoriskt."
+    elif len(losenord) < 8:
+        fel["losenord"] = "Lösenordet måste vara minst 8 tecken."
+
+    # Om valideringsfel finns – returnera sidan med alla felmeddelanden
+    if fel:
+        return render_template(
+            "register.html",
+            fel=fel,
+            # Skicka tillbaka ifyllda värden så användaren inte behöver skriva om allt
+            prev={"namn": namn, "personnummer": personnummer, "email": email, "tel": tel}
+        )
 
     cursor = conn.cursor()
 
     try:
         # Kolla om emailen redan är registrerad
         cursor.execute(
-            "SELECT * FROM public.foretagare WHERE email = %s",
+            "SELECT id FROM public.foretagare WHERE email = %s",
             (email,)
         )
         if cursor.fetchone():
-            # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
-            return render_template("register.html", fel="Email redan registrerad")
+            fel["email"] = "Den här e-postadressen är redan registrerad."
+            return render_template(
+                "register.html",
+                fel=fel,
+                prev={"namn": namn, "personnummer": personnummer, "email": email, "tel": tel}
+            )
 
         # Hasha lösenordet innan det sparas i databasen
         hashat_losenord = generate_password_hash(losenord)
 
         cursor.execute(
-            "INSERT INTO public.foretagare (foretagsnamn, email, losenord) VALUES (%s, %s, %s)",
-            (namn, email, hashat_losenord)
+            """INSERT INTO public.foretagare
+               (foretagsnamn, personnummer, email, telefon, losenord)
+               VALUES (%s, %s, %s, %s, %s)""",
+            (namn, personnummer, email, tel, hashat_losenord)
         )
         conn.commit()
 
     except Exception as e:
         conn.rollback()
         print(f"Fel vid registrering: {e}")
-        # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
-        return render_template("register.html", fel="Något gick fel, försök igen")
+        return render_template(
+            "register.html",
+            fel={"general": "Något gick fel, försök igen."},
+            prev={"namn": namn, "personnummer": personnummer, "email": email, "tel": tel}
+        )
 
     # Skicka användaren till inloggningssidan efter lyckad registrering
     return redirect(url_for("logga_in"))
-
 
 
 # -------------------------------------------------------
@@ -286,10 +340,10 @@ def logga_ut():
     session.clear()      # Raderar minneslappen - användaren är ut utloggad
     return redirect(url_for("home"))
 
-
 # -------------------------------------------------------
 # Info sidan
 # -------------------------------------------------------
+
 @app.route("/info")
 def info():
     """
