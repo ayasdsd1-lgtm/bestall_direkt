@@ -256,16 +256,22 @@ footer section{
 .login-form{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
 
 .login-input{  
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     padding: 10px;
     border: 1px solid #462009;
     border-radius: 5px;
 }
 
+.login-input:focus {
+    outline: none;
+    border-color: #a79b92; 
+    box-shadow: 0 0 5px rgba(167, 155, 146, 0.5);
+    background-color: #fafafa;
+}
 .login-button {
     background-color: #746a63;
     color: white;
@@ -752,4 +758,63 @@ footer img{
 #support h3, 
 #support p{
     padding-left: 50px;
+}
+
+/*------------------------------------- Responsiv design --------------------------------------*/
+
+/*-------- Surfplattor och mindre skärmar --------*/
+
+@media (max-width: 768px){
+
+    /* Gemensamma delar (Header/Footer) */
+
+    /* Säkerställer att header, main och footer ligger under varandra */
+    #grid { 
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    /* Header */
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; 
+    }
+
+    #for-foretag {
+        margin: 0;
+    }
+
+    /* Footer */
+
+
+    /* Startsidan (index.html) */
+
+    #grid-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+
+    /* Inloggsidan (log_in.html) */
+
+    /* Registreringssidan (register.html) */
+
+}
+
+/*-------------- Mobila enheter --------------*/
+
+@media (max-width: 480px){
+    /* Gemensamma delar (Header/Footer) */
+
+    /* Startsidan (index.html) */
+
+    /* Inloggsidan (log_in.html) */
+
+    /* Registreringssidan (register.html) */
+
 }
