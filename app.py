@@ -355,7 +355,7 @@ def info():
 
 
 # -------------------------------------------------------
-# Visa bokade tjänster för företag
+# Profile sidan
 # -------------------------------------------------------
 @app.route("/profile")
 def profile():
