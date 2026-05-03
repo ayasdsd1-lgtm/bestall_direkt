@@ -354,6 +354,46 @@ def info():
     return render_template("info.html")
 
 
+# -------------------------------------------------------
+# Visa bokade tjänster för företag
+# -------------------------------------------------------
+@app.route("/profile")
+def profile():
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+    
+    email = session["user"]
+    cursor = conn.cursor()
+
+    try:
+        query = """
+            SELECT
+                b.bestallning_id,
+                b.datum,
+                k.namn AS kund_namn,
+                k.telefonnummer,
+                m.menynamn,
+                br.antal
+            FROM public.foretagare f
+            JOIN public.verksamhet v ON f.foretagare_id = v.foretagare_id
+            JOIN public.bestallningar b ON v.verksamhet_id = b.verksamhet_id
+            JOIN public.kund k ON b.kund_id = k.kund_id
+            JOIN public.bestallningsrad br ON b.bestallning_id = br.bestallning_id
+            JOIN public.meny m ON br.meny_id = m.meny_id
+            WHERE f.email = %s
+            ORDER BY b.datum DESC
+        """
+
+        cursor.execute(query, (email, ))
+        bokningar = cursor.fetchall()
+
+        return render_template("profile.html", bokningar=bokningar)
+    
+    except Exception as e:
+        print(f"Gick inte att ladda upp profilsidan: {e}")
+        return "Ett fel uppstod", 500
+
+
 
 # -------------------------------------------------------
 # STARTA SERVERN

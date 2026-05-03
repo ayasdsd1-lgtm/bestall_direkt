@@ -1,0 +1,31 @@
+
+
+<div class="bookings-box">
+    <h3>Era bokade tjänster</h3>
+    {% if bokningar %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Kund</th>
+                    <th>Telefon</th>
+                    <th>Datum</th>
+                    <th>Tjänst</th>
+                    <th>Antal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bokning in bokningar %}
+                <tr>
+                    <td>{{ bokning [0] }}</td>
+                    <td>{{ bokning [5] }}</td>
+                    <td>{{ bokning [1].strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>{{ bokning [2] }}</td>
+                    <td>{{ bokning [3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {%if not nokningar %}
+            <p>Du har inga bokningar ännu.</p>
+        {% endif %}
+</div>
