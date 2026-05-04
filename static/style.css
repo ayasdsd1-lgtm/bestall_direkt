@@ -336,7 +336,8 @@ footer img{
     display: flex;
     flex-direction: column;
     border-radius: 20px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
 }
 
 .register-input{
@@ -766,17 +767,14 @@ footer img{
 
 @media (max-width: 768px){
 
-    /* Gemensamma delar (Header/Footer) */
-
-    /* Säkerställer att header, main och footer ligger under varandra */
+    /* Gemensamma delar (Layout för kolumner, Header, Footer) */
     #grid { 
         display: flex;
         flex-direction: column;
         width: 100%;
         padding: 0 10px;
     }
-
-    /* Header */
+    
     header {
         display: flex;
         flex-direction: column;
@@ -788,33 +786,48 @@ footer img{
         margin: 0;
     }
 
-    /* Footer */
-
+    .footer_box {
+        flex-direction: column;
+        align-items: center;
+    }
 
     /* Startsidan (index.html) */
-
     #grid-cards {
         display: grid;
         grid-template-columns: 1fr;
         gap: 20px;
     }
-
-
-    /* Inloggsidan (log_in.html) */
-
-    /* Registreringssidan (register.html) */
-
 }
 
 /*-------------- Mobila enheter --------------*/
 
 @media (max-width: 480px){
-    /* Gemensamma delar (Header/Footer) */
 
+    /* Gemensamma delar (Header/Footer) */
+    #footer_bottom{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    header {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    nav > form {
+        max-width: 94%;
+    }
+    
     /* Startsidan (index.html) */
+    #home-main,#home-nav {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
 
     /* Inloggsidan (log_in.html) */
-
-    /* Registreringssidan (register.html) */
-
+    #lank-till-registrering {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    display: inline-block;
+    }
 }
