@@ -34,26 +34,64 @@ def home():
 
 @app.route("/search")
 def search():
-    """ 
-    Hämtar det användaren skrev i sökrutan (name="q").
-    Formuläret i HTML ska ha method="GET" och action="/search".
-    OBS: input i HTML måste ha name="q" för att detta ska fungera.
+    """
+    Sökfunktion för startsidan.
 
-    HTML-sida: search.html (ej byggd än)
+    Denna route:
+    1. Hämtar sökordet från URL:en (t.ex. /search?q=brunch)
+    2. Söker i databasen efter företag som matchar sökordet
+    3. Skickar resultatet till search.html för visning
     """
 
-    """
-    # När search.html är byggd, använd det här:
-    query = request.args.get('q')
+    # Hämtar det användaren skrev i sökfältet
+    # request.args används eftersom formuläret använder method="GET"
+    # "q" måste matcha name="q" i HTML-inputen
+    query = request.args.get("q", "").strip()
+
+    # Skapar en cursor för att kunna prata med databasen
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM public.foretagare WHERE foretagsnamn ILIKE %s",
-        (f"%{query}%",)
-    )
-    resultat = cursor.fetchall()
+
+    try:
+        # SQL-fråga:
+        # ILIKE = case-insensitive (både "brunch" och "Brunch" funkar)
+        # % betyder "matcha vad som helst före/efter"
+        # Vi söker både på företagsnamn och kategori
+        cursor.execute(
+            """
+            SELECT foretagare_id, foretagsnamn, kategori, email, telefon
+            FROM public.foretagare
+            WHERE foretagsnamn ILIKE %s
+               OR kategori ILIKE %s
+            """,
+            (f"%{query}%", f"%{query}%")
+        )
+
+        # Hämtar alla matchande rader från databasen
+        resultat = cursor.fetchall()
+
+    except Exception as e:
+        # Om något går fel i databasen
+        print("Fel vid sökning:", e)
+        resultat = []
+
+    # Tillfällig testdata om databasen inte ger några träffar
+    # Detta gör att vi kan testa search.html även innan databasen är färdig
+    if not resultat:
+        test_foretag = [
+            (1, "Sushi Express", "Sushi", "info@sushi.se", "0701234567"),
+            (2, "Italiensk Buffé AB", "Buffé", "info@buffe.se", "0702222222"),
+            (3, "Brunch & Co", "Brunch", "info@brunch.se", "0703333333"),
+            (4, "Sushi House", "Sushi", "kontakt@sushihouse.se", "0704444444"),
+            (5, "Vegansk Catering", "Veganskt", "hej@vegansk.se", "0705555555")
+        ]
+
+        for foretag in test_foretag:
+            if query.lower() in foretag[1].lower() or query.lower() in foretag[2].lower():
+                resultat.append(foretag)
+
+    # Skickar resultatet + sökordet till HTML-sidan
+    # search.html ansvarar för att visa listan
     return render_template("search.html", resultat=resultat, query=query)
-    """
-    return f"<h1>Sökresultat</h1><p>Du söker efter: {query}</p><a href='/'>Tillbaka till start</a>"
 
 
 # -------------------------------------------------------
