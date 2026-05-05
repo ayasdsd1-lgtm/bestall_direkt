@@ -31,47 +31,26 @@
                 <h2>{{ namn }}</h2>
 
                 <div id="grid-cards">
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 1</h3>
-                            </a>
-                    </article>
+                    {% if foretag %}
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 2</h3>
-                            </a>
-                    </article>
+                        {% for f in foretag %}
+                            <article class="card">
+                                <a href="{{ url_for('view_company', company_id=f[0]) }}">
+                                    <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ f[1] }}">
+                                    <h3>{{ f[1] }}</h3>
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 3</h3>
-                            </a>
-                    </article>
+                                    {% if f[2] %}
+                                        <p>{{ f[2] }}</p>
+                                    {% endif %}
+                                </a>
+                            </article>
+                        {% endfor %}
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 4</h3>
-                            </a>
-                    </article>
+                    {% else %}
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 5</h3>
-                            </a>
-                    </article>
+                        <p>Det finns inga verksamheter i denna kategori ännu.</p>
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 6</h3>
-                            </a>
-                    </article>
+                    {% endif %}
                 </div>
             </section>
         </main>

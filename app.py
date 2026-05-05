@@ -43,19 +43,11 @@ def search():
     3. Skickar resultatet till search.html för visning
     """
 
-    # Hämtar det användaren skrev i sökfältet
-    # request.args används eftersom formuläret använder method="GET"
-    # "q" måste matcha name="q" i HTML-inputen
     query = request.args.get("q", "").strip()
 
-    # Skapar en cursor för att kunna prata med databasen
     cursor = conn.cursor()
 
     try:
-        # SQL-fråga:
-        # ILIKE = case-insensitive (både "brunch" och "Brunch" funkar)
-        # % betyder "matcha vad som helst före/efter"
-        # Vi söker både på företagsnamn och kategori
         cursor.execute(
             """
             SELECT foretagare_id, foretagsnamn, kategori, email, telefon
@@ -66,11 +58,9 @@ def search():
             (f"%{query}%", f"%{query}%")
         )
 
-        # Hämtar alla matchande rader från databasen
         resultat = cursor.fetchall()
 
     except Exception as e:
-        # Om något går fel i databasen
         print("Fel vid sökning:", e)
         resultat = []
 
@@ -93,7 +83,6 @@ def search():
     # search.html ansvarar för att visa listan
     return render_template("search.html", resultat=resultat, query=query)
 
-
 # -------------------------------------------------------
 # KATEGORIER
 # -------------------------------------------------------
@@ -101,16 +90,26 @@ def search():
 @app.route("/kategori/<namn>")
 def kategori(namn):
     """
-    Visar en sida för en specifik catering-kategori.
-    Länken i HTML ska se ut: {{ url_for('kategori', namn='Brunch') }}
-    HTML-sida: kategori.html
+    Visar alla företag som tillhör en viss kategori.
     """
+
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM public.foretagare WHERE kategori = %s",
-        (namn,)
-    )
-    foretag = cursor.fetchall()
+
+    try:
+        cursor.execute(
+            "SELECT * FROM public.foretagare WHERE kategori = %s",
+            (namn,)
+        )
+
+        foretag = cursor.fetchall()
+
+    except Exception as e:
+        conn.rollback()
+
+        print("Fel vid kategori:", e)
+
+        foretag = []
+
     return render_template("kategori.html", namn=namn, foretag=foretag)
 
 
