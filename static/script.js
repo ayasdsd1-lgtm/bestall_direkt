@@ -150,6 +150,20 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }    
+
+    // Visar fler kategorier när användaren klickar på "Visa alla kategorier"
+    const visaFler = document.getElementById("visa-fler");
+    const extraKategorier = document.querySelectorAll(".extra-kategori");
+
+    if (visaFler) {
+        visaFler.addEventListener("click", function() {
+            extraKategorier.forEach(function(kategori) {
+                kategori.style.display = "block";
+            });
+
+            visaFler.style.display = "none";
+        });
+    }
 });
 
 

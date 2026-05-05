@@ -92,6 +92,15 @@ def kategori(namn):
     """
     Visar alla företag som tillhör en viss kategori.
     """
+    kategorier = {
+    "Smatt-och-mingel": "Smått & mingel",
+    "Middag-och-festmat": "Middag & festmat",
+    "Bakver-och-sott": "Bakverk & sött",
+    "Buffe": "Buffé",
+    "Brunch": "Brunch"
+}
+
+    visningsnamn = kategorier.get(namn, namn.replace("-", " "))
 
     cursor = conn.cursor()
 
@@ -110,7 +119,7 @@ def kategori(namn):
 
         foretag = []
 
-    return render_template("kategori.html", namn=namn, foretag=foretag)
+    return render_template("kategori.html", namn=visningsnamn, foretag=foretag)
 
 
 @app.route("/alla-kategorier")
@@ -436,5 +445,5 @@ def profile():
 # STARTA SERVERN
 # -------------------------------------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
 

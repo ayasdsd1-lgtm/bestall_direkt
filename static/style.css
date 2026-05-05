@@ -176,6 +176,10 @@ main{
     background-color: #6A8FA8;
 }
 
+.extra-kategori {
+    display: none;
+}
+
 /*-------------------------------------Footer------------------------------------*/
 footer{
    display: flex;

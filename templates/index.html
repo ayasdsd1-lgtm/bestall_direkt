@@ -7,6 +7,7 @@
         <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
         <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
+        <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     </head>
     <body>
         <div id="grid">
@@ -66,16 +67,28 @@
                         </article>
 
                         <article class="card">
-                            <a href="{{ url_for('kategori', namn='Bakver-och-sott') }}">
+                            <a href="{{ url_for('kategori', namn='Bakverk-och-sott') }}">
                                 <img src="{{ url_for('static', filename='images/bakverkochsott.jpg') }}" alt="Bakverk och sött kategori omslag">
                                 <h3>Bakverk & sött</h3>
                             </a>
                         </article>
 
                         <!-- sjätte kategori - visa alla kategorier-->
-                        <article class="card card-all">
-                            <a href="{{ url_for('alla_kategorier') }}">
+                        <article id="visa-fler" class="card card-all">
                                 <h3>Visa alla kategorier</h3>
+                        </article>
+
+                        <article class="card extra-kategori">
+                            <a href="{{ url_for('kategori', namn='Sushi') }}">
+                                <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="Sushi kategori omslag">
+                                <h3>Sushi</h3>
+                            </a>
+                        </article>
+
+                        <article class="card extra-kategori">
+                            <a href="{{ url_for('kategori', namn='Veganskt') }}">
+                                <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="Veganskt kategori omslag">
+                                <h3>Veganskt</h3>
                             </a>
                         </article>
                     </div>
