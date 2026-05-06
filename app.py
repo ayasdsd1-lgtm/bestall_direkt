@@ -371,7 +371,6 @@ def register():
     # Skicka användaren till inloggningssidan efter lyckad registrering
     return render_template("register.html", success="Ditt konto har skapats! Du kan nu logga in.")
 
-
 # -------------------------------------------------------
 # UTLOGGNING
 # -------------------------------------------------------
@@ -405,6 +404,13 @@ def info():
 # -------------------------------------------------------
 @app.route("/profile")
 def profile():
+    """
+    Visar profilsidan för inloggad företagare.
+    Kontrollerar att användaren är inloggad via sessionen.
+    Hämtar företagarens inkomna beställningar från databasen och skickar dem till profile.html.
+    Länken i HTML ska se ut: {{ url_for('profile') }}
+    HTML-sida: profile.html
+    """
     if "user" not in session:
         return redirect(url_for("logga_in"))
     
