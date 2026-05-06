@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8">
+    <title>Sökresultat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+    <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div id="grid">
+    <header>
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="logo">
+        </a>
+
+        <a id="for-foretag" href="{{ url_for('logga_in') }}">För företag</a>
+    </header>
+
+    <nav class="nav">
+        <form action="/search" method="GET">
+            <div class="search">
+                <span class="search-icon material-symbols-outlined">search</span>
+                <input class="search-input" type="search" name="q" id="search" placeholder="Vad vill du boka idag?">
+            </div>
+        </form>
+    </nav>
+
+    <main>
+        <section>
+            <h2 class="catering_categori">
+                Resultat för: "{{ query }}"
+            </h2>
+
+            <div id="grid-cards">
+                {% if resultat %}
+
+                    {% for foretag in resultat %}
+                        <article class="card">
+                            <a href="{{ url_for('view_company', company_id=foretag[0]) }}">
+                                <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ foretag[1] }}">
+                                <h3>{{ foretag[1] }}</h3>
+                            </a>
+                        </article>
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>Inga verksamheter matchade din sökning.</p>
+
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <section class="footer_box">
+            <p><a href="{{ url_for('logga_in') }}">Företagsinloggning</a></p>
+            <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
+            <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+            <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
+        </section>
+
+        <div id="footer_bottom">
+            <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="logo">
+            <p>© Beställ Direkt 2026</p>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

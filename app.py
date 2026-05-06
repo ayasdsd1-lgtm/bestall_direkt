@@ -34,27 +34,54 @@ def home():
 
 @app.route("/search")
 def search():
-    """ 
-    Hämtar det användaren skrev i sökrutan (name="q").
-    Formuläret i HTML ska ha method="GET" och action="/search".
-    OBS: input i HTML måste ha name="q" för att detta ska fungera.
+    """
+    Sökfunktion för startsidan.
 
-    HTML-sida: search.html (ej byggd än)
+    Denna route:
+    1. Hämtar sökordet från URL:en (t.ex. /search?q=brunch)
+    2. Söker i databasen efter företag som matchar sökordet
+    3. Skickar resultatet till search.html för visning
     """
 
-    """
-    # När search.html är byggd, använd det här:
-    query = request.args.get('q')
+    query = request.args.get("q", "").strip()
+
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM public.foretagare WHERE foretagsnamn ILIKE %s",
-        (f"%{query}%",)
-    )
-    resultat = cursor.fetchall()
-    return render_template("search.html", resultat=resultat, query=query)
-    """
-    return f"<h1>Sökresultat</h1><p>Du söker efter: {query}</p><a href='/'>Tillbaka till start</a>"
 
+    try:
+        cursor.execute(
+            """
+            SELECT foretagare_id, foretagsnamn, kategori, email, telefon
+            FROM public.foretagare
+            WHERE foretagsnamn ILIKE %s
+               OR kategori ILIKE %s
+            """,
+            (f"%{query}%", f"%{query}%")
+        )
+
+        resultat = cursor.fetchall()
+
+    except Exception as e:
+        print("Fel vid sökning:", e)
+        resultat = []
+
+    # Tillfällig testdata om databasen inte ger några träffar
+    # Detta gör att vi kan testa search.html även innan databasen är färdig
+    if not resultat:
+        test_foretag = [
+            (1, "Sushi Express", "Sushi", "info@sushi.se", "0701234567"),
+            (2, "Italiensk Buffé AB", "Buffé", "info@buffe.se", "0702222222"),
+            (3, "Brunch & Co", "Brunch", "info@brunch.se", "0703333333"),
+            (4, "Sushi House", "Sushi", "kontakt@sushihouse.se", "0704444444"),
+            (5, "Vegansk Catering", "Veganskt", "hej@vegansk.se", "0705555555")
+        ]
+
+        for foretag in test_foretag:
+            if query.lower() in foretag[1].lower() or query.lower() in foretag[2].lower():
+                resultat.append(foretag)
+
+    # Skickar resultatet + sökordet till HTML-sidan
+    # search.html ansvarar för att visa listan
+    return render_template("search.html", resultat=resultat, query=query)
 
 # -------------------------------------------------------
 # KATEGORIER
@@ -63,17 +90,36 @@ def search():
 @app.route("/kategori/<namn>")
 def kategori(namn):
     """
-    Visar en sida för en specifik catering-kategori.
-    Länken i HTML ska se ut: {{ url_for('kategori', namn='Brunch') }}
-    HTML-sida: kategori.html
+    Visar alla företag som tillhör en viss kategori.
     """
+    kategorier = {
+    "Smatt-och-mingel": "Smått & mingel",
+    "Middag-och-festmat": "Middag & festmat",
+    "Bakver-och-sott": "Bakverk & sött",
+    "Buffe": "Buffé",
+    "Brunch": "Brunch"
+}
+
+    visningsnamn = kategorier.get(namn, namn.replace("-", " "))
+
     cursor = conn.cursor()
-    cursor.execute(
-        "SELECT * FROM public.foretagare WHERE kategori = %s",
-        (namn,)
-    )
-    foretag = cursor.fetchall()
-    return render_template("kategori.html", namn=namn, foretag=foretag)
+
+    try:
+        cursor.execute(
+            "SELECT * FROM public.foretagare WHERE kategori = %s",
+            (namn,)
+        )
+
+        foretag = cursor.fetchall()
+
+    except Exception as e:
+        conn.rollback()
+
+        print("Fel vid kategori:", e)
+
+        foretag = []
+
+    return render_template("kategori.html", namn=visningsnamn, foretag=foretag)
 
 
 @app.route("/alla-kategorier")
@@ -205,7 +251,7 @@ def login():
     try:
         # Hämta bara via email
         cursor.execute(
-            "SELECT * FROM public.foretagare WHERE email = %s",
+            "SELECT losenord FROM public.foretagare WHERE email = %s",
             (email,)
         )
         user = cursor.fetchone()
@@ -341,8 +387,7 @@ def register():
         )
 
     # Skicka användaren till inloggningssidan efter lyckad registrering
-    return redirect(url_for("logga_in"))
-
+    return render_template("register.html", success="Ditt konto har skapats! Du kan nu logga in.")
 
 # -------------------------------------------------------
 # UTLOGGNING
@@ -372,10 +417,57 @@ def info():
     return render_template("info.html")
 
 
+# -------------------------------------------------------
+# Profile sidan
+# -------------------------------------------------------
+@app.route("/profile")
+def profile():
+    """
+    Visar profilsidan för inloggad företagare.
+    Kontrollerar att användaren är inloggad via sessionen.
+    Hämtar företagarens inkomna beställningar från databasen och skickar dem till profile.html.
+    Länken i HTML ska se ut: {{ url_for('profile') }}
+    HTML-sida: profile.html
+    """
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+    
+    email = session["user"]
+    cursor = conn.cursor()
+
+    try:
+        query = """
+            SELECT
+                b.bestallning_id,
+                b.datum,
+                k.namn AS kund_namn,
+                k.telefonnummer,
+                m.menynamn,
+                br.antal
+            FROM public.foretagare f
+            JOIN public.verksamhet v ON f.foretagare_id = v.foretagare_id
+            JOIN public.bestallningar b ON v.verksamhet_id = b.verksamhet_id
+            JOIN public.kund k ON b.kund_id = k.kund_id
+            JOIN public.bestallningsrad br ON b.bestallning_id = br.bestallning_id
+            JOIN public.meny m ON br.meny_id = m.meny_id
+            WHERE f.email = %s
+            ORDER BY b.datum DESC
+        """
+
+        cursor.execute(query, (email, ))
+        bokningar = cursor.fetchall()
+
+        return render_template("profile.html", bokningar=bokningar)
+    
+    except Exception as e:
+        print(f"Gick inte att ladda upp profilsidan: {e}")
+        return "Ett fel uppstod", 500
+
+
 
 # -------------------------------------------------------
 # STARTA SERVERN
 # -------------------------------------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
 

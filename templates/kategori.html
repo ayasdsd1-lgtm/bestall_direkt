@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Kategori</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
         <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
@@ -30,47 +31,26 @@
                 <h2>{{ namn }}</h2>
 
                 <div id="grid-cards">
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 1</h3>
-                            </a>
-                    </article>
+                    {% if foretag %}
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 2</h3>
-                            </a>
-                    </article>
+                        {% for f in foretag %}
+                            <article class="card">
+                                <a href="{{ url_for('view_company', company_id=f[0]) }}">
+                                    <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ f[1] }}">
+                                    <h3>{{ f[1] }}</h3>
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 3</h3>
-                            </a>
-                    </article>
+                                    {% if f[2] %}
+                                        <p>{{ f[2] }}</p>
+                                    {% endif %}
+                                </a>
+                            </article>
+                        {% endfor %}
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 4</h3>
-                            </a>
-                    </article>
+                    {% else %}
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 5</h3>
-                            </a>
-                    </article>
+                        <p>Det finns inga verksamheter i denna kategori ännu.</p>
 
-                    <article class="card">
-                            <a href="">
-                                <img src="" alt="">
-                                <h3>Företag 6</h3>
-                            </a>
-                    </article>
+                    {% endif %}
                 </div>
             </section>
         </main>
