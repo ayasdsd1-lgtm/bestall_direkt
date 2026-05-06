@@ -29,6 +29,10 @@
                     {% if fel and fel.general %}
                         <p class="fel-general">{{ fel.general }}</p>
                     {% endif %}
+
+                    {% if success %}
+                        <p class="success-meddelande">{{ success }}</p>
+                    {% endif %}
  
                     <form class="register-form" action="/register" method="POST">
  
