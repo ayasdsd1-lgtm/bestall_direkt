@@ -337,7 +337,7 @@ def register():
     try:
         # Kolla om emailen redan är registrerad
         cursor.execute(
-            "SELECT id FROM public.foretagare WHERE email = %s",
+            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
             (email,)
         )
         if cursor.fetchone():
