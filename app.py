@@ -233,7 +233,7 @@ def login():
     try:
         # Hämta bara via email
         cursor.execute(
-            "SELECT * FROM public.foretagare WHERE email = %s",
+            "SELECT losenord FROM public.foretagare WHERE email = %s",
             (email,)
         )
         user = cursor.fetchone()
