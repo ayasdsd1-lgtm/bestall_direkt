@@ -120,36 +120,54 @@ def skapa_bestallning():
     HTML-sida: view.html
     """
     
-    kund_namn = request.form.get('kund_namn')
-    hemadress = request.form.get('hemadress')
-    epost = request.form.get('epost')
-    telefonnummer = request.form.get('telefonnummer') 
+    namn = request.form.get('kund_namn')
+    email = request.form.get('epost')
+    telefon = request.form.get('telefonnummer')
 
-    order_detaljer = request.form.get('order_data')
-    total_pris = request.form.get('total_pris')
+    order_data = request.form.get('order_data') # JSON-sträng med produkter
+    import json
+    order_items = json.loads(order_data) 
+
+    for item in order_items:
+        cursor.execute("""
+            INSERT INTO bestallningsrad (bestallning_id, meny_id, antal)
+                       VALUES (%s, %s, %s)
+                        """, (bestallning_id, item['meny_id'], item['antal']))
 
     cursor = conn.cursor()
 
     try:
-        query = """
-        INSERT INTO bestallningar
-        (kund_namn, hemadress, epost, telefonnummer, order_detaljer, total_pris)
-        VALUES (%s, %s, %s, %s, %s, %s)
-        """
+        # 1. Skapa kund 
+        cursor.execute("""
+            INSERT INTO kund (namn, email, telefonnummer)
+            VALUES (%s, %s, %s) 
+            RETURNING kund_id
+        """, (namn, email, telefon))
 
-        cursor.execute(query, (
-            kund_namn,
-            hemadress,
-            epost,
-            telefonnummer,
-            order_detaljer,
-            total_pris
-        ))
+        kund_id = cursor.fetchone()[0]  # Hämta det genererade kund_id
+
+        # 2. Skapa beställning kopplad till kunden
+        cursor.execute("""
+            INSERT INTO bestallningar (kund_id, verksamhet_id, status)
+            VALUES (%s, %s, %s)
+            RETURNING bestallning_id
+            """, (kund_id, 1, 'pending'))  # Verksamhet_id = 1 som exempel
+        
+        bestallning_id = cursor.fetchone()[0]  # Hämta det genererade bestallning_id
+
+        # 3. Lägg till beställningsrader
+        cursor.execute("""
+            INSERT INTO bestallningsrader (bestallning_id, meny_id, antal)
+            VALUES (%s, %s, %s)
+        """, (bestallning_id, 1, 2))  # Exempel
+
         conn.commit()
-        return jsonify({"success": True, "message": f"Tack för din beställning, {kund_namn}!"})
+
+        return jsonify({"success": True, "message": f"Tack för din beställning, {namn}!"})
     
     except Exception as e:
         conn.rollback()
+        print(e)
         return jsonify({"success": False, "message": f"Beställningen gick inte igenom. "}), 500
 
 
@@ -193,7 +211,7 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            stored_password = user[0]
+            stored_password = user[4]  # lösenordet är i kolumn 4
             if check_password_hash(stored_password, password):
                 # session: Sparar inloggad användare i sessionen
                 session["user"] = email 
@@ -291,7 +309,7 @@ def register():
     try:
         # Kolla om emailen redan är registrerad
         cursor.execute(
-            "SELECT id FROM public.foretagare WHERE email = %s",
+            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
             (email,)
         )
         if cursor.fetchone():
