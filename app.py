@@ -257,11 +257,11 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            stored_password = user[4]  # lösenordet är i kolumn 4
+            stored_password = user[0] 
             if check_password_hash(stored_password, password):
                 # session: Sparar inloggad användare i sessionen
                 session["user"] = email 
-                return redirect(url_for("home"))
+                return redirect(url_for("profile")) # skickar inloggad användare till profilsidan
             else:
                 # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
                 return render_template("log_in.html", fel="Fel lösenord")
@@ -420,7 +420,7 @@ def info():
 # -------------------------------------------------------
 # Profile sidan
 # -------------------------------------------------------
-@app.route("/profile")
+@app.route("/verksamhet")
 def profile():
     """
     Visar profilsidan för inloggad företagare.
@@ -457,11 +457,57 @@ def profile():
         cursor.execute(query, (email, ))
         bokningar = cursor.fetchall()
 
-        return render_template("profile.html", bokningar=bokningar)
+        # Hämta verksamhetsinformation
+        cursor.execute("SELECT verksamhetsnamn, beskrivning, telefonnummer FROM public.verksamhet WHERE foretagare_id = (SELECT foretagare_id FROM public.foretagare WHERE email = %s)", (email,))
+        verksamhet = cursor.fetchone()
+
+        return render_template("profile.html", bokningar=bokningar, verksamhet=verksamhet)
     
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
         return "Ett fel uppstod", 500
+    
+@app.route("/uppdatera-verksamhet", methods=["POST"])
+def uppdatera_verksamhet():
+
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    email = session["user"]
+
+    verksamhetsnamn = request.form.get("verksamhetsnamn")
+    beskrivning = request.form.get("beskrivning")
+    telefonnummer = request.form.get("telefonnummer")
+
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE public.verksamhet
+            SET verksamhetsnamn = %s,
+                beskrivning = %s,
+                telefonnummer = %s
+            WHERE foretagare_id = (
+                SELECT foretagare_id
+                FROM public.foretagare
+                WHERE email = %s
+            )
+        """, (
+            verksamhetsnamn,
+            beskrivning,
+            telefonnummer,
+            email
+        ))
+
+        conn.commit()
+
+        return redirect(url_for("profile"))
+
+    except Exception as e:
+        conn.rollback()
+        print("Fel vid uppdatering:", e)
+
+        return "Kunde inte uppdatera verksamheten", 500
 
 
 
