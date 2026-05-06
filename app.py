@@ -369,7 +369,7 @@ def register():
         )
 
     # Skicka användaren till inloggningssidan efter lyckad registrering
-    return redirect(url_for("logga_in"))
+    return render_template("register.html", success="Ditt konto har skapats! Du kan nu logga in.")
 
 
 # -------------------------------------------------------
