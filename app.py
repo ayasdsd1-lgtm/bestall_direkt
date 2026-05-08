@@ -509,7 +509,116 @@ def uppdatera_verksamhet():
 
         return "Kunde inte uppdatera verksamheten", 500
 
+# -------------------------------------------------------
+# RADERA KONTO
+# -------------------------------------------------------
 
+@app.route("/radera-konto", methods=["POST"])
+def radera_konto():
+    """
+    Raderar den inloggade företagarens konto och all kopplad persondata.
+    Uppfyller GDPR-krav om rätten att bli glömd (SÄ-S-01).
+    Raderar kopplade beställningsrader, beställningar och verksamhet
+    innan kontot tas bort.
+    Loggar ut användaren efter radering och skickar till startsidan.
+    Länken i HTML ska se ut: action="{{ url_for('radera_konto') }}"
+    HTML-sida: profile.html
+    """
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    email = session["user"]
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
+            (email,)
+        )
+        foretagare = cursor.fetchone()
+
+        if not foretagare:
+            session.clear()
+            return redirect(url_for("logga_in"))
+
+        foretagare_id = foretagare[0]
+
+        # Radera kopplade beställningsrader
+        cursor.execute(
+            """
+            DELETE FROM public.bestallningsrad
+            WHERE bestallning_id IN (
+                SELECT b.bestallning_id FROM public.bestallningar b
+                JOIN public.verksamhet v ON b.verksamhet_id = v.verksamhet_id
+                WHERE v.foretagare_id = %s
+            )
+            """,
+            (foretagare_id,)
+        )
+
+        # Radera kopplade beställningar
+        cursor.execute(
+            """
+            DELETE FROM public.bestallningar
+            WHERE verksamhet_id IN (
+                SELECT verksamhet_id FROM public.verksamhet
+                WHERE foretagare_id = %s
+            )
+            """,
+            (foretagare_id,)
+        )
+
+        # Radera verksamhet
+        cursor.execute(
+            "DELETE FROM public.verksamhet WHERE foretagare_id = %s",
+            (foretagare_id,)
+        )
+
+        # Radera företagarkontot
+        cursor.execute(
+            "DELETE FROM public.foretagare WHERE foretagare_id = %s",
+            (foretagare_id,)
+        )
+
+        conn.commit()
+        session.clear()
+        return redirect(url_for("home"))
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Fel vid radering av konto: {e}")
+        return redirect(url_for("profile"))
+
+
+# -------------------------------------------------------
+# REDIGERA FÖRETAGSSIDA
+# -------------------------------------------------------
+
+@app.route("/redigera/<int:company_id>", methods=["GET", "POST"])
+def redigera(company_id):
+    """
+    Kontrollerar att inloggad användare endast kan redigera sin egen sida.
+    Redigeringen sker via profilsidan – denna route används enbart för auktorisering.
+    Returnerar 403 Forbidden om användaren försöker komma åt ett annat företags sida via URL.
+    Skickar inloggad användare vidare till profilsidan om auktoriseringen lyckas.
+    Länken i HTML ska se ut: {{ url_for('redigera', company_id=id) }}
+    """
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    email = session["user"]
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
+        (email,)
+    )
+    foretagare = cursor.fetchone()
+
+    if not foretagare or foretagare[0] != company_id:
+        return "403 Forbidden – Du har inte behörighet att redigera denna sida.", 403
+
+    return redirect(url_for("profile"))
 
 # -------------------------------------------------------
 # STARTA SERVERN

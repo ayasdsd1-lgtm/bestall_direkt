@@ -104,5 +104,14 @@
             <p>Du har inga bokningar ännu.</p>
         {% endif %}
     </div>
+    <!-- Radera konto -->
+        <div class="delete-account-box">
+            <h3>Kontoinställningar</h3>
+            <p>Radering av ditt konto är permanent och kan inte ångras. All din data tas bort enligt GDPR.</p>
+            <form action="{{ url_for('radera_konto') }}" method="POST"
+                  onsubmit="return confirm('Är du säker? Detta raderar ditt konto och all data permanent.')">
+                <button type="submit" class="delete-account-btn">Radera mitt konto</button>
+            </form>
+        </div>
     </div>
     </div>
