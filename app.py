@@ -471,6 +471,16 @@ def logga_ut():
     session.clear()      # Raderar minneslappen - användaren är ut utloggad
     return redirect(url_for("home"))
 
+@app.route("/radera-konto")
+def radera_konto():
+
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    session.clear()
+
+    return redirect(url_for("home"))
+
 # -------------------------------------------------------
 # Info sidan
 # -------------------------------------------------------
@@ -576,6 +586,18 @@ def uppdatera_verksamhet():
         print("Fel vid uppdatering:", e)
 
         return "Kunde inte uppdatera verksamheten", 500
+    
+@app.route("/skapa-verksamhet")
+def skapa_verksamhet():
+    """
+    Visar sidan där företagaren kan skapa en verksamhet.
+    """
+
+    # Kontrollera att användaren är inloggad
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    return render_template("create_business.html")
 
 
 
