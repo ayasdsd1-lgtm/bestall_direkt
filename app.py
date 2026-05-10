@@ -576,62 +576,9 @@ def uppdatera_verksamhet():
         print("Fel vid uppdatering:", e)
 
         return "Kunde inte uppdatera verksamheten", 500
-    
-@app.route("/skapa-verksamhet")
-def skapa_verksamhet():
 
-    if "user" not in session:
-        return redirect(url_for("logga_in"))
 
-    return render_template("create_business.html")
 
-@app.route("/spara-verksamhet", methods=["POST"])
-def spara_verksamhet():
-
-    if "user" not in session:
-        return redirect(url_for("logga_in"))
-
-    email = session["user"]
-
-    verksamhetsnamn = request.form["verksamhetsnamn"]
-    beskrivning = request.form["beskrivning"]
-    telefonnummer = request.form["telefonnummer"]
-
-    cursor = conn.cursor()
-
-    try:
-
-        cursor.execute("""
-            SELECT foretagare_id
-            FROM public.foretagare
-            WHERE email = %s
-        """, (email,))
-
-        foretagare_id = cursor.fetchone()[0]
-
-        cursor.execute("""
-            INSERT INTO public.verksamhet
-            (foretagare_id, verksamhetsnamn, beskrivning, telefonnummer)
-
-            VALUES (%s, %s, %s, %s)
-        """, (
-            foretagare_id,
-            verksamhetsnamn,
-            beskrivning,
-            telefonnummer
-        ))
-
-        conn.commit()
-
-        return redirect(url_for("profile"))
-
-    except Exception as e:
-
-        conn.rollback()
-
-        print(e)
-
-        return "Kunde inte skapa verksamhet"
 # -------------------------------------------------------
 # STARTA SERVERN
 # -------------------------------------------------------
