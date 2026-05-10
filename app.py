@@ -143,18 +143,73 @@ def view_company(company_id):
     OBS: Använder testdata tills företagstabellen i databasen är kopplad.
     HTML-sida: view.html
     """
-    test_data = {
-        "namn": "Ajabaja AB",
-        "adress": "ingenstans 123",
-        "telefon": "0712345678",
-        "epost": "ajabaja@ajabaja.com",
-        "beskrivning": "Gottegott gottegott",
-        "tjanster":[
-            {"namn": "Dolma", "beskrivning": "Vinblad fyllda med ris, köttfärs och kryddor" ,"pris": 10},
-            {"namn": "Mini cheesecake", "beskrivning": "Bakverk innehållande färskost" ,"pris": 20}
-        ]
-    }
-    return render_template("view.html", foretag=test_data)
+    
+    cursor = conn.cursor()
+
+    try:
+
+        # Hämta verksamhetsinformation
+        cursor.execute("""
+            SELECT
+                verksamhetsnamn,
+                adress,
+                telefonnummer,
+                beskrivning
+            FROM public.verksamhet
+            WHERE verksamhet_id = %s
+        """, (company_id,))
+
+        verksamhet = cursor.fetchone()
+
+        print("Verksamhet:", verksamhet)  
+
+        # Om verksamheten inte finns
+        if not verksamhet:
+            return "Verksamheten hittades inte", 404
+
+        # Gör om databassvaret till dictionary
+        foretag = {
+            "namn": verksamhet[0],
+            "adress": verksamhet[1],
+            "telefon": verksamhet[2],
+            "epost": "kontakt@bestalldirekt.se",  # tillfällig
+            "beskrivning": verksamhet[3],
+            "tjanster": []
+        }
+
+        # Hämta tjänster/meny
+        cursor.execute("""
+            SELECT
+                menynamn,
+                beskrivning,
+                pris
+            FROM public.meny
+            WHERE verksamhet_id = %s
+        """, (company_id,))
+
+        meny = cursor.fetchall()
+
+        # Lägg till tjänster i listan
+        for item in meny:
+
+            foretag["tjanster"].append({
+                "namn": item[0],
+                "beskrivning": item[1],
+                "pris": item[2]
+            })
+
+        return render_template(
+            "view.html",
+            foretag=foretag
+        )
+
+    except Exception as e:
+
+        conn.rollback()
+
+        print("Fel vid hämtning av verksamhet:", e)
+
+        return "Ett fel uppstod", 500
 
 
 @app.route('/skapa_bestallning', methods=['POST'])
@@ -234,46 +289,59 @@ def logga_in():
 
 @app.route("/login", methods=["POST"])
 def login():
-    """
-    Hanterar inloggning för företagare.
-    Tar emot email och lösenord via POST och jämför
-    lösenordet mot det hashade värdet i databasen.
-    Vid lyckad inloggning sparas email i sessionen
-    och användaren skickas till startsidan.
-    Formuläret i HTML ska ha method="POST" och action="/login".
-    HTML-sida: log_in.html
-    """
+
     email = request.form["email"]
     password = request.form["password"]
 
     cursor = conn.cursor()
 
     try:
-        # Hämta bara via email
-        cursor.execute(
-            "SELECT losenord FROM public.foretagare WHERE email = %s",
-            (email,)
-        )
+
+        cursor.execute("""
+            SELECT 
+                v.verksamhet_id,
+                f.losenord
+             FROM public.foretagare f
+             LEFT JOIN public.verksamhet v
+                ON f.foretagare_id = v.foretagare_id
+            WHERE f.email = %s
+        """, (email,))
+
         user = cursor.fetchone()
 
-        if user:
-            stored_password = user[0] 
-            if check_password_hash(stored_password, password):
-                # session: Sparar inloggad användare i sessionen
-                session["user"] = email 
-                return redirect(url_for("profile")) # skickar inloggad användare till profilsidan
-            else:
-                # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
-                return render_template("log_in.html", fel="Fel lösenord")
-        else:
-            # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
-            return render_template("log_in.html", fel="Användaren finns inte")
+        print(user)
 
+        if user:
+
+            verksamhet_id = user[0]
+            stored_password = user[1]
+
+            if check_password_hash(stored_password, password):
+
+                # Sparar användaren i session
+                session["user"] = email
+
+                # Skicka företagaren till dashboard/profile
+                return redirect(url_for("profile"))
+            
+            else:
+                return render_template(
+                    "log_in.html",
+                    fel="Fel lösenord"
+                )
+        else:
+            return render_template(
+                "log_in.html",
+                fel="Användare finns inte"
+            )
+        
     except Exception as e:
         conn.rollback()
         print("FEL:", e)
-        # ÄNDRAT: returnerar sidan med felmeddelande istället för ren text
-        return render_template("log_in.html", fel="Något gick fel, försök igen")
+        return render_template(
+            "log_in.html",
+            fel="Något gick fel, försök igen"
+        )
     
 
 # -------------------------------------------------------
@@ -508,9 +576,62 @@ def uppdatera_verksamhet():
         print("Fel vid uppdatering:", e)
 
         return "Kunde inte uppdatera verksamheten", 500
+    
+@app.route("/skapa-verksamhet")
+def skapa_verksamhet():
 
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
 
+    return render_template("create_business.html")
 
+@app.route("/spara-verksamhet", methods=["POST"])
+def spara_verksamhet():
+
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    email = session["user"]
+
+    verksamhetsnamn = request.form["verksamhetsnamn"]
+    beskrivning = request.form["beskrivning"]
+    telefonnummer = request.form["telefonnummer"]
+
+    cursor = conn.cursor()
+
+    try:
+
+        cursor.execute("""
+            SELECT foretagare_id
+            FROM public.foretagare
+            WHERE email = %s
+        """, (email,))
+
+        foretagare_id = cursor.fetchone()[0]
+
+        cursor.execute("""
+            INSERT INTO public.verksamhet
+            (foretagare_id, verksamhetsnamn, beskrivning, telefonnummer)
+
+            VALUES (%s, %s, %s, %s)
+        """, (
+            foretagare_id,
+            verksamhetsnamn,
+            beskrivning,
+            telefonnummer
+        ))
+
+        conn.commit()
+
+        return redirect(url_for("profile"))
+
+    except Exception as e:
+
+        conn.rollback()
+
+        print(e)
+
+        return "Kunde inte skapa verksamhet"
 # -------------------------------------------------------
 # STARTA SERVERN
 # -------------------------------------------------------
