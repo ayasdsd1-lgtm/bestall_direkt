@@ -933,6 +933,15 @@ footer img{
         grid-template-columns: 1fr;
         gap: 20px;
     }
+    #home-nav{
+        min-height: 290px;
+    }
+
+     /* Kategorisidorna (kategori.html) */
+    #kategori-nav{
+        min-height: 290px;
+    }
+
 }
 
 /*-------------- Mobila enheter --------------*/
@@ -959,11 +968,29 @@ footer img{
         padding-left: 40px;
         padding-right: 40px;
     }
+    #home-nav {
+        min-height: 180px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
 
     /* Inloggsidan (log_in.html) */
     #lank-till-registrering {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    display: inline-block;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        display: inline-block;
     }
+
+    /* Kategorisidorna (kategori.html) */
+    #kategori-nav {
+        min-height: 180px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    #kategori-nav {  /* Eventuellt lägga till kategori-main här som i startsidan */
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
 }
