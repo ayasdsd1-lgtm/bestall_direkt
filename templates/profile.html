@@ -22,6 +22,26 @@
 <!--Det finns redan en @app.route för sidan under  "profile sidan" i python-->
 <!--blocket nedan visar en beställningstabell så företag tar del av vilka som bokade deras tjänster och vad de har bokat. Du kan placera den vart du än vill :) -->
 
+{% if verksamhet %}
+
+    <h2>Din verksamhet</h2>
+
+    <a href="{{ url_for('view_company', company_id=1) }}">
+        Visa verksamhetssida
+    </a>
+
+{% else %}
+
+    <h2>Du har ingen verksamhet ännu</h2>
+
+    <a href="{{ url_for('skapa_verksamhet') }}">
+        Skapa verksamhet
+    </a>
+
+{% endif %}
+
+  
+
 <div class="profile-layout">
 
 <div class="profile-edit-box">
@@ -104,5 +124,14 @@
             <p>Du har inga bokningar ännu.</p>
         {% endif %}
     </div>
+    <!-- Radera konto -->
+        <div class="delete-account-box">
+            <h3>Kontoinställningar</h3>
+            <p>Radering av ditt konto är permanent och kan inte ångras. All din data tas bort enligt GDPR.</p>
+            <form action="{{ url_for('radera_konto') }}" method="POST"
+                  onsubmit="return confirm('Är du säker? Detta raderar ditt konto och all data permanent.')">
+                <button type="submit" class="delete-account-btn">Radera mitt konto</button>
+            </form>
+        </div>
     </div>
     </div>
