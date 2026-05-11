@@ -793,7 +793,7 @@ footer img{
     display: grid;
     grid-template-columns: 320px 1fr;
     gap: 30px;
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 40px auto;
     padding: 0 40px;
     align-items: start;
@@ -949,6 +949,39 @@ footer img{
 }
 
 
+.profile-top-buttons{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 10px;
+}
+
+.profile-top-btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    padding: 14px 26px;
+
+    background-color: #ffffff;
+    color: #462009;
+    border: 1px solid #d8d2cc;
+    border-radius: 14px;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.profile-top-btn:hover{
+    background-color: #462009;
+    color: white;
+    border-color: #462009;
+}
+
+
 /*------------------------------------- Responsiv design --------------------------------------*/
 
 /*-------- Surfplattor och mindre skärmar --------*/
@@ -992,6 +1025,155 @@ footer img{
      /* Kategorisidorna (kategori.html) */
     #kategori-nav{
         min-height: 290px;
+    }
+
+}
+
+/*------------------------------------- Create Business --------------------------------------*/
+
+.create-business-wrapper{
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px 70px;
+}
+
+.create-business-card{
+    width: 100%;
+    max-width: 760px;
+
+    background: #ffffff;
+
+    padding: 35px;
+
+    border-radius: 20px;
+
+    border: 1px solid #ece7e2;
+
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.create-business-header{
+    margin-bottom: 40px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.create-business-header h1{
+    font-size: 2.3rem;
+    color: #462009;
+    margin-bottom: 8px;
+}
+
+.create-business-header p{
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.create-business-form{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.form-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label{
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #462009;
+    font-size: 1rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width: 100%;
+    padding: 13px 14px;
+
+    border: 1px solid #d8d2cc;
+    border-radius: 14px;
+
+    font-size: 1rem;
+    font-family: inherit;
+
+    background-color: #fff;
+
+    box-sizing: border-box;
+
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    outline: none;
+
+    border-color: #8f512b;
+
+    box-shadow: 0 0 0 4px rgba(143,81,43,0.08);
+}
+
+.form-group textarea{
+    min-height: 160px;
+    resize: vertical;
+}
+
+.full-width{
+    width: 100%;
+}
+
+.create-business-btn{
+    width: 100%;
+
+    background-color: #462009;
+    color: white;
+
+    border: none;
+    border-radius: 14px;
+
+    padding: 14px;
+
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+.create-business-btn:hover{
+    background-color: #6a3416;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(70,32,9,0.18);
+}
+
+/*---------------- RESPONSIVE ----------------*/
+
+@media (max-width: 768px){
+
+    .create-business-card{
+        padding: 30px;
+    }
+
+    .form-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .create-business-header h1{
+        font-size: 2.2rem;
     }
 
 }

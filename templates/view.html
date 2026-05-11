@@ -46,9 +46,11 @@
 
             <div class="view-container">
                 <div class="left-column">
-                    <section class="view-img-box">
-                        <img src="{{ url_for('static', filename= 'loads/') }}" alt="{{ foretag.namn }} logo">
-                    </section>
+                    {% if foretag.logo_url %}
+                        <section class="view-img-box">
+                            <img src="{{ foretag.logo_url }}" alt="{{ foretag.namn }} logo">
+                        </section>
+                    {% endif %}
 
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
