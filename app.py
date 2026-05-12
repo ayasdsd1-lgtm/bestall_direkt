@@ -6,6 +6,7 @@ import psycopg2
 import os
 import re      # Används för formatvalidering vid registrering
 from flask import jsonify
+import json
 
 
 load_dotenv() # laddar in .env-filen som innehåller databas-info
@@ -236,7 +237,6 @@ def skapa_bestallning():
     telefon = request.form.get('telefonnummer')
 
     order_data = request.form.get('order_data') # JSON-sträng med produkter
-    import json
     order_items = json.loads(order_data) 
 
     for item in order_items:
