@@ -51,12 +51,16 @@ def search():
     try:
         cursor.execute(
             """
-            SELECT foretagare_id, foretagsnamn, kategori, email, telefon
-            FROM public.foretagare
-            WHERE foretagsnamn ILIKE %s
-               OR kategori ILIKE %s
+           SELECT DISTINCT v.verksamhet_id, v.verksamhetsnamn, v.kategori
+            FROM public.verksamhet v
+            LEFT JOIN public.meny m ON m.verksamhet_id = v.verksamhet_id
+            WHERE v.verksamhetsnamn ILIKE %s
+                OR v.kategori        ILIKE %s
+                OR v.beskrivning     ILIKE %s
+                OR m.menynamn        ILIKE %s
+                OR m.beskrivning     ILIKE %s
             """,
-            (f"%{query}%", f"%{query}%")
+            (f"%{query}%", f"%{query}%", f"%{query}%", f"%{query}%", f"%{query}%")
         )
 
         resultat = cursor.fetchall()
