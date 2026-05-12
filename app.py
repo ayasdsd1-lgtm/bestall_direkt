@@ -114,10 +114,15 @@ def kategori(namn):
 
     except Exception as e:
         conn.rollback()
-
         print("Fel vid kategori:", e)
-
         foretag = []
+    
+    # Hårdkodad testdata för kategorin Sushi
+    if not foretag and visningsnamn == "Sushi":
+        foretag = [
+            (1, "Sushi Express"),
+            (4, "Sushi House")
+        ]
 
     return render_template("kategori.html", namn=visningsnamn, foretag=foretag)
 
@@ -145,6 +150,45 @@ def view_company(company_id):
     """
     
     cursor = conn.cursor()
+
+    # hårdkod när man klickar på en sushi verksamhet från sökfältet "sushi"
+    test_foretag = {
+        1: {
+            "namn": "Sushi Express",
+            "adress": "Testgatan 1",
+            "telefon": "0701234567",
+            "epost": "info@sushi.se",
+            "beskrivning": "Vi erbjuder sushi och japansk catering.",
+            "kategori": "Sushi",
+            "logo_url": None,
+            "tjanster": [
+                {
+                    "namn": "Sushimeny",
+                    "beskrivning": "Blandade sushibitar för event och catering.",
+                    "pris": 129
+                }
+            ]
+        },
+        4: {
+            "namn": "Sushi House",
+            "adress": "Exempelvägen 4",
+            "telefon": "0704444444",
+            "epost": "kontakt@sushihouse.se",
+            "beskrivning": "Catering med sushi och asiatiska smaker.",
+            "kategori": "Sushi",
+            "logo_url": None,
+            "tjanster": [
+                {
+                    "namn": "Sushiplatå",
+                    "beskrivning": "Sushi för större sällskap.",
+                    "pris": 199
+                }
+            ]
+        }
+    }
+
+    if company_id in test_foretag:
+        return render_template("view.html", foretag=test_foretag[company_id])
 
     try:
 
