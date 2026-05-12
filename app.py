@@ -641,7 +641,7 @@ def uppdatera_verksamhet():
 
         return "Kunde inte uppdatera verksamheten", 500
     
-@app.route("/skapa-verksamhet")
+@app.route("/skapa-verksamhet", methods=["GET","POST"])
 def skapa_verksamhet():
     """
     Visar sidan där företagaren kan skapa en verksamhet.
@@ -650,6 +650,11 @@ def skapa_verksamhet():
     # Kontrollera att användaren är inloggad
     if "user" not in session:
         return redirect(url_for("logga_in"))
+    
+    if request.method == "POST":
+        # Här spar vi verksamheten
+
+        pass
 
     return render_template("create_business.html")
 
