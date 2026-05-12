@@ -666,6 +666,65 @@ def skapa_tjanst():
 
         return "Kunde inte skapa tjänst", 500
 
+# -------------------------------------------------------
+# Admin
+# -------------------------------------------------------
+ADMIN_USER = os.getenv("ADMIN_USER")
+ADMIN_PASS = os.getenv("ADMIN_PASS")
+
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        
+        if email == ADMIN_USER and password == ADMIN_PASS:
+            session["admin_logged_in"] = True
+            return redirect(url_for("admin_dashboard"))
+        else:
+            return render_template("admin_login.html", fel="Felaktiga admin-uppgifter")
+            
+    return render_template("admin_login.html")
+
+@app.route("/admin/dashboard")
+def admin_dashboard():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+    
+    cursor = conn.cursor()
+    cursor.execute("SELECT foretagare_id, foretagsnamn, email, blockera FROM public.foretagare ORDER BY foretagare_id DESC")
+    foretagare = cursor.fetchall()
+    return render_template("admin_dashboard.html", foretagare=foretagare)
+
+@app.route("/admin/blockera/<int:id>")
+def blockera_foretagare(id):
+    if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
+    
+    cursor = conn.cursor()
+    cursor.execute("UPDATE public.foretagare SET blockera = NOT blockera WHERE foretagare_id = %s", (id,))
+    conn.commit()
+    return redirect(url_for("admin_dashboard"))
+
+@app.route("/admin/ta-bort/<int:id>")
+def ta_bort_foretagare(id):
+    if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
+    
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM public.verksamhet WHERE foretagare_id = %s", (id,))
+        cursor.execute("DELETE FROM public.foretagare WHERE foretagare_id = %s", (id,))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(f"Fel vid radering: {e}")
+        
+    return redirect(url_for("admin_dashboard"))
+
+@app.route("/admin/logout")
+def admin_logout():
+    session.pop("admin_logged_in", None)
+    return redirect(url_for("home"))
+
 
 # -------------------------------------------------------
 # STARTA SERVERN
