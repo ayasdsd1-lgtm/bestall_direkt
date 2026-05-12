@@ -106,8 +106,8 @@ def kategori(namn):
 
     try:
         cursor.execute(
-            "SELECT * FROM public.foretagare WHERE kategori = %s",
-            (namn,)
+            "SELECT * FROM public.verksamhet WHERE kategori = %s",
+            (visningsnamn,)
         )
 
         foretag = cursor.fetchall()
@@ -154,7 +154,9 @@ def view_company(company_id):
                 verksamhetsnamn,
                 adress,
                 telefonnummer,
-                beskrivning
+                beskrivning,
+                kategori,
+                logo_url
             FROM public.verksamhet
             WHERE verksamhet_id = %s
         """, (company_id,))
@@ -174,6 +176,8 @@ def view_company(company_id):
             "telefon": verksamhet[2],
             "epost": "kontakt@bestalldirekt.se",  # tillfällig
             "beskrivning": verksamhet[3],
+            "kategori": verksamhet[4],
+            "logo_url": verksamhet[5],
             "tjanster": []
         }
 
@@ -556,6 +560,8 @@ def uppdatera_verksamhet():
     verksamhetsnamn = request.form.get("verksamhetsnamn")
     beskrivning = request.form.get("beskrivning")
     telefonnummer = request.form.get("telefonnummer")
+    logo_url = request.form.get("logo_url")
+    kategori = request.form.get("kategori")
 
     cursor = conn.cursor()
 
@@ -564,7 +570,9 @@ def uppdatera_verksamhet():
             UPDATE public.verksamhet
             SET verksamhetsnamn = %s,
                 beskrivning = %s,
-                telefonnummer = %s
+                telefonnummer = %s,
+                logo_url = %s,
+                kategori = %s
             WHERE foretagare_id = (
                 SELECT foretagare_id
                 FROM public.foretagare
@@ -574,6 +582,8 @@ def uppdatera_verksamhet():
             verksamhetsnamn,
             beskrivning,
             telefonnummer,
+            logo_url,
+            kategori,
             email
         ))
 
@@ -599,6 +609,62 @@ def skapa_verksamhet():
 
     return render_template("create_business.html")
 
+
+@app.route("/skapa-tjanst", methods=["POST"])
+def skapa_tjanst():
+
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    email = session["user"]
+
+    menynamn = request.form.get("menynamn")
+    beskrivning = request.form.get("beskrivning")
+    pris = request.form.get("pris")
+
+    cursor = conn.cursor()
+
+    try:
+
+        cursor.execute("""
+            SELECT verksamhet_id
+            FROM public.verksamhet
+            WHERE foretagare_id = (
+                SELECT foretagare_id
+                FROM public.foretagare
+                WHERE email = %s
+            )
+        """, (email,))
+
+        verksamhet_id = cursor.fetchone()[0]
+
+        cursor.execute("""
+            INSERT INTO public.meny
+            (
+                verksamhet_id,
+                menynamn,
+                beskrivning,
+                pris
+            )
+            VALUES (%s, %s, %s, %s)
+        """, (
+            verksamhet_id,
+            menynamn,
+            beskrivning,
+            pris
+        ))
+
+        conn.commit()
+
+        return redirect(url_for("profile"))
+
+    except Exception as e:
+
+        conn.rollback()
+
+        print(e)
+
+        return "Kunde inte skapa tjänst", 500
 
 
 # -------------------------------------------------------
