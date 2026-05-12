@@ -1,3 +1,4 @@
+from sqlite3 import Cursor
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -141,54 +142,15 @@ def alla_kategorier():
 # VIEW
 # -------------------------------------------------------
 
-@app.route("/view/<int:company_id>") # /<id> måste läggas till när en tabell i databasen har kopplats
+@app.route("/view/<int:company_id>") 
 def view_company(company_id):
     """
     Visar företagssidan för ett specifikt företag baserat på company_id i URL:en.
     OBS: Använder testdata tills företagstabellen i databasen är kopplad.
     HTML-sida: view.html
     """
-    
+
     cursor = conn.cursor()
-
-    # hårdkod när man klickar på en sushi verksamhet från sökfältet "sushi"
-    test_foretag = {
-        1: {
-            "namn": "Sushi Express",
-            "adress": "Testgatan 1",
-            "telefon": "0701234567",
-            "epost": "info@sushi.se",
-            "beskrivning": "Vi erbjuder sushi och japansk catering.",
-            "kategori": "Sushi",
-            "logo_url": None,
-            "tjanster": [
-                {
-                    "namn": "Sushimeny",
-                    "beskrivning": "Blandade sushibitar för event och catering.",
-                    "pris": 129
-                }
-            ]
-        },
-        4: {
-            "namn": "Sushi House",
-            "adress": "Exempelvägen 4",
-            "telefon": "0704444444",
-            "epost": "kontakt@sushihouse.se",
-            "beskrivning": "Catering med sushi och asiatiska smaker.",
-            "kategori": "Sushi",
-            "logo_url": None,
-            "tjanster": [
-                {
-                    "namn": "Sushiplatå",
-                    "beskrivning": "Sushi för större sällskap.",
-                    "pris": 199
-                }
-            ]
-        }
-    }
-
-    if company_id in test_foretag:
-        return render_template("view.html", foretag=test_foretag[company_id])
 
     try:
 
@@ -204,7 +166,7 @@ def view_company(company_id):
             FROM public.verksamhet
             WHERE verksamhet_id = %s
         """, (company_id,))
-
+        
         verksamhet = cursor.fetchone()
 
         print("Verksamhet:", verksamhet)  
@@ -641,8 +603,9 @@ def uppdatera_verksamhet():
 
         return "Kunde inte uppdatera verksamheten", 500
     
-@app.route("/skapa-verksamhet", methods=["GET","POST"])
+@app.route("/skapa-verksamhet", methods=["GET", "POST"])
 def skapa_verksamhet():
+
     """
     Visar sidan där företagaren kan skapa en verksamhet.
     """
@@ -650,11 +613,76 @@ def skapa_verksamhet():
     # Kontrollera att användaren är inloggad
     if "user" not in session:
         return redirect(url_for("logga_in"))
-    
-    if request.method == "POST":
-        # Här spar vi verksamheten
 
-        pass
+    if request.method == "POST":
+
+        verksamhetsnamn = request.form.get("verksamhetsnamn")
+        adress = request.form.get("adress")
+        telefonnummer = request.form.get("telefonnummer")
+        beskrivning = request.form.get("beskrivning")
+        kategori = request.form.get("kategori")
+        logo_url = request.form.get("logo_url")
+
+        email = session["user"]
+
+        cursor = conn.cursor()
+
+        try:
+
+            # Hämta foretagare_id från inloggad användare
+            cursor.execute("""
+                SELECT foretagare_id
+                FROM public.foretagare
+                WHERE email = %s
+            """, (email,))
+
+            foretagare_id = cursor.fetchone()[0]
+
+            # Skapa verksamheten
+            cursor.execute("""
+                INSERT INTO public.verksamhet
+                (
+                    foretagare_id,
+                    verksamhetsnamn,
+                    adress,
+                    telefonnummer,
+                    beskrivning,
+                    kategori,
+                    logo_url
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                RETURNING verksamhet_id
+            """, (
+                foretagare_id,
+                verksamhetsnamn,
+                adress,
+                telefonnummer,
+                beskrivning,
+                kategori,
+                logo_url
+            ))
+
+            verksamhet_id = cursor.fetchone()[0]
+
+            conn.commit()
+
+            return redirect(
+                url_for(
+                    "view_company",
+                    company_id=verksamhet_id
+                )
+            )
+
+        except Exception as e:
+
+            conn.rollback()
+
+            print("Fel vid skapande av verksamhet:", e)
+
+            return render_template(
+                "create_business.html",
+                fel="Kunde inte skapa verksamheten"
+            )
 
     return render_template("create_business.html")
 
