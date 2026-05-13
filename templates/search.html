@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
     <meta charset="utf-8">
-    <title>Sökresultat</title>
+    <title>Deställ Direkt - Sökresultat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
@@ -61,6 +61,7 @@
             <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
             <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
             <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
+            <p><a href="{{ url_for('admin_login') }}">Admin</a></p>
         </section>
 
         <div id="footer_bottom">
