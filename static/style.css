@@ -994,6 +994,29 @@ footer img{
         min-height: 290px;
     }
 
+    /* viewsidan (view.html) */
+    .view-container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        gap: 20px;
+    }
+
+    .category-list {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 10px 0;
+        list-style: none;
+    }
+
+    .nav-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 15px;
+    }
+
 }
 
 /*-------------- Mobila enheter --------------*/
