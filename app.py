@@ -101,7 +101,7 @@ def kategori(namn):
     kategorier = {
     "Smatt-och-mingel": "Smått & mingel",
     "Middag-och-festmat": "Middag & festmat",
-    "Bakver-och-sott": "Bakverk & sött",
+    "Bakverk-och-sott": "Bakverk & sött",
     "Buffe": "Buffé",
     "Brunch": "Brunch"
 }
