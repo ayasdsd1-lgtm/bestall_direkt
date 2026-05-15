@@ -485,14 +485,83 @@ def logga_ut():
     session.clear()      # Raderar minneslappen - användaren är ut utloggad
     return redirect(url_for("home"))
 
-@app.route("/radera-konto")
-def radera_konto():
 
+@app.route("/radera-konto", methods=["POST"])
+def radera_konto():
+    """
+    Raderar företagarens konto och all kopplad data permanent ur databasen.
+    Kräver POST-anrop (bekräftelse från formulär) för att förhindra oavsiktlig radering.
+    Kopplade tabeller som raderas: bestallningsrad, bestallningar, meny, verksamhet, foretagare.
+    """
     if "user" not in session:
         return redirect(url_for("logga_in"))
 
-    session.clear()
+    email = session["user"]
+    cursor = conn.cursor()
 
+    try:
+        # Hämta foretagare_id och verksamhet_id för kaskadradering
+        cursor.execute(
+            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
+            (email,)
+        )
+        row = cursor.fetchone()
+        if not row:
+            session.clear()
+            return redirect(url_for("home"))
+
+        foretagare_id = row[0]
+
+        cursor.execute(
+            "SELECT verksamhet_id FROM public.verksamhet WHERE foretagare_id = %s",
+            (foretagare_id,)
+        )
+        verksamhet_row = cursor.fetchone()
+
+        if verksamhet_row:
+            verksamhet_id = verksamhet_row[0]
+
+            # Radera beställningsrader
+            cursor.execute("""
+                DELETE FROM public.bestallningsrad
+                WHERE bestallning_id IN (
+                    SELECT bestallning_id FROM public.bestallningar
+                    WHERE verksamhet_id = %s
+                )
+            """, (verksamhet_id,))
+
+            # Radera beställningar
+            cursor.execute(
+                "DELETE FROM public.bestallningar WHERE verksamhet_id = %s",
+                (verksamhet_id,)
+            )
+
+            # Radera meny
+            cursor.execute(
+                "DELETE FROM public.meny WHERE verksamhet_id = %s",
+                (verksamhet_id,)
+            )
+
+            # Radera verksamhet
+            cursor.execute(
+                "DELETE FROM public.verksamhet WHERE verksamhet_id = %s",
+                (verksamhet_id,)
+            )
+
+        # Radera företagaren
+        cursor.execute(
+            "DELETE FROM public.foretagare WHERE foretagare_id = %s",
+            (foretagare_id,)
+        )
+
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Fel vid radering av konto: {e}")
+        return "Kunde inte radera kontot, försök igen.", 500
+
+    session.clear()
     return redirect(url_for("home"))
 
 # -------------------------------------------------------
@@ -576,6 +645,26 @@ def uppdatera_verksamhet():
     cursor = conn.cursor()
 
     try:
+        # Hämta foretagare_id för inloggad användare (SÄ-S-02)
+        cursor.execute(
+            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
+            (email,)
+        )
+        row = cursor.fetchone()
+        if not row:
+            return "Obehörig åtkomst", 403
+
+        foretagare_id = row[0]
+
+        # Verifiera att en verksamhet faktiskt tillhör den inloggade företagaren
+        # innan UPDATE körs — förhindrar att session-manipulation når annan data (SÄ-S-02)
+        cursor.execute(
+            "SELECT verksamhet_id FROM public.verksamhet WHERE foretagare_id = %s",
+            (foretagare_id,)
+        )
+        if not cursor.fetchone():
+            return "Obehörig åtkomst", 403
+
         cursor.execute("""
             UPDATE public.verksamhet
             SET verksamhetsnamn = %s,
@@ -583,18 +672,14 @@ def uppdatera_verksamhet():
                 telefonnummer = %s,
                 logo_url = %s,
                 kategori = %s
-            WHERE foretagare_id = (
-                SELECT foretagare_id
-                FROM public.foretagare
-                WHERE email = %s
-            )
+            WHERE foretagare_id = %s
         """, (
             verksamhetsnamn,
             beskrivning,
             telefonnummer,
             logo_url,
             kategori,
-            email
+            foretagare_id
         ))
 
         conn.commit()
@@ -604,12 +689,11 @@ def uppdatera_verksamhet():
     except Exception as e:
         conn.rollback()
         print("Fel vid uppdatering:", e)
-
         return "Kunde inte uppdatera verksamheten", 500
+    
     
 @app.route("/skapa-verksamhet", methods=["GET", "POST"])
 def skapa_verksamhet():
-
     """
     Visar sidan där företagaren kan skapa en verksamhet.
     """
@@ -717,7 +801,10 @@ def skapa_tjanst():
             )
         """, (email,))
 
-        verksamhet_id = cursor.fetchone()[0]
+        verksamhet_row = cursor.fetchone()
+        if not verksamhet_row:
+            return "Ingen verksamhet kopplad till kontot", 403
+        verksamhet_id = verksamhet_row[0]
 
         cursor.execute("""
             INSERT INTO public.meny
