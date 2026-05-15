@@ -7,14 +7,28 @@ import os
 import re      # Används för formatvalidering vid registrering
 from flask import jsonify
 import json
+# orderbekräftelse funktion
 import smtplib
 from email.message import EmailMessage
+# funktion för verksamhet att lägga ut bilder
+from werkzeug.utils import secure_filename
+import uuid
 
 
 load_dotenv() # laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")  # Hämtar hemlig nyckel från .env
+
+# funktion för verksamhet att lägga ut bilder 
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Databasanslutning via miljövariabel - Supabase kräver SSL
 conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
@@ -643,6 +657,47 @@ def profile():
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
         return "Ett fel uppstod", 500
+    
+@app.route("/upload-profile-image", methods=["POST"])
+def upload_profile_image():
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    image = request.files.get("profile_image")
+
+    if not image or image.filename == "":
+        return redirect(url_for("profile"))
+
+    if not allowed_file(image.filename):
+        return "Endast JPG, JPEG och PNG är tillåtna.", 400
+
+    original_filename = secure_filename(image.filename)
+    file_extension = original_filename.rsplit(".", 1)[1].lower()
+    unique_filename = f"{uuid.uuid4()}.{file_extension}"
+
+    image.save(os.path.join(app.config["UPLOAD_FOLDER"], unique_filename))
+
+    image_path = url_for("static", filename=f"uploads/{unique_filename}")
+
+    email = session["user"]
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE public.verksamhet v
+            SET logo_url = %s
+            FROM public.foretagare f
+            WHERE v.foretagare_id = f.foretagare_id
+              AND f.email = %s
+        """, (image_path, email))
+
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print("Fel vid bilduppladdning:", e)
+
+    return redirect(url_for("profile"))
     
 @app.route("/uppdatera-verksamhet", methods=["POST"])
 def uppdatera_verksamhet():

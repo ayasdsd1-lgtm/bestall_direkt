@@ -99,12 +99,24 @@
 
     <label>Logo URL</label>
 
-    <input
-        type="text"
-        name="logo_url"
-        placeholder="https://..."
-        value="{{ verksamhet[5] if verksamhet[5] else '' }}"
-    >
+    <input type="text" name="logo_url" placeholder="https://..." value="{{ verksamhet[5] if verksamhet[5] else '' }}">
+
+    <form method="POST"
+        action="{{ url_for('upload_profile_image') }}"
+        enctype="multipart/form-data">
+
+        <label for="profile_image">Ladda upp profilbild</label>
+
+        <input
+            type="file"
+            name="profile_image"
+            id="profile_image"
+            accept=".jpg,.jpeg,.png"
+            required
+        >
+
+        <button type="submit">Ladda upp bild</button>
+    </form>
 </div>
 
 
