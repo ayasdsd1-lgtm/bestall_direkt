@@ -7,6 +7,8 @@ import os
 import re      # Används för formatvalidering vid registrering
 from flask import jsonify
 import json
+import smtplib
+from email.message import EmailMessage
 
 
 load_dotenv() # laddar in .env-filen som innehåller databas-info
@@ -226,6 +228,27 @@ def view_company(company_id):
 
         return "Ett fel uppstod", 500
 
+def send_order_confirmation_email(to_email, customer_name):
+    """
+    Sends a confirmation email after a customer has placed an order.
+    """
+
+    sender_email = os.getenv("MAIL_USERNAME")
+    sender_password = os.getenv("MAIL_PASSWORD")
+
+    message = EmailMessage()
+    message["Subject"] = "Bekräftelse på din beställning"
+    message["From"] = sender_email
+    message["To"] = to_email
+
+    message.set_content(f"""Hej {customer_name}! Tack för din beställning hos Beställ Direkt. 
+Vi har tagit emot din beställning och verksamheten kommer att hantera den så snart som möjligt. 
+    
+Vänliga hälsningar, Beställ Direkt""")
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(sender_email, sender_password)
+        smtp.send_message(message)
 
 @app.route('/skapa_bestallning', methods=['POST'])
 def skapa_bestallning():
@@ -240,51 +263,44 @@ def skapa_bestallning():
     email = request.form.get('epost')
     telefon = request.form.get('telefonnummer')
 
-    order_data = request.form.get('order_data') # JSON-sträng med produkter
-    order_items = json.loads(order_data) 
-
-    for item in order_items:
-        cursor.execute("""
-            INSERT INTO bestallningsrad (bestallning_id, meny_id, antal)
-                       VALUES (%s, %s, %s)
-                        """, (bestallning_id, item['meny_id'], item['antal']))
-
     cursor = conn.cursor()
 
     try:
-        # 1. Skapa kund 
+        # skapa kund
         cursor.execute("""
-            INSERT INTO kund (namn, email, telefonnummer)
-            VALUES (%s, %s, %s) 
+            INSERT INTO public.kund (namn, email, telefonnummer)
+            VALUES (%s, %s, %s)
             RETURNING kund_id
         """, (namn, email, telefon))
 
-        kund_id = cursor.fetchone()[0]  # Hämta det genererade kund_id
+        kund_id = cursor.fetchone()[0]
 
-        # 2. Skapa beställning kopplad till kunden
+        # skapa beställlning 
         cursor.execute("""
-            INSERT INTO bestallningar (kund_id, verksamhet_id, status)
+            INSERT INTO public.bestallningar (kund_id, verksamhet_id, status)
             VALUES (%s, %s, %s)
             RETURNING bestallning_id
-            """, (kund_id, 1, 'pending'))  # Verksamhet_id = 1 som exempel
+        """, (kund_id, 5, 'pending'))
+
+        bestallning_id = cursor.fetchone()[0]
         
-        bestallning_id = cursor.fetchone()[0]  # Hämta det genererade bestallning_id
-
-        # 3. Lägg till beställningsrader
-        cursor.execute("""
-            INSERT INTO bestallningsrader (bestallning_id, meny_id, antal)
-            VALUES (%s, %s, %s)
-        """, (bestallning_id, 1, 2))  # Exempel
-
         conn.commit()
 
-        return jsonify({"success": True, "message": f"Tack för din beställning, {namn}!"})
+        send_order_confirmation_email(email, namn)
+
+        return jsonify({
+            "success": True,
+            "message": f"Tack för din beställning, {namn}! En bekräftelse har skickats till {email}."
+        })
     
     except Exception as e:
         conn.rollback()
-        print(e)
-        return jsonify({"success": False, "message": f"Beställningen gick inte igenom. "}), 500
+        print("Fel vid beställning:", e)
 
+        return jsonify({
+            "success": False,
+            "message": "Beställningen gick inte igenom."
+        }), 500
 
 # -------------------------------------------------------
 # INLOGGNING
