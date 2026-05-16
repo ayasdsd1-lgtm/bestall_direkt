@@ -186,7 +186,8 @@ def view_company(company_id):
               v.telefonnummer,
               v.beskrivning,
               v.kategori,
-              v.email
+              v.email,
+                v.logo_url
             FROM public.verksamhet v
             JOIN public.foretagare f
                 ON v.foretagare_id = f.foretagare_id
@@ -210,6 +211,7 @@ def view_company(company_id):
             "beskrivning": verksamhet[3],
             "kategori": verksamhet[4],
             "epost": verksamhet[5],
+            "logo_url": verksamhet[6],
             "tjanster": []
         }
 
