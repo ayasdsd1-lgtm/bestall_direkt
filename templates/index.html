@@ -18,7 +18,11 @@
                 </a>
 
                 <!-- länk till inlogg-->
+                 {% if session.get('user') %} 
+                    <a id="for-foretag" href="{{ url_for('profile') }}">Min profil</a>
+                {% else %}
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+                {% endif %}
             </header>
 
             <nav class="nav" id="home-nav">     
@@ -78,14 +82,14 @@
                                 <h3>Visa alla kategorier</h3>
                         </article>
 
-                        <article class="card extra-kategori">
+                        <article class="card extra-category">
                             <a href="{{ url_for('kategori', namn='Sushi') }}">
                                 <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="Sushi kategori omslag">
                                 <h3>Sushi</h3>
                             </a>
                         </article>
 
-                        <article class="card extra-kategori">
+                        <article class="card extra-category"> 
                             <a href="{{ url_for('kategori', namn='Veganskt') }}">
                                 <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="Veganskt kategori omslag">
                                 <h3>Veganskt</h3>
@@ -106,27 +110,10 @@
             </section>
 
             <div id="footer_bottom">
-                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
+                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 <p>© Beställ direkt 2026</p>
             </div>
         </footer>
         </div>
-
-
-        <!--
-        <h2>Logga in</h2>
-        <form action="/login" method="POST">
-            <input type="email" name="email" placeholder="Email">
-            <input type="password" name="password" placeholder="Lösenord">
-            <button type="submit">Logga in</button>
-        </form>
-        <h2>Registrera ny användare</h2>
-        <form action="/register" method="POST">
-            <input type="text" name="namn" placeholder="Företagsnamn">
-             <input type="email" name="email" placeholder="Email">
-             <input type="password" name="losenord" placeholder="Lösenord">
-             <button type="submit">Registrera</button>
-            </form>
-        Vi kanske behöver flytta dem till deras sidor, registrering och inlogging??-->
     </body>
 </html>

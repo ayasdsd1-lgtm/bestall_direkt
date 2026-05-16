@@ -15,7 +15,11 @@
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 </a>
 
+                 {% if session.get('user') %} 
+                    <a id="for-foretag" href="{{ url_for('profile') }}">Min profil</a>
+                {% else %}
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+                {% endif %}
             </header>
 
 
@@ -28,10 +32,16 @@
 
     <div class="profile-top-buttons">
 
-    <a href="{{ url_for('view_company', company_id=1) }}"
+    <a href="{{ url_for('view_company', company_id=verksamhet_id) }}"
         class="profile-top-btn">
         Visa verksamhetssida
     </a>
+
+    <a href="{{ url_for('logga_ut') }}" 
+    class="profile-top-btn">
+    Logga ut
+   </a> 
+ </div>
 
 {% else %}
 
@@ -47,7 +57,9 @@
 
     </div>
 
-  
+  <div class="profile-id-box">
+    <p><strong>Verksamhets-ID:</strong> #{{ verksamhet[0] }}</p>
+</div>
 
 <div class="profile-layout">
 
@@ -60,15 +72,17 @@
         <input 
             type="text" 
             name="verksamhetsnamn"
-            value="{{ verksamhet[0] }}"
-            required>
+            value="{{ verksamhet[1] }}"
+            required
+            >
 
         <label for="beskrivning">Beskrivning</label>
         <textarea 
             name="beskrivning"
             rows="5"
             required
-        >{{ verksamhet[1] }}</textarea>
+        >
+        {{ verksamhet[3] }}</textarea>
 
         <label for="telefonnummer">Telefonnummer</label>
         <input 
@@ -77,17 +91,26 @@
             value="{{ verksamhet[2] }}"
             required>
 
+            <label for="email">E-postadress</label>
+            
+            <input
+            type="email"
+            name="email"
+            value="{{ verksamhet[5] }}"
+            required
+            >
+
         <label>Kategori</label>
 
 <select name="kategori">
 
-    <option value="Buffé" {% if verksamhet[5] == "Buffé" %}selected{% endif %}>Buffé </option>
+    <option value="Buffé" {% if verksamhet[4] == "Buffé" %}selected{% endif %}>Buffé </option>
 
-    <option value="Brunch"{% if verksamhet[5] == "Brunch" %}selected{% endif %}>Brunch</option>
+    <option value="Brunch"{% if verksamhet[4] == "Brunch" %}selected{% endif %}>Brunch</option>
 
-    <option value="Bakverk & sött"{% if verksamhet[5] == "Bakverk & sött" %}selected{% endif %}>Bakverk & sött</option>
+    <option value="Bakverk & sött"{% if verksamhet[4] == "Bakverk & sött" %}selected{% endif %}>Bakverk & sött</option>
 
-    <option value="Smått & mingel"{% if verksamhet[5] == "Smått & mingel" %}selected{% endif %}>Smått & mingel</option>
+    <option value="Smått & mingel"{% if verksamhet[4] == "Smått & mingel" %}selected{% endif %}>Smått & mingel</option>
 
 </select>
 
@@ -97,14 +120,22 @@
 
     </form>
 
-    <label>Logo URL</label>
+    <form method="POST"
+        action="{{ url_for('upload_profile_image') }}"
+        enctype="multipart/form-data">
 
-    <input
-        type="text"
-        name="logo_url"
-        placeholder="https://..."
-        value="{{ verksamhet[5] if verksamhet[5] else '' }}"
-    >
+        <label for="profile_image">Ladda upp profilbild</label>
+
+        <input
+            type="file"
+            name="profile_image"
+            id="profile_image"
+            accept=".jpg,.jpeg,.png"
+            required
+        >
+
+        <button type="submit">Ladda upp bild</button>
+    </form>
 </div>
 
 
@@ -112,27 +143,33 @@
 
         <div class="preview-card">
 
-            <h1>{{ verksamhet[0] }}</h1>
+            <h1>{{ verksamhet[1] }}</h1>
 
             <p class="preview-description">
-                {{ verksamhet[1] }}
+                {{ verksamhet[3] }}
             </p>
 
             <div class="preview-contact">
                 <h4>Kontakt</h4>
                 <p>{{ verksamhet[2] }}</p>
+                <p>{{ verksamhet[5] }}</p>
             </div>
 
         </div>
+        
+        <h3 class="service-title">Lägg till tjänst</h3>
 
-        <form action="{{ url_for('skapa_tjanst') }}" method="POST"
-        class="service-form">
+        <form action="{{ url_for('skapa_tjanst') }}" method="POST" enctype="multipart/form-data" class="service-form">
         
         <input type="text" name="menynamn" placeholder="Tjänstens namn" required>
 
     <textarea name="beskrivning" placeholder="Beskrivning"></textarea>
 
     <input type="number" name="pris" placeholder="Pris" required>
+
+    <label for="service_image">Bild på tjänsten</label>
+
+    <input type="file" name="service_image" id="service_image" accept=".jpg,.jpeg,.png">
 
     <button type="submit">Lägg till tjänst</button>
 

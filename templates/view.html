@@ -15,7 +15,11 @@
                 <a href="{{ url_for('home') }}">
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 </a>
+                {% if session.get('user') %} 
+                    <a id="for-foretag" href="{{ url_for('profile') }}">Min profil</a>
+                {% else %}
                 <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+                {% endif %}
             </header>
 
             <nav class="category-nav">
@@ -46,16 +50,15 @@
 
             <div class="view-container">
                 <div class="left-column">
-                    {% if foretag.logo_url %}
-                        <section class="view-img-box">
-                            <img src="{{ foretag.logo_url }}" alt="{{ foretag.namn }} logo">
-                        </section>
-                    {% endif %}
 
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
                         {% for tjanst in foretag.tjanster %}
                         <div class="view-card" data-namn="{{tjanst.namn}}">
+                            {% if tjanst.bild_url %}
+                                <img src="{{ tjanst.bild_url }}" alt="{{ tjanst.namn }}" class="service-image">
+                            {% endif %}
+
                             <h3>{{ tjanst.namn }}</h3>
 
                             <p class="card-service-desc">{{ tjanst.beskrivning }}</p>
@@ -78,8 +81,12 @@
                 </div>
 
                 <div class="right-column">
-                    <section class="logo-box"> 
-                        <img src="{{ url_for('static', filename= '')}}" alt="{{ foretag.namn }} logo">
+                    <section class="logo-box">
+                        {% if foretag.logo_url %}
+                            <img src="{{ foretag.logo_url }}" alt="{{ foretag.namn }} logo">
+                        {% else %}
+                            <p>Ingen profilbild uppladdad.</p>
+                        {% endif %}
                     </section>
 
                     <section>
@@ -156,7 +163,7 @@
             </section>
 
             <div id="footer_bottom">
-                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="kockhatt">
+                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 <p>© Beställ direkt 2026</p>
             </div>
         </footer>

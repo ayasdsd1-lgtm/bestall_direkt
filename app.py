@@ -1,3 +1,4 @@
+import email
 from sqlite3 import Cursor
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,12 +8,30 @@ import os
 import re      # Används för formatvalidering vid registrering
 from flask import jsonify
 import json
+# orderbekräftelse funktion
+import smtplib
+from email.message import EmailMessage
+# funktion för verksamhet att lägga ut bilder
+from werkzeug.utils import secure_filename
+import uuid
+from datetime import timedelta
 
 
 load_dotenv() # laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")  # Hämtar hemlig nyckel från .env
+app.permanent_session_lifetime = timedelta(days=30)
+
+# funktion för verksamhet att lägga ut bilder 
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Databasanslutning via miljövariabel - Supabase kräver SSL
 conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
@@ -101,7 +120,7 @@ def kategori(namn):
     kategorier = {
     "Smatt-och-mingel": "Smått & mingel",
     "Middag-och-festmat": "Middag & festmat",
-    "Bakver-och-sott": "Bakverk & sött",
+    "Bakverk-och-sott": "Bakverk & sött",
     "Buffe": "Buffé",
     "Brunch": "Brunch"
 }
@@ -162,15 +181,19 @@ def view_company(company_id):
         # Hämta verksamhetsinformation
         cursor.execute("""
             SELECT
-                verksamhetsnamn,
-                adress,
-                telefonnummer,
-                beskrivning,
-                kategori,
-                logo_url
-            FROM public.verksamhet
-            WHERE verksamhet_id = %s
+              v.verksamhetsnamn,
+              v.adress,
+              v.telefonnummer,
+              v.beskrivning,
+              v.kategori,
+              v.email,
+                v.logo_url
+            FROM public.verksamhet v
+            JOIN public.foretagare f
+                ON v.foretagare_id = f.foretagare_id
+            WHERE v.verksamhet_id = %s
         """, (company_id,))
+                
         
         verksamhet = cursor.fetchone()
 
@@ -185,10 +208,10 @@ def view_company(company_id):
             "namn": verksamhet[0],
             "adress": verksamhet[1],
             "telefon": verksamhet[2],
-            "epost": "kontakt@bestalldirekt.se",  # tillfällig
             "beskrivning": verksamhet[3],
             "kategori": verksamhet[4],
-            "logo_url": verksamhet[5],
+            "epost": verksamhet[5],
+            "logo_url": verksamhet[6],
             "tjanster": []
         }
 
@@ -197,7 +220,8 @@ def view_company(company_id):
             SELECT
                 menynamn,
                 beskrivning,
-                pris
+                pris,
+                bild_url
             FROM public.meny
             WHERE verksamhet_id = %s
         """, (company_id,))
@@ -210,7 +234,8 @@ def view_company(company_id):
             foretag["tjanster"].append({
                 "namn": item[0],
                 "beskrivning": item[1],
-                "pris": item[2]
+                "pris": item[2],
+                "bild_url": item[3]
             })
 
         return render_template(
@@ -226,6 +251,27 @@ def view_company(company_id):
 
         return "Ett fel uppstod", 500
 
+def send_order_confirmation_email(to_email, customer_name):
+    """
+    Sends a confirmation email after a customer has placed an order.
+    """
+
+    sender_email = os.getenv("MAIL_USERNAME")
+    sender_password = os.getenv("MAIL_PASSWORD")
+
+    message = EmailMessage()
+    message["Subject"] = "Bekräftelse på din beställning"
+    message["From"] = sender_email
+    message["To"] = to_email
+
+    message.set_content(f"""Hej {customer_name}! Tack för din beställning hos Beställ Direkt. 
+Vi har tagit emot din beställning och verksamheten kommer att hantera den så snart som möjligt. 
+    
+Vänliga hälsningar, Beställ Direkt""")
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(sender_email, sender_password)
+        smtp.send_message(message)
 
 @app.route('/skapa_bestallning', methods=['POST'])
 def skapa_bestallning():
@@ -240,51 +286,44 @@ def skapa_bestallning():
     email = request.form.get('epost')
     telefon = request.form.get('telefonnummer')
 
-    order_data = request.form.get('order_data') # JSON-sträng med produkter
-    order_items = json.loads(order_data) 
-
-    for item in order_items:
-        cursor.execute("""
-            INSERT INTO bestallningsrad (bestallning_id, meny_id, antal)
-                       VALUES (%s, %s, %s)
-                        """, (bestallning_id, item['meny_id'], item['antal']))
-
     cursor = conn.cursor()
 
     try:
-        # 1. Skapa kund 
+        # skapa kund
         cursor.execute("""
-            INSERT INTO kund (namn, email, telefonnummer)
-            VALUES (%s, %s, %s) 
+            INSERT INTO public.kund (namn, email, telefonnummer)
+            VALUES (%s, %s, %s)
             RETURNING kund_id
         """, (namn, email, telefon))
 
-        kund_id = cursor.fetchone()[0]  # Hämta det genererade kund_id
+        kund_id = cursor.fetchone()[0]
 
-        # 2. Skapa beställning kopplad till kunden
+        # skapa beställlning 
         cursor.execute("""
-            INSERT INTO bestallningar (kund_id, verksamhet_id, status)
+            INSERT INTO public.bestallningar (kund_id, verksamhet_id, status)
             VALUES (%s, %s, %s)
             RETURNING bestallning_id
-            """, (kund_id, 1, 'pending'))  # Verksamhet_id = 1 som exempel
+        """, (kund_id, 5, 'pending'))
+
+        bestallning_id = cursor.fetchone()[0]
         
-        bestallning_id = cursor.fetchone()[0]  # Hämta det genererade bestallning_id
-
-        # 3. Lägg till beställningsrader
-        cursor.execute("""
-            INSERT INTO bestallningsrader (bestallning_id, meny_id, antal)
-            VALUES (%s, %s, %s)
-        """, (bestallning_id, 1, 2))  # Exempel
-
         conn.commit()
 
-        return jsonify({"success": True, "message": f"Tack för din beställning, {namn}!"})
+        send_order_confirmation_email(email, namn)
+
+        return jsonify({
+            "success": True,
+            "message": f"Tack för din beställning, {namn}! En bekräftelse har skickats till {email}."
+        })
     
     except Exception as e:
         conn.rollback()
-        print(e)
-        return jsonify({"success": False, "message": f"Beställningen gick inte igenom. "}), 500
+        print("Fel vid beställning:", e)
 
+        return jsonify({
+            "success": False,
+            "message": "Beställningen gick inte igenom."
+        }), 500
 
 # -------------------------------------------------------
 # INLOGGNING
@@ -333,6 +372,7 @@ def login():
             if check_password_hash(stored_password, password):
 
                 # Sparar användaren i session
+                session.permanent = True  # Gör sessionen permanent (varar i 30 dagar)
                 session["user"] = email
 
                 # Skicka företagaren till dashboard/profile
@@ -485,14 +525,83 @@ def logga_ut():
     session.clear()      # Raderar minneslappen - användaren är ut utloggad
     return redirect(url_for("home"))
 
-@app.route("/radera-konto")
-def radera_konto():
 
+@app.route("/radera-konto", methods=["POST"])
+def radera_konto():
+    """
+    Raderar företagarens konto och all kopplad data permanent ur databasen.
+    Kräver POST-anrop (bekräftelse från formulär) för att förhindra oavsiktlig radering.
+    Kopplade tabeller som raderas: bestallningsrad, bestallningar, meny, verksamhet, foretagare.
+    """
     if "user" not in session:
         return redirect(url_for("logga_in"))
 
-    session.clear()
+    email = session["user"]
+    cursor = conn.cursor()
 
+    try:
+        # Hämta foretagare_id och verksamhet_id för kaskadradering
+        cursor.execute(
+            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
+            (email,)
+        )
+        row = cursor.fetchone()
+        if not row:
+            session.clear()
+            return redirect(url_for("home"))
+
+        foretagare_id = row[0]
+
+        cursor.execute(
+            "SELECT verksamhet_id FROM public.verksamhet WHERE foretagare_id = %s",
+            (foretagare_id,)
+        )
+        verksamhet_row = cursor.fetchone()
+
+        if verksamhet_row:
+            verksamhet_id = verksamhet_row[0]
+
+            # Radera beställningsrader
+            cursor.execute("""
+                DELETE FROM public.bestallningsrad
+                WHERE bestallning_id IN (
+                    SELECT bestallning_id FROM public.bestallningar
+                    WHERE verksamhet_id = %s
+                )
+            """, (verksamhet_id,))
+
+            # Radera beställningar
+            cursor.execute(
+                "DELETE FROM public.bestallningar WHERE verksamhet_id = %s",
+                (verksamhet_id,)
+            )
+
+            # Radera meny
+            cursor.execute(
+                "DELETE FROM public.meny WHERE verksamhet_id = %s",
+                (verksamhet_id,)
+            )
+
+            # Radera verksamhet
+            cursor.execute(
+                "DELETE FROM public.verksamhet WHERE verksamhet_id = %s",
+                (verksamhet_id,)
+            )
+
+        # Radera företagaren
+        cursor.execute(
+            "DELETE FROM public.foretagare WHERE foretagare_id = %s",
+            (foretagare_id,)
+        )
+
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print(f"Fel vid radering av konto: {e}")
+        return "Kunde inte radera kontot, försök igen.", 500
+
+    session.clear()
     return redirect(url_for("home"))
 
 # -------------------------------------------------------
@@ -550,14 +659,83 @@ def profile():
         bokningar = cursor.fetchall()
 
         # Hämta verksamhetsinformation
-        cursor.execute("SELECT verksamhetsnamn, beskrivning, telefonnummer FROM public.verksamhet WHERE foretagare_id = (SELECT foretagare_id FROM public.foretagare WHERE email = %s)", (email,))
+        cursor.execute("""
+            SELECT
+                verksamhet_id,
+                verksamhetsnamn,
+                telefonnummer,
+                beskrivning,
+                kategori,
+                email 
+            FROM public.verksamhet   
+            WHERE foretagare_id = (
+                    SELECT foretagare_id
+                       FROM public.foretagare
+                       WHERE email = %s
+                    )
+                       """, (email,))
+
         verksamhet = cursor.fetchone()
 
-        return render_template("profile.html", bokningar=bokningar, verksamhet=verksamhet)
-    
+        if verksamhet:
+            return render_template(
+                "profile.html", 
+                bokningar=bokningar, 
+                verksamhet=verksamhet,
+                verksamhet_id=verksamhet[0]
+            )
+        else:
+            return render_template(
+                "profile.html", 
+                bokningar=bokningar, 
+                verksamhet=None,
+                verksamhet_id=None
+            )
+
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
         return "Ett fel uppstod", 500
+    
+@app.route("/upload-profile-image", methods=["POST"])
+def upload_profile_image():
+    if "user" not in session:
+        return redirect(url_for("logga_in"))
+
+    image = request.files.get("profile_image")
+
+    if not image or image.filename == "":
+        return redirect(url_for("profile"))
+
+    if not allowed_file(image.filename):
+        return "Endast JPG, JPEG och PNG är tillåtna.", 400
+
+    original_filename = secure_filename(image.filename)
+    file_extension = original_filename.rsplit(".", 1)[1].lower()
+    unique_filename = f"{uuid.uuid4()}.{file_extension}"
+
+    image.save(os.path.join(app.config["UPLOAD_FOLDER"], unique_filename))
+
+    image_path = url_for("static", filename=f"uploads/{unique_filename}")
+
+    email = session["user"]
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            UPDATE public.verksamhet v
+            SET logo_url = %s
+            FROM public.foretagare f
+            WHERE v.foretagare_id = f.foretagare_id
+              AND f.email = %s
+        """, (image_path, email))
+
+        conn.commit()
+
+    except Exception as e:
+        conn.rollback()
+        print("Fel vid bilduppladdning:", e)
+
+    return redirect(url_for("profile"))
     
 @app.route("/uppdatera-verksamhet", methods=["POST"])
 def uppdatera_verksamhet():
@@ -565,36 +743,49 @@ def uppdatera_verksamhet():
     if "user" not in session:
         return redirect(url_for("logga_in"))
 
-    email = session["user"]
+    session_email = session["user"]
 
     verksamhetsnamn = request.form.get("verksamhetsnamn")
     beskrivning = request.form.get("beskrivning")
     telefonnummer = request.form.get("telefonnummer")
-    logo_url = request.form.get("logo_url")
     kategori = request.form.get("kategori")
+    email = request.form.get("email")
 
     cursor = conn.cursor()
 
     try:
+        # Hämta foretagare_id för inloggad användare (SÄ-S-02)
+        cursor.execute("""
+            SELECT foretagare_id
+            FROM public.foretagare
+            WHERE email = %s
+        """, (session_email,))
+
+        foretagare = cursor.fetchone()
+        
+        if not foretagare:
+            return "Obehörig åtkomst", 403
+
+        foretagare_id = foretagare[0]
+
+        # Verifiera att en verksamhet faktiskt tillhör den inloggade företagaren
+        # innan UPDATE körs — förhindrar att session-manipulation når annan data (SÄ-S-02)
         cursor.execute("""
             UPDATE public.verksamhet
-            SET verksamhetsnamn = %s,
+            SET
+               verksamhetsnamn = %s,
                 beskrivning = %s,
                 telefonnummer = %s,
-                logo_url = %s,
-                kategori = %s
-            WHERE foretagare_id = (
-                SELECT foretagare_id
-                FROM public.foretagare
-                WHERE email = %s
-            )
+                kategori = %s,
+                email = %s
+            WHERE foretagare_id = %s
         """, (
             verksamhetsnamn,
             beskrivning,
             telefonnummer,
-            logo_url,
             kategori,
-            email
+            email,
+            foretagare_id
         ))
 
         conn.commit()
@@ -604,12 +795,11 @@ def uppdatera_verksamhet():
     except Exception as e:
         conn.rollback()
         print("Fel vid uppdatering:", e)
-
         return "Kunde inte uppdatera verksamheten", 500
+    
     
 @app.route("/skapa-verksamhet", methods=["GET", "POST"])
 def skapa_verksamhet():
-
     """
     Visar sidan där företagaren kan skapa en verksamhet.
     """
@@ -625,9 +815,9 @@ def skapa_verksamhet():
         telefonnummer = request.form.get("telefonnummer")
         beskrivning = request.form.get("beskrivning")
         kategori = request.form.get("kategori")
-        logo_url = request.form.get("logo_url")
 
-        email = session["user"]
+
+        email = request.form.get("email")
 
         cursor = conn.cursor()
 
@@ -652,7 +842,7 @@ def skapa_verksamhet():
                     telefonnummer,
                     beskrivning,
                     kategori,
-                    logo_url
+                    email
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 RETURNING verksamhet_id
@@ -663,7 +853,7 @@ def skapa_verksamhet():
                 telefonnummer,
                 beskrivning,
                 kategori,
-                logo_url
+                email
             ))
 
             verksamhet_id = cursor.fetchone()[0]
@@ -703,6 +893,26 @@ def skapa_tjanst():
     beskrivning = request.form.get("beskrivning")
     pris = request.form.get("pris")
 
+    service_image = request.files.get("service_image")
+    image_path = None
+
+    if service_image and service_image.filename != "" and allowed_file(service_image.filename):
+
+        original_filename = secure_filename(service_image.filename)
+
+        file_extension = original_filename.rsplit(".", 1)[1].lower()
+
+        unique_filename = f"{uuid.uuid4()}.{file_extension}"
+
+        service_image.save(
+            os.path.join(app.config["UPLOAD_FOLDER"], unique_filename)
+        )
+
+        image_path = url_for(
+            "static",
+            filename=f"uploads/{unique_filename}"
+        )
+
     cursor = conn.cursor()
 
     try:
@@ -717,7 +927,10 @@ def skapa_tjanst():
             )
         """, (email,))
 
-        verksamhet_id = cursor.fetchone()[0]
+        verksamhet_row = cursor.fetchone()
+        if not verksamhet_row:
+            return "Ingen verksamhet kopplad till kontot", 403
+        verksamhet_id = verksamhet_row[0]
 
         cursor.execute("""
             INSERT INTO public.meny
@@ -725,14 +938,16 @@ def skapa_tjanst():
                 verksamhet_id,
                 menynamn,
                 beskrivning,
-                pris
+                pris,
+                bild_url
             )
-            VALUES (%s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s)
         """, (
             verksamhet_id,
             menynamn,
             beskrivning,
-            pris
+            pris,
+            image_path
         ))
 
         conn.commit()
