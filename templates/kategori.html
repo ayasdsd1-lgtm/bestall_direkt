@@ -15,7 +15,12 @@
             <a href="{{ url_for('home') }}">
                 <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
             </a>
-            <a id="for-foretag" href="{{ url_for('logga_in') }}">För företag</a>
+            
+             {% if session.get('user') %} 
+                    <a id="for-foretag" href="{{ url_for('profile') }}">Min profil</a>
+                {% else %}
+                <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+                {% endif %}
         </header>
 
         <nav class="nav" id="kategori-nav">

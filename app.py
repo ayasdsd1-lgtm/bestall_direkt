@@ -1,3 +1,4 @@
+import email
 from sqlite3 import Cursor
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -13,12 +14,14 @@ from email.message import EmailMessage
 # funktion för verksamhet att lägga ut bilder
 from werkzeug.utils import secure_filename
 import uuid
+from datetime import timedelta
 
 
 load_dotenv() # laddar in .env-filen som innehåller databas-info
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")  # Hämtar hemlig nyckel från .env
+app.permanent_session_lifetime = timedelta(days=30)
 
 # funktion för verksamhet att lägga ut bilder 
 UPLOAD_FOLDER = "static/uploads"
@@ -178,15 +181,18 @@ def view_company(company_id):
         # Hämta verksamhetsinformation
         cursor.execute("""
             SELECT
-                verksamhetsnamn,
-                adress,
-                telefonnummer,
-                beskrivning,
-                kategori,
-                logo_url
-            FROM public.verksamhet
-            WHERE verksamhet_id = %s
+              v.verksamhetsnamn,
+              v.adress,
+              v.telefonnummer,
+              v.beskrivning,
+              v.kategori,
+              v.email
+            FROM public.verksamhet v
+            JOIN public.foretagare f
+                ON v.foretagare_id = f.foretagare_id
+            WHERE v.verksamhet_id = %s
         """, (company_id,))
+                
         
         verksamhet = cursor.fetchone()
 
@@ -201,10 +207,9 @@ def view_company(company_id):
             "namn": verksamhet[0],
             "adress": verksamhet[1],
             "telefon": verksamhet[2],
-            "epost": "kontakt@bestalldirekt.se",  # tillfällig
             "beskrivning": verksamhet[3],
             "kategori": verksamhet[4],
-            "logo_url": verksamhet[5],
+            "epost": verksamhet[5],
             "tjanster": []
         }
 
@@ -363,6 +368,7 @@ def login():
             if check_password_hash(stored_password, password):
 
                 # Sparar användaren i session
+                session.permanent = True  # Gör sessionen permanent (varar i 30 dagar)
                 session["user"] = email
 
                 # Skicka företagaren till dashboard/profile
@@ -649,11 +655,39 @@ def profile():
         bokningar = cursor.fetchall()
 
         # Hämta verksamhetsinformation
-        cursor.execute("SELECT verksamhetsnamn, beskrivning, telefonnummer FROM public.verksamhet WHERE foretagare_id = (SELECT foretagare_id FROM public.foretagare WHERE email = %s)", (email,))
+        cursor.execute("""
+            SELECT
+                verksamhet_id,
+                verksamhetsnamn,
+                telefonnummer,
+                beskrivning,
+                kategori,
+                email 
+            FROM public.verksamhet   
+            WHERE foretagare_id = (
+                    SELECT foretagare_id
+                       FROM public.foretagare
+                       WHERE email = %s
+                    )
+                       """, (email,))
+
         verksamhet = cursor.fetchone()
 
-        return render_template("profile.html", bokningar=bokningar, verksamhet=verksamhet)
-    
+        if verksamhet:
+            return render_template(
+                "profile.html", 
+                bokningar=bokningar, 
+                verksamhet=verksamhet,
+                verksamhet_id=verksamhet[0]
+            )
+        else:
+            return render_template(
+                "profile.html", 
+                bokningar=bokningar, 
+                verksamhet=None,
+                verksamhet_id=None
+            )
+
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
         return "Ett fel uppstod", 500
@@ -705,51 +739,48 @@ def uppdatera_verksamhet():
     if "user" not in session:
         return redirect(url_for("logga_in"))
 
-    email = session["user"]
+    session_email = session["user"]
 
     verksamhetsnamn = request.form.get("verksamhetsnamn")
     beskrivning = request.form.get("beskrivning")
     telefonnummer = request.form.get("telefonnummer")
-    logo_url = request.form.get("logo_url")
     kategori = request.form.get("kategori")
+    email = request.form.get("email")
 
     cursor = conn.cursor()
 
     try:
         # Hämta foretagare_id för inloggad användare (SÄ-S-02)
-        cursor.execute(
-            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
-            (email,)
-        )
-        row = cursor.fetchone()
-        if not row:
+        cursor.execute("""
+            SELECT foretagare_id
+            FROM public.foretagare
+            WHERE email = %s
+        """, (session_email,))
+
+        foretagare = cursor.fetchone()
+        
+        if not foretagare:
             return "Obehörig åtkomst", 403
 
-        foretagare_id = row[0]
+        foretagare_id = foretagare[0]
 
         # Verifiera att en verksamhet faktiskt tillhör den inloggade företagaren
         # innan UPDATE körs — förhindrar att session-manipulation når annan data (SÄ-S-02)
-        cursor.execute(
-            "SELECT verksamhet_id FROM public.verksamhet WHERE foretagare_id = %s",
-            (foretagare_id,)
-        )
-        if not cursor.fetchone():
-            return "Obehörig åtkomst", 403
-
         cursor.execute("""
             UPDATE public.verksamhet
-            SET verksamhetsnamn = %s,
+            SET
+               verksamhetsnamn = %s,
                 beskrivning = %s,
                 telefonnummer = %s,
-                logo_url = %s,
-                kategori = %s
+                kategori = %s,
+                email = %s
             WHERE foretagare_id = %s
         """, (
             verksamhetsnamn,
             beskrivning,
             telefonnummer,
-            logo_url,
             kategori,
+            email,
             foretagare_id
         ))
 
@@ -780,9 +811,9 @@ def skapa_verksamhet():
         telefonnummer = request.form.get("telefonnummer")
         beskrivning = request.form.get("beskrivning")
         kategori = request.form.get("kategori")
-        logo_url = request.form.get("logo_url")
 
-        email = session["user"]
+
+        email = request.form.get("email")
 
         cursor = conn.cursor()
 
@@ -807,7 +838,7 @@ def skapa_verksamhet():
                     telefonnummer,
                     beskrivning,
                     kategori,
-                    logo_url
+                    email
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 RETURNING verksamhet_id
@@ -818,7 +849,7 @@ def skapa_verksamhet():
                 telefonnummer,
                 beskrivning,
                 kategori,
-                logo_url
+                email
             ))
 
             verksamhet_id = cursor.fetchone()[0]
