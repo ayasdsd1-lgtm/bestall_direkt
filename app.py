@@ -218,7 +218,8 @@ def view_company(company_id):
             SELECT
                 menynamn,
                 beskrivning,
-                pris
+                pris,
+                bild_url
             FROM public.meny
             WHERE verksamhet_id = %s
         """, (company_id,))
@@ -231,7 +232,8 @@ def view_company(company_id):
             foretag["tjanster"].append({
                 "namn": item[0],
                 "beskrivning": item[1],
-                "pris": item[2]
+                "pris": item[2],
+                "bild_url": item[3]
             })
 
         return render_template(
@@ -889,6 +891,26 @@ def skapa_tjanst():
     beskrivning = request.form.get("beskrivning")
     pris = request.form.get("pris")
 
+    service_image = request.files.get("service_image")
+    image_path = None
+
+    if service_image and service_image.filename != "" and allowed_file(service_image.filename):
+
+        original_filename = secure_filename(service_image.filename)
+
+        file_extension = original_filename.rsplit(".", 1)[1].lower()
+
+        unique_filename = f"{uuid.uuid4()}.{file_extension}"
+
+        service_image.save(
+            os.path.join(app.config["UPLOAD_FOLDER"], unique_filename)
+        )
+
+        image_path = url_for(
+            "static",
+            filename=f"uploads/{unique_filename}"
+        )
+
     cursor = conn.cursor()
 
     try:
@@ -914,14 +936,16 @@ def skapa_tjanst():
                 verksamhet_id,
                 menynamn,
                 beskrivning,
-                pris
+                pris,
+                bild_url
             )
-            VALUES (%s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s)
         """, (
             verksamhet_id,
             menynamn,
             beskrivning,
-            pris
+            pris,
+            image_path
         ))
 
         conn.commit()

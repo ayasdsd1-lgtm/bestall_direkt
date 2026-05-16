@@ -156,15 +156,20 @@
             </div>
 
         </div>
+        
+        <h3 class="service-title">Lägg till tjänst</h3>
 
-        <form action="{{ url_for('skapa_tjanst') }}" method="POST"
-        class="service-form">
+        <form action="{{ url_for('skapa_tjanst') }}" method="POST" enctype="multipart/form-data" class="service-form">
         
         <input type="text" name="menynamn" placeholder="Tjänstens namn" required>
 
     <textarea name="beskrivning" placeholder="Beskrivning"></textarea>
 
     <input type="number" name="pris" placeholder="Pris" required>
+
+    <label for="service_image">Bild på tjänsten</label>
+
+    <input type="file" name="service_image" id="service_image" accept=".jpg,.jpeg,.png">
 
     <button type="submit">Lägg till tjänst</button>
 
