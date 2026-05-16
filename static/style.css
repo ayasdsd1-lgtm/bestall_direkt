@@ -128,6 +128,7 @@ main{
 .card {
     background: transparent;
     transition: transform 0.2s ease;
+    justify-items: stretch;
 }
 
 /* gör hela kortet klickbart */
@@ -598,7 +599,8 @@ footer img{
     margin-top: 10px;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
-    width: 50%;
+    width: 100%;
+    max-width: 180px;
 
     margin-left: auto;
     margin-right: auto;
@@ -791,12 +793,11 @@ footer img{
 
 .profile-layout{
     display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 30px;
+    grid-template-columns: 1fr !important;
+    gap: 20px;
     max-width: 1200px;
     margin: 40px auto;
-    padding: 0 40px;
-    align-items: start;
+    padding: 0 15px;
 }
 
 .profile-header-content{
@@ -951,6 +952,7 @@ footer img{
     border-radius: 20px;
     border: 1px solid #eee;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow-x: auto;
 }
 
 .bookings-box table{
@@ -1018,14 +1020,6 @@ footer img{
     gap: 15px;
     margin-bottom: 20px;
     flex-wrap: nowrap;
-}
-
-.profile-id-box{
-   
-    width: fit-content;
- 
-
- 
 }
 
 
@@ -1135,6 +1129,7 @@ footer img{
 .service-form input[type="file"]::file-selector-button:hover{
     background-color: #6a3416;
 }
+
 
 
 /*------------------------------------- Create Business --------------------------------------*/
@@ -1380,8 +1375,10 @@ footer img{
     #grid-cards {
         display: grid;
         grid-template-columns: 1fr;
+        justify-items: stretch;
         gap: 20px;
     }
+
     #home-nav{
         min-height: 290px;
     }
@@ -1395,12 +1392,15 @@ footer img{
     .view-container {
         display: flex;
         flex-direction: column;
+        align-items: center;
         padding: 10px;
         gap: 20px;
     }
 
     .category-list {
         display: flex;
+        flex-direction: column;
+        align-items: center;
         overflow-x: auto;
         gap: 15px;
         padding: 10px 0;
@@ -1416,9 +1416,50 @@ footer img{
 
     /* Verksamhetssidan (Profile.html) */
 
+    .profile-layout {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+        gap: 20px;
+    }
 
+    .profile-edit-box {
+        position: relative;
+        top: auto;
+    }
+
+    .profile-top-buttons {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .bookings-box {
+        overflow-x: auto;
+    }
+
+    .bookings-box table {
+        min-width: 600px;
+    }
+
+    /* Kategorisidan (Kategori.html) */
+
+    #grid-cards {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+    .card {
+        width: 100%;
+        max-width: 600px;
+    }
+    main {
+        padding: 10px 20px;
+    }
+    /* Search (Search.html) */
+
+    #search-nav{
+        min-height: 290px;
+    }
+    
 }
-
 /*-------------- Mobila enheter --------------*/
 
 @media (max-width: 480px){
@@ -1430,8 +1471,7 @@ footer img{
     }
 
     header {
-        padding-left: 40px;
-        padding-right: 40px;
+         padding: 20px 15px;
     }
 
     nav > form {
@@ -1470,7 +1510,67 @@ footer img{
 
      /* Verksamhetssidan (Profile.html) */
 
+     .profile-layout {
+        grid-template-columns: 1fr;
+        padding: 0 15px;
+    }
+
+    .profile-header-content {
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+
+    .profile-edit-box,
+    .profile-preview,
+    .bookings-box,
+    .delete-account-box {
+        padding: 20px;
+    }
+
+    .profile-top-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    }
+
+    .profile-top-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .profile-title {
+        font-size: 1.4rem;
+    }
+
+    .profile-header-content{
+        padding: 0 15px;
+    }
+
+    .profile-edit-box{
+        position: relative;
+        top: auto;
+    }
+
+    /* Kategorisidorna (kategori.html) */
+    #grid-cards {
+        grid-template-columns: 1fr;
+        
+    }
+
+    .card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+     /* Search (Search.html) */
+
+    #search-nav{
+        min-height: 180px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+
 }
-
-
 
