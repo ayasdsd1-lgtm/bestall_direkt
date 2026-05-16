@@ -799,6 +799,13 @@ footer img{
     align-items: start;
 }
 
+.profile-header-content{
+    max-width: 1200px;
+    margin: 40px auto 20px auto;
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
 /* vänster sida */
 .profile-edit-box{
     background-color: #fdfdfd;
@@ -820,6 +827,10 @@ footer img{
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+
+.profile-edit-box form + form{
+    margin-top: 30px;
 }
 
 .profile-edit-box label{
@@ -846,6 +857,54 @@ footer img{
     font-family: inherit;
     font-weight: bold;
     cursor: pointer;
+}
+
+.profile-edit-box select{
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #d6d1cb;
+    background-color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.profile-edit-box select:focus{
+    outline: none;
+    border-color: #8f512b;
+    box-shadow: 0 0 0 3px rgba(143,81,43,0.12);
+}
+
+.profile-edit-box input[type="file"]{
+    padding: 10px;
+    border: 1px dashed #c7beb6;
+    border-radius: 10px;
+    background-color: #faf8f6;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.profile-edit-box input[type="file"]:hover{
+    background-color: #f2ece7;
+    border-color: #8f512b;
+}
+
+.profile-edit-box input[type="file"]::file-selector-button{
+    background-color: #462009;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-right: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.profile-edit-box input[type="file"]::file-selector-button:hover{
+    background-color: #6a3416;
 }
 
 /* höger sida */
@@ -948,23 +1007,34 @@ footer img{
     background-color: #746a63;
 }
 
+.profile-title{
+    margin-top: 20px;
+    color: #462009;
+}
 
 .profile-top-buttons{
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 14px;
-
-    margin-bottom: 10px;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
 }
+
+.profile-id-box{
+   
+    width: fit-content;
+ 
+
+ 
+}
+
 
 .profile-top-btn{
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-
     padding: 14px 26px;
-
     background-color: #ffffff;
     color: #462009;
     border: 1px solid #d8d2cc;
@@ -1039,77 +1109,33 @@ footer img{
 
 .service-form input[type="file"] {
     padding: 10px;
-    background-color: #fafafa;
+    border: 1px dashed #c7beb6;
+    border-radius: 10px;
+    background-color: #faf8f6;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
-/*------------------------------------- Responsiv design --------------------------------------*/
-
-/*-------- Surfplattor och mindre skärmar --------*/
-
-@media (max-width: 768px){
-
-    /* Gemensamma delar (Layout för kolumner, Header, Footer) */
-    #grid { 
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        padding: 0 10px;
-    }
-    
-    header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px; 
-    }
-
-    #for-foretag {
-        margin: 0;
-    }
-
-    .footer_box {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* Startsidan (index.html) */
-    #grid-cards {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    #home-nav{
-        min-height: 290px;
-    }
-
-     /* Kategorisidorna (kategori.html) */
-    #kategori-nav{
-        min-height: 290px;
-    }
-
-    /* viewsidan (view.html) */
-    .view-container {
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
-        gap: 20px;
-    }
-
-    .category-list {
-        display: flex;
-        overflow-x: auto;
-        gap: 15px;
-        padding: 10px 0;
-        list-style: none;
-    }
-
-    .nav-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        padding: 0 15px;
-    }
-
+.service-form input[type="file"]:hover{
+    background-color: #f2ece7;
+    border-color: #8f512b;
 }
+.service-form input[type="file"]::file-selector-button{
+    background-color: #462009;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-right: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.service-form input[type="file"]::file-selector-button:hover{
+    background-color: #6a3416;
+}
+
 
 /*------------------------------------- Create Business --------------------------------------*/
 
@@ -1260,59 +1286,6 @@ footer img{
 
 }
 
-/*-------------- Mobila enheter --------------*/
-
-@media (max-width: 480px){
-
-    /* Gemensamma delar (Header/Footer) */
-    #footer_bottom{
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    header {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-
-    nav > form {
-        max-width: 94%;
-    }
-    
-    /* Startsidan (index.html) */
-    #home-main,#home-nav {
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-    #home-nav {
-        min-height: 180px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-
-    /* Inloggsidan (log_in.html) */
-    #lank-till-registrering {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-        display: inline-block;
-    }
-
-    /* Kategorisidorna (kategori.html) */
-    #kategori-nav {
-        min-height: 180px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-    }
-
-    #kategori-nav {  /* Eventuellt lägga till kategori-main här som i startsidan */
-        padding-left: 40px;
-        padding-right: 40px;
-    }
-
-}
-
-
-
 /*------------------------------------------ Admin dashboard -------------------------------------------------*/
 .admin-table {
     width: 100%;
@@ -1372,3 +1345,132 @@ footer img{
     display: flex;
     gap: 10px;
 }
+
+/*------------------------------------- Responsiv design --------------------------------------*/
+
+/*-------- Surfplattor och mindre skärmar --------*/
+
+@media (max-width: 768px){
+
+    /* Gemensamma delar (Layout för kolumner, Header, Footer) */
+    #grid { 
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0 10px;
+    }
+    
+    header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px; 
+    }
+
+    #for-foretag {
+        margin: 0;
+    }
+
+    .footer_box {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Startsidan (index.html) */
+    #grid-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    #home-nav{
+        min-height: 290px;
+    }
+
+     /* Kategorisidorna (kategori.html) */
+    #kategori-nav{
+        min-height: 290px;
+    }
+
+    /* viewsidan (view.html) */
+    .view-container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        gap: 20px;
+    }
+
+    .category-list {
+        display: flex;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 10px 0;
+        list-style: none;
+    }
+
+    .nav-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding: 0 15px;
+    }
+
+    /* Verksamhetssidan (Profile.html) */
+
+
+}
+
+/*-------------- Mobila enheter --------------*/
+
+@media (max-width: 480px){
+
+    /* Gemensamma delar (Header/Footer) */
+    #footer_bottom{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    header {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    nav > form {
+        max-width: 94%;
+    }
+    
+    /* Startsidan (index.html) */
+    #home-main,#home-nav {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+    #home-nav {
+        min-height: 180px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    /* Inloggsidan (log_in.html) */
+    #lank-till-registrering {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        display: inline-block;
+    }
+
+    /* Kategorisidorna (kategori.html) */
+    #kategori-nav {
+        min-height: 180px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    #kategori-nav {  /* Eventuellt lägga till kategori-main här som i startsidan */
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+     /* Verksamhetssidan (Profile.html) */
+
+}
+
+
+

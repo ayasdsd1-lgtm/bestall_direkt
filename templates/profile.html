@@ -27,38 +27,37 @@
 <!--blocket nedan visar en beställningstabell så företag tar del av vilka som bokade deras tjänster och vad de har bokat. Du kan placera den vart du än vill :) -->
 
 {% if verksamhet %}
+    <div class="profile-header-content">
 
-    <h2 class="profile-title">Din verksamhet</h2>
+        <h2 class="profile-title">Din verksamhet</h2>
 
-    <div class="profile-top-buttons">
+        <div class="profile-top-buttons">
 
-    <a href="{{ url_for('view_company', company_id=verksamhet_id) }}"
+        <a href="{{ url_for('view_company', company_id=verksamhet_id) }}"
+            class="profile-top-btn">
+            Visa verksamhetssida
+        </a>
+
+        <a href="{{ url_for('logga_ut') }}" 
         class="profile-top-btn">
-        Visa verksamhetssida
-    </a>
-
-    <a href="{{ url_for('logga_ut') }}" 
-    class="profile-top-btn">
-    Logga ut
-   </a> 
- </div>
-
-{% else %}
-
-    <h2>Du har ingen verksamhet ännu</h2>
-
-    <a href="{{ url_for('skapa_verksamhet') }}"
-        class="profile-top-btn">
-        Skapa verksamhet
-    </a>
-
-{% endif %}
-
-
+        Logga ut
+    </a> 
     </div>
 
-  <div class="profile-id-box">
-    <p><strong>Verksamhets-ID:</strong> #{{ verksamhet[0] }}</p>
+    {% else %}
+
+        <h2>Du har ingen verksamhet ännu</h2>
+
+        <a href="{{ url_for('skapa_verksamhet') }}"
+            class="profile-top-btn">
+            Skapa verksamhet
+        </a>
+
+    {% endif %}
+
+    <div class="profile-id-box">
+        <p><strong>Verksamhets-ID:</strong> #{{ verksamhet[0] }}</p>
+    </div>
 </div>
 
 <div class="profile-layout">
