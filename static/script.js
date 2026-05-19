@@ -169,6 +169,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-//---------------------------------------Annat??--------------------------------------//
+//-----------------------------------register.html-----------------------------------//
+const registerForm = document.getElementById("register-form");
 
+if (registerForm) {
+    registerForm.addEventListener("submit", function(e) {
+        let harFel = false;
+
+        document.querySelectorAll(".klient-fel").forEach(el => el.remove());
+        document.querySelectorAll(".fel-border").forEach(el => el.classList.remove("fel-border"));
+
+        const namn = document.getElementById("namn");
+        const personnummer = document.getElementById("personnummer");
+        const email = document.getElementById("email");
+        const tel = document.getElementById("tel");
+        const losenord = document.getElementById("losenord");
+
+        function visaFel(input, meddelande) {
+            input.classList.add("fel-border");
+            const span = document.createElement("span");
+            span.className = "falt-fel klient-fel";
+            span.textContent = meddelande;
+            input.insertAdjacentElement("afterend", span);
+            harFel = true;
+        }
+
+        if (!namn.value.trim() || namn.value.trim().length < 2)
+            visaFel(namn, "Namn är obligatoriskt och måste vara minst 2 tecken.");
+
+        if (!personnummer.value.trim() || !/^\d{8}-?\d{4}$/.test(personnummer.value.trim()))
+            visaFel(personnummer, "Ange personnummer i format YYYYMMDD-XXXX.");
+
+        if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()))
+            visaFel(email, "Ange en giltig e-postadress.");
+
+        if (!tel.value.trim() || !/^(\+46|0)\d{9}$/.test(tel.value.replace(/[\s-]/g, "")))
+            visaFel(tel, "Ange ett giltigt mobilnummer (t.ex. 0701234567).");
+
+        if (!losenord.value || losenord.value.length < 8)
+            visaFel(losenord, "Lösenordet måste vara minst 8 tecken.");
+
+        if (harFel) e.preventDefault();
+    });
+}
 
