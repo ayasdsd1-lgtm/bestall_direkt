@@ -38,10 +38,6 @@
             Visa verksamhetssida
         </a>
 
-        <a href="{{ url_for('logga_ut') }}" 
-        class="profile-top-btn">
-        Logga ut
-    </a> 
     </div>
 
     {% else %}
@@ -54,6 +50,11 @@
         </a>
 
     {% endif %}
+
+    <a href="{{ url_for('logga_ut') }}" 
+        class="profile-top-btn">
+        Logga ut
+    </a> 
 
     <div class="profile-id-box">
         <p><strong>Verksamhets-ID:</strong> #{{ verksamhet[0] }}</p>
