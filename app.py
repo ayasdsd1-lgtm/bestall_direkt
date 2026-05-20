@@ -147,7 +147,7 @@ def category(category_name):
         print("Fel vid kategori:", e)
         companies = []
 
-    return render_template("kategori.html", namn=display_name, foretag=companies)
+    return render_template("kategori.html", name=display_name, foretag=companies)
 
 # -------------------------------------------------------
 # VIEW
@@ -192,9 +192,9 @@ def view_company(company_id):
 
         # Gör om databassvaret till dictionary
         foretag = {
-            "namn": verksamhet[0],
+            "name": verksamhet[0],
             "adress": verksamhet[1],
-            "telefon": verksamhet[2],
+            "phone": verksamhet[2],
             "beskrivning": verksamhet[3],
             "kategori": verksamhet[4],
             "epost": verksamhet[5],
@@ -219,7 +219,7 @@ def view_company(company_id):
         for item in meny:
 
             foretag["tjanster"].append({
-                "namn": item[0],
+                "name": item[0],
                 "beskrivning": item[1],
                 "pris": item[2],
                 "bild_url": item[3]
@@ -269,19 +269,19 @@ def create_order():
     HTML-sida: view.html
     """
     
-    namn = request.form.get('kund_namn')
+    name = request.form.get('kund_namn')
     email = request.form.get('epost')
-    telefon = request.form.get('telefonnummer')
+    phone = request.form.get('telefonnummer')
 
     cursor = conn.cursor()
 
     try:
         # skapa kund
         cursor.execute("""
-            INSERT INTO public.kund (namn, email, telefonnummer)
+            INSERT INTO public.kund (name, email, telefonnummer)
             VALUES (%s, %s, %s)
             RETURNING kund_id
-        """, (namn, email, telefon))
+        """, (name, email, phone))
 
         kund_id = cursor.fetchone()[0]
 
@@ -296,11 +296,11 @@ def create_order():
         
         conn.commit()
 
-        send_order_confirmation_email(email, namn)
+        send_order_confirmation_email(email, name)
 
         return jsonify({
             "success": True,
-            "message": f"Tack för din beställning, {namn}! En bekräftelse har skickats till {email}."
+            "message": f"Tack för din beställning, {name}! En bekräftelse har skickats till {email}."
         })
     
     except Exception as e:
@@ -411,7 +411,7 @@ def register():
     Formuläret i HTML ska ha method="POST" och action="/register".
     HTML-sida: register.html
     """
-    namn          = request.form.get("namn", "").strip()
+    name          = request.form.get("namn", "").strip()
     personnummer  = request.form.get("personnummer", "").strip()
     email         = request.form.get("email", "").strip()
     tel           = request.form.get("tel", "").strip()
@@ -421,10 +421,10 @@ def register():
     fel = {}
 
     # Namn
-    if not namn:
-        fel["namn"] = "Namn är obligatoriskt."
-    elif len(namn) < 2:
-        fel["namn"] = "Namnet är för kort."
+    if not name:
+        fel["name"] = "Namn är obligatoriskt."
+    elif len(name) < 2:
+        fel["name"] = "Namnet är för kort."
 
     # Personnummer – format YYYYMMDD-XXXX eller YYYYMMDDXXXX
     if not personnummer:
@@ -456,7 +456,7 @@ def register():
             "register.html",
             fel=fel,
             # Skicka tillbaka ifyllda värden så användaren inte behöver skriva om allt
-            prev={"namn": namn, "personnummer": personnummer, "email": email, "tel": tel}
+            prev={"name": name, "personnummer": personnummer, "email": email, "tel": tel}
         )
 
     cursor = conn.cursor()
@@ -472,7 +472,7 @@ def register():
             return render_template(
                 "register.html",
                 fel=fel,
-                prev={"namn": namn, "personnummer": personnummer, "email": email, "tel": tel}
+                prev={"name": name, "personnummer": personnummer, "email": email, "tel": tel}
             )
 
         # Hasha lösenordet innan det sparas i databasen
@@ -480,9 +480,9 @@ def register():
 
         cursor.execute(
             """INSERT INTO public.foretagare
-               (foretagsnamn, personnummer, email, telefon, losenord)
+               (foretagsnamn, personnummer, email, phone, losenord)
                VALUES (%s, %s, %s, %s, %s)""",
-            (namn, personnummer, email, tel, hashat_losenord)
+            (name, personnummer, email, tel, hashat_losenord)
         )
         conn.commit()
 
@@ -492,7 +492,7 @@ def register():
         return render_template(
             "register.html",
             fel={"general": "Något gick fel, försök igen."},
-            prev={"namn": namn, "personnummer": personnummer, "email": email, "tel": tel}
+            prev={"name": name, "personnummer": personnummer, "email": email, "tel": tel}
         )
 
     # Skicka användaren till inloggningssidan efter lyckad registrering
@@ -628,7 +628,7 @@ def profile():
             SELECT
                 b.bestallning_id,
                 b.datum,
-                k.namn AS kund_namn,
+                k.name AS kund_namn,
                 k.telefonnummer,
                 m.menynamn,
                 br.antal

@@ -38,16 +38,16 @@
                     <form class="register-form" action="/register" method="POST" id="register-form">
  
                         <!-- Namn -->
-                        <label for="namn">Namn *</label>
+                        <label for="name">Namn *</label>
                         <input  type="text"
                                 id="name"
                                 name="namn"
                                 placeholder="Ditt fullständiga namn"
-                                class="register-input {% if fel and fel.namn %}fel-border{% endif %}"
-                                value="{{ prev.namn if prev else '' }}"
+                                class="register-input {% if fel and fel.name %}fel-border{% endif %}"
+                                value="{{ prev.name if prev else '' }}"
                                 required>
-                        {% if fel and fel.namn %}
-                            <span class="falt-fel">{{ fel.namn }}</span>
+                        {% if fel and fel.name %}
+                            <span class="falt-fel">{{ fel.name }}</span>
                         {% endif %}
  
                         <!-- Personnummer -->
