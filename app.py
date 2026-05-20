@@ -500,11 +500,11 @@ def register():
 # -------------------------------------------------------
 
 @app.route("/logga-ut")
-def logga_ut():
+def logout():
     """
     Loggar ut den inloggade användaren genom att rensa sessionen.
     Skickar användaren tillbaka till startsidan.
-    Länken i HTML ska se ut: {{ url_for('logga_ut') }}
+    Länken i HTML ska se ut: {{ url_for('logout') }}
     """
     session.clear()      # Raderar minneslappen - användaren är ut utloggad
     return redirect(url_for("home"))
