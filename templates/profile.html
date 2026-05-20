@@ -104,13 +104,17 @@
 
 <select name="kategori">
 
-    <option value="Buffé" {% if verksamhet[4] == "Buffé" %}selected{% endif %}>Buffé </option>
-
     <option value="Brunch"{% if verksamhet[4] == "Brunch" %}selected{% endif %}>Brunch</option>
+
+    <option value="Smått & mingel"{% if verksamhet[4] == "Smått & mingel" %}selected{% endif %}>Smått & mingel</option>
+
+    <option value="Middag & festmat" {% if verksamhet[4] == "Middag & festmat" %}selected{% endif %}>Middag & festmat</option>
+
+    <option value="Buffé" {% if verksamhet[4] == "Buffé" %}selected{% endif %}>Buffé </option>
 
     <option value="Bakverk & sött"{% if verksamhet[4] == "Bakverk & sött" %}selected{% endif %}>Bakverk & sött</option>
 
-    <option value="Smått & mingel"{% if verksamhet[4] == "Smått & mingel" %}selected{% endif %}>Smått & mingel</option>
+    <option value="Vegetariskt" {% if verksamhet[4] == "Vegetariskt" %}selected{% endif %}>Vegetariskt</option>
 
 </select>
 
