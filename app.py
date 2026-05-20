@@ -66,6 +66,7 @@ def search():
     2. Söker i databasen efter företag som matchar sökordet
     3. Skickar resultatet till search.html för visning
     """
+    # behöver ändra försiktigt med databas
 
     query = request.args.get("q", "").strip()
 
