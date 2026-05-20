@@ -331,11 +331,11 @@ def skapa_bestallning():
 # -------------------------------------------------------
 
 @app.route("/logga-in")
-def logga_in():
+def login_page():
 
     """
     Visar inloggningssidan för företagare
-    Länken i HTML ska se ut: {{ url_for('logga_in') }}
+    Länken i HTML ska se ut: {{ url_for('login_page') }}
     HTML-sida: log_in.html
     """
     return render_template("log_in.html")

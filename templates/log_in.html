@@ -17,7 +17,7 @@
             <!-- lägg till profil nedan-->
 
             <!-- länk till inlogg-->
-            <a id="for-foretag" href="{{ url_for('logga_in') }}"> För företag</a>
+            <a id="for-foretag" href="{{ url_for('login_page') }}"> För företag</a>
         </header>
 
         <!--Logga in form-->
@@ -51,7 +51,7 @@
         </main>
         <footer>
             <section class="footer_box">
-                <p><a href="{{ url_for('logga_in') }}">Företagsinloggning</a></p>
+                <p><a href="{{ url_for('login_page') }}">Företagsinloggning</a></p>
                 <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
                 <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
                 <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
