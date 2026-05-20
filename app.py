@@ -106,6 +106,8 @@ def category(category_name):
     Visar alla företag som tillhör en viss kategori.
     """
 
+    # behöver ändra försiktigt med databas
+
     categories = {
     "Brunch": "Brunch",
     "Smatt-och-mingel": "Smått & mingel",
