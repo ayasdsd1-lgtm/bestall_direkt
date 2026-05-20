@@ -1,4 +1,6 @@
+# används import email?
 import email
+# används from sqlite3 import Cursor?
 from sqlite3 import Cursor
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,6 +9,7 @@ import psycopg2
 import os
 import re      # Används för formatvalidering vid registrering
 from flask import jsonify
+# används import json?
 import json
 # orderbekräftelse funktion
 import smtplib
