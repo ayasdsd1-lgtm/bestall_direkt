@@ -866,7 +866,7 @@ def create_business():
 
 
 @app.route("/skapa-tjanst", methods=["POST"])
-def skapa_tjanst():
+def create_service():
 
     if "user" not in session:
         return redirect(url_for("logga_in"))
