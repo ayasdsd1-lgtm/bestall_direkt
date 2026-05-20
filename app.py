@@ -191,7 +191,7 @@ def view_company(company_id):
         foretag = {
             "name": verksamhet[0],
             "adress": verksamhet[1],
-            "telefon": verksamhet[2],
+            "phone": verksamhet[2],
             "beskrivning": verksamhet[3],
             "kategori": verksamhet[4],
             "epost": verksamhet[5],
@@ -268,7 +268,7 @@ def create_order():
     
     name = request.form.get('kund_namn')
     email = request.form.get('epost')
-    telefon = request.form.get('telefonnummer')
+    phone = request.form.get('telefonnummer')
 
     cursor = conn.cursor()
 
@@ -278,7 +278,7 @@ def create_order():
             INSERT INTO public.kund (name, email, telefonnummer)
             VALUES (%s, %s, %s)
             RETURNING kund_id
-        """, (name, email, telefon))
+        """, (name, email, phone))
 
         kund_id = cursor.fetchone()[0]
 
@@ -477,7 +477,7 @@ def register():
 
         cursor.execute(
             """INSERT INTO public.foretagare
-               (foretagsnamn, personnummer, email, telefon, losenord)
+               (foretagsnamn, personnummer, email, phone, losenord)
                VALUES (%s, %s, %s, %s, %s)""",
             (name, personnummer, email, tel, hashat_losenord)
         )
