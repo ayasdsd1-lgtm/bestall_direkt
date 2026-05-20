@@ -36,16 +36,16 @@
                 <h2>{{ name }}</h2>
 
                 <div id="grid-cards">
-                    {% if foretag %}
+                    {% if companies %}
 
-                        {% for f in foretag %}
+                        {% for company in companies %}
                             <article class="card">
-                                <a href="{{ url_for('view_company', company_id=f[0]) }}">
-                                    <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ f[1] }}">
-                                    <h3>{{ f[1] }}</h3>
+                                <a href="{{ url_for('view_company', company_id=company[0]) }}">
+                                    <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ company[1] }}">
+                                    <h3>{{ company[1] }}</h3>
 
-                                    {% if f[2] %}
-                                        <p>{{ f[2] }}</p>
+                                    {% if company[2] %}
+                                        <p>{{ company[2] }}</p>
                                     {% endif %}
                                 </a>
                             </article>
