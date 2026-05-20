@@ -2,9 +2,9 @@
 //-----------------------------------View.html-----------------------------------//
         //===========Prisöversikt och lägg till knapparna===========//
 document.addEventListener('DOMContentLoaded', function() {
-    let totalSumma = 0;
-    let totalAntal = 0;
-    const varukorg = {}; 
+    let totalAmount = 0;
+    let totalItems = 0;
+    const cart = {}; 
 
     const totalDisplay = document.getElementById('total-summa');
     const antalDisplay = document.getElementById('antal-produkter');
@@ -15,65 +15,65 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalPrisInput = document.getElementById('total_pris_input');
 
 
-    function laggTillVara(namn, pris, index) {
-            totalSumma += pris;
-            totalAntal += 1;
+    function addItem(name, price, index) {
+            totalAmount += price;
+            totalItems += 1;
 
-            if (varukorg[namn]) {
-                varukorg[namn].antal += 1;
+            if (cart[name]) {
+                cart[name].quantity += 1;
             } else {
-                varukorg[namn] = {
-                    antal: 1,
-                    pris: pris,
+                cart[name] = {
+                    quantity: 1,
+                    price: price,
                     index: index
                 };
             }
-            uppdateraAllt();  
+            updateCart();  
     }
 
 
-    function taBortVara(namn) {
-        if (varukorg[namn]) {
-            const prisPerEnhet = varukorg[namn].pris;
+    function removeItem(name) {
+        if (cart[name]) {
+            const prisPerEnhet = cart[name].price;
 
-            totalSumma -= prisPerEnhet;
-            totalAntal -= 1;
-            varukorg[namn].antal -=1;
+            totalAmount -= prisPerEnhet;
+            totalItems -= 1;
+            cart[name].quantity -=1;
 
-            if (totalSumma < 0) totalSumma = 0;
-            if (totalAntal < 0) totalSumma = 0;
+            if (totalAmount < 0) totalAmount = 0;
+            if (totalItems < 0) totalAmount = 0;
 
-            if (varukorg[namn].antal <= 0) {
-                const countSpan = document.getElementById(`count-${varukorg[namn].index}`);
+            if (cart[name].quantity <= 0) {
+                const countSpan = document.getElementById(`count-${cart[name].index}`);
                 if(countSpan) countSpan.textContent = "0";
-                delete varukorg[namn];
+                delete cart[name];
             }
-            uppdateraAllt();
+            updateCart();
         }
     }
 
     // plus knappen för tjänstrkort//
     document.querySelectorAll(' .add-btn-stepper').forEach(button => {
         button.addEventListener('click', function() {
-            const pris = parseFloat(this.getAttribute('data-pris'));
-            const namn = this.getAttribute('data-namn');
+            const price = parseFloat(this.getAttribute('data-pris'));
+            const name = this.getAttribute('data-namn');
             const index = this.getAttribute('data-index');
-            laggTillVara(namn, pris, index);
+            addItem(name, price, index);
         });
     });
 
     // minus knappen för tjänstekort//
     document.querySelectorAll('.remove-btn-small').forEach(button => {
         button.addEventListener('click', function() {
-            const namn = this.getAttribute('data-namn');
-            taBortVara(namn)
+            const name = this.getAttribute('data-namn');
+            removeItem(name)
         });
     });
 
 
-    function uppdateraAllt() {
-        totalDisplay.textContent = totalSumma.toLocaleString('sv-SE');
-        antalDisplay.textContent = totalAntal;
+    function updateCart() {
+        totalDisplay.textContent = totalAmount.toLocaleString('sv-SE');
+        antalDisplay.textContent = totalItems;
 
         document.querySelectorAll('.item-count').forEach(span => {
             span.textContent = "0";
@@ -82,12 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         listaDisplay.innerHTML = "";
 
-        for (const [namn, data] of Object.entries(varukorg)) {
+        for (const [name, data] of Object.entries(cart)) {
             const countSpan = document.getElementById(`count-${data.index}`);
             if (countSpan) {
-                countSpan.textContent = data.antal;
+                countSpan.textContent = data.quantity;
                 countSpan.style.color = "#ffffff"; 
-                countSpan.style.opacity = data.antal > 0 ? "1" : "0.5"
+                countSpan.style.opacity = data.quantity > 0 ? "1" : "0.5"
             }
             const li= document.createElement('li');
             li.style.display = "flex";
@@ -97,11 +97,11 @@ document.addEventListener('DOMContentLoaded', function() {
             li.style.paddingBottom= "5px";
 
             li.innerHTML = `
-                <span>${namn} (${data.antal} st)</span>
+                <span>${name} (${data.quantity} st)</span>
                 <button class="remove-btn-list" style="background: #8f512b; color:white; border:none; padding: 2px 8px; cursor:pointer;">Ta bort</button>
             `;
 
-            li.querySelector('.remove-btn-list').addEventListener('click', () => taBortVara(namn));
+            li.querySelector('.remove-btn-list').addEventListener('click', () => removeItem(name));
             listaDisplay.appendChild(li);
 
         }
@@ -111,17 +111,17 @@ document.addEventListener('DOMContentLoaded', function() {
         checkoutForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            if(Object.keys(varukorg).length === 0) {
+            if(Object.keys(cart).length === 0) {
                 alert("Din Varukorg är tom!");
                 return;
             }
 
             let cartDataText= "";
-            for (const [namn, data] of Object.entries(varukorg)) {
-                cartDataText += `${namn} (${data.antal} st), `;
+            for (const [name, data] of Object.entries(cart)) {
+                cartDataText += `${name} (${data.quantity} st), `;
             }
             orderDataInput.value = cartDataText;
-            totalPrisInput.value = totalSumma;
+            totalPrisInput.value = totalAmount;
 
             const formData = new FormData(this);
 
@@ -179,7 +179,7 @@ if (registerForm) {
         document.querySelectorAll(".klient-fel").forEach(el => el.remove());
         document.querySelectorAll(".fel-border").forEach(el => el.classList.remove("fel-border"));
 
-        const namn = document.getElementById("namn");
+        const name = document.getElementById("namn");
         const personnummer = document.getElementById("personnummer");
         const email = document.getElementById("email");
         const tel = document.getElementById("tel");
@@ -194,8 +194,8 @@ if (registerForm) {
             harFel = true;
         }
 
-        if (!namn.value.trim() || namn.value.trim().length < 2)
-            visaFel(namn, "Namn är obligatoriskt och måste vara minst 2 tecken.");
+        if (!name.value.trim() || name.value.trim().length < 2)
+            visaFel(name, "Namn är obligatoriskt och måste vara minst 2 tecken.");
 
         if (!personnummer.value.trim() || !/^\d{8}-?\d{4}$/.test(personnummer.value.trim()))
             visaFel(personnummer, "Ange personnummer i format YYYYMMDD-XXXX.");
