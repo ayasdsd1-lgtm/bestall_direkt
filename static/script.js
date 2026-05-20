@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const cart = {}; 
 
     const totalDisplay = document.getElementById('total-summa');
-    const antalDisplay = document.getElementById('antal-produkter');
-    const listaDisplay = document.getElementById('produkt-lista');
+    const itemCountDisplay = document.getElementById('antal-produkter');
+    const productListDisplay = document.getElementById('produkt-lista');
 
     const checkoutForm = document.getElementById('checkout-form');
     const orderDataInput = document.getElementById('order_data_input');
-    const totalPrisInput = document.getElementById('total_pris_input');
+    const totalPriceInput = document.getElementById('total_pris_input');
 
 
     function addItem(name, price, index) {
@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function removeItem(name) {
         if (cart[name]) {
-            const prisPerEnhet = cart[name].price;
+            const unitPrice = cart[name].price;
 
-            totalAmount -= prisPerEnhet;
+            totalAmount -= unitPrice;
             totalItems -= 1;
             cart[name].quantity -=1;
 
@@ -73,14 +73,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateCart() {
         totalDisplay.textContent = totalAmount.toLocaleString('sv-SE');
-        antalDisplay.textContent = totalItems;
+        itemCountDisplay.textContent = totalItems;
 
         document.querySelectorAll('.item-count').forEach(span => {
             span.textContent = "0";
             span.style.opacity = "0.5";
         });
 
-        listaDisplay.innerHTML = "";
+        productListDisplay.innerHTML = "";
 
         for (const [name, data] of Object.entries(cart)) {
             const countSpan = document.getElementById(`count-${data.index}`);
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
 
             li.querySelector('.remove-btn-list').addEventListener('click', () => removeItem(name));
-            listaDisplay.appendChild(li);
+            productListDisplay.appendChild(li);
 
         }
         //===========formuäret===========//
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cartDataText += `${name} (${data.quantity} st), `;
             }
             orderDataInput.value = cartDataText;
-            totalPrisInput.value = totalAmount;
+            totalPriceInput.value = totalAmount;
 
             const formData = new FormData(this);
 
@@ -174,7 +174,7 @@ const registerForm = document.getElementById("register-form");
 
 if (registerForm) {
     registerForm.addEventListener("submit", function(e) {
-        let harFel = false;
+        let hasError = false;
 
         document.querySelectorAll(".klient-fel").forEach(el => el.remove());
         document.querySelectorAll(".fel-border").forEach(el => el.classList.remove("fel-border"));
@@ -183,33 +183,33 @@ if (registerForm) {
         const personnummer = document.getElementById("personnummer");
         const email = document.getElementById("email");
         const tel = document.getElementById("tel");
-        const losenord = document.getElementById("losenord");
+        const password = document.getElementById("losenord");
 
-        function visaFel(input, meddelande) {
+        function showError(input, message) {
             input.classList.add("fel-border");
             const span = document.createElement("span");
             span.className = "falt-fel klient-fel";
-            span.textContent = meddelande;
+            span.textContent = message;
             input.insertAdjacentElement("afterend", span);
-            harFel = true;
+            hasError = true;
         }
 
         if (!name.value.trim() || name.value.trim().length < 2)
-            visaFel(name, "Namn är obligatoriskt och måste vara minst 2 tecken.");
+            showError(name, "Namn är obligatoriskt och måste vara minst 2 tecken.");
 
         if (!personnummer.value.trim() || !/^\d{8}-?\d{4}$/.test(personnummer.value.trim()))
-            visaFel(personnummer, "Ange personnummer i format YYYYMMDD-XXXX.");
+            showError(personnummer, "Ange personnummer i format YYYYMMDD-XXXX.");
 
         if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()))
-            visaFel(email, "Ange en giltig e-postadress.");
+            showError(email, "Ange en giltig e-postadress.");
 
         if (!tel.value.trim() || !/^(\+46|0)\d{9}$/.test(tel.value.replace(/[\s-]/g, "")))
-            visaFel(tel, "Ange ett giltigt mobilnummer (t.ex. 0701234567).");
+            showError(tel, "Ange ett giltigt mobilnummer (t.ex. 0701234567).");
 
-        if (!losenord.value || losenord.value.length < 8)
-            visaFel(losenord, "Lösenordet måste vara minst 8 tecken.");
+        if (!password.value || password.value.length < 8)
+            showError(password, "Lösenordet måste vara minst 8 tecken.");
 
-        if (harFel) e.preventDefault();
+        if (hasError) e.preventDefault();
     });
 }
 
