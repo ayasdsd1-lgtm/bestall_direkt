@@ -404,7 +404,7 @@ def login():
 # -------------------------------------------------------
 
 @app.route("/registrering")
-def registrera_sig():
+def register_page():
 
     """
     Visar registreringssidan för företagare.
