@@ -92,8 +92,6 @@ def search():
         print("Fel vid sökning:", e)
         resultat = []
 
-    # Skickar resultatet + sökordet till HTML-sidan
-    # search.html ansvarar för att visa listan
     return render_template("search.html", resultat=resultat, query=query)
 
 # -------------------------------------------------------
