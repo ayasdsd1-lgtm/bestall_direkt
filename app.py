@@ -164,24 +164,24 @@ def view_company(company_id):
         """, (company_id,))
                 
         
-        verksamhet = cursor.fetchone()
+        company_data = cursor.fetchone()
 
-        print("Verksamhet:", verksamhet)  
+        print("Verksamhet:", company_data)  
 
         # Om verksamheten inte finns
-        if not verksamhet:
+        if not company_data:
             return "Verksamheten hittades inte", 404
 
         # Gör om databassvaret till dictionary
-        foretag = {
-            "name": verksamhet[0],
-            "adress": verksamhet[1],
-            "phone": verksamhet[2],
-            "beskrivning": verksamhet[3],
-            "kategori": verksamhet[4],
-            "epost": verksamhet[5],
-            "logo_url": verksamhet[6],
-            "tjanster": []
+        company = {
+            "name": company_data[0],
+            "adress": company_data[1],
+            "phone": company_data[2],
+            "beskrivning": company_data[3],
+            "kategori": company_data[4],
+            "epost": company_data[5],
+            "logo_url": company_data[6],
+            "services": []
         }
 
         # Hämta tjänster/meny
@@ -200,7 +200,7 @@ def view_company(company_id):
         # Lägg till tjänster i listan
         for item in meny:
 
-            foretag["tjanster"].append({
+            company["services"].append({
                 "name": item[0],
                 "beskrivning": item[1],
                 "pris": item[2],
@@ -209,7 +209,7 @@ def view_company(company_id):
 
         return render_template(
             "view.html",
-            foretag=foretag
+            company=company
         )
 
     except Exception as e:
