@@ -511,14 +511,14 @@ def logout():
 
 
 @app.route("/radera-konto", methods=["POST"])
-def radera_konto():
+def delete_account():
     """
     Raderar företagarens konto och all kopplad data permanent ur databasen.
     Kräver POST-anrop (bekräftelse från formulär) för att förhindra oavsiktlig radering.
     Kopplade tabeller som raderas: bestallningsrad, bestallningar, meny, verksamhet, foretagare.
     """
     if "user" not in session:
-        return redirect(url_for("logga_in"))
+        return redirect(url_for("login_page"))
 
     email = session["user"]
     cursor = conn.cursor()
@@ -977,7 +977,7 @@ def admin_dashboard():
     return render_template("admin_dashboard.html", foretagare=foretagare)
 
 @app.route("/admin/blockera/<int:id>")
-def blockera_foretagare(id):
+def toggle_company_status(id):
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
@@ -986,7 +986,7 @@ def blockera_foretagare(id):
     return redirect(url_for("admin_dashboard"))
 
 @app.route("/admin/ta-bort/<int:id>")
-def ta_bort_foretagare(id):
+def delete_company(id):
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()

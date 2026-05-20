@@ -46,10 +46,10 @@
                                     </td>
                                     <td>
                                         <div>
-                                            <a href="{{ url_for('blockera_foretagare', id=f[0]) }}" class="btn-small">
+                                            <a href="{{ url_for('toggle_company_status', id=f[0]) }}" class="btn-small">
                                                 {% if f[3] %}Aktivera{% else %}Spärra{% endif %}
                                             </a>
-                                            <a href="{{ url_for('ta_bort_foretagare', id=f[0]) }}" class="btn-delete" 
+                                            <a href="{{ url_for('delete_company', id=f[0]) }}" class="btn-delete" 
                                                onclick="return confirm('Är du helt säker på att du vill ta bort detta företag? All data försvinner.')">
                                                Ta bort
                                             </a>
