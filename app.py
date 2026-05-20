@@ -148,6 +148,8 @@ def view_company(company_id):
     HTML-sida: view.html
     """
 
+    # behöver ändra försiktigt med databas
+
     cursor = conn.cursor()
 
     try:
