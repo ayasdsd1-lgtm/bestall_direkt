@@ -152,16 +152,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }    
 
     // Visar fler kategorier när användaren klickar på "Visa alla kategorier"
-    const visaFler = document.getElementById("visa-fler");
-    const extraKategorier = document.querySelectorAll(".extra-kategori");
+    const showMoreButton = document.getElementById("show-more");
+    const extraCategories = document.querySelectorAll(".extra-category");
 
-    if (visaFler) {
-        visaFler.addEventListener("click", function() {
-            extraKategorier.forEach(function(kategori) {
-                kategori.style.display = "block";
+    if (showMoreButton) {
+        showMoreButton.addEventListener("click", function() {
+            extraCategories.forEach(function(category) {
+                category.style.display = "block";
             });
 
-            visaFler.style.display = "none";
+            showMoreButton.style.display = "none";
         });
     }
 });
