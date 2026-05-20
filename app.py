@@ -89,21 +89,6 @@ def search():
         print("Fel vid sökning:", e)
         resultat = []
 
-    # Tillfällig testdata om databasen inte ger några träffar
-    # Detta gör att vi kan testa search.html även innan databasen är färdig
-    if not resultat:
-        test_foretag = [
-            (1, "Sushi Express", "Sushi", "info@sushi.se", "0701234567"),
-            (2, "Italiensk Buffé AB", "Buffé", "info@buffe.se", "0702222222"),
-            (3, "Brunch & Co", "Brunch", "info@brunch.se", "0703333333"),
-            (4, "Sushi House", "Sushi", "kontakt@sushihouse.se", "0704444444"),
-            (5, "Vegansk Catering", "Veganskt", "hej@vegansk.se", "0705555555")
-        ]
-
-        for foretag in test_foretag:
-            if query.lower() in foretag[1].lower() or query.lower() in foretag[2].lower():
-                resultat.append(foretag)
-
     # Skickar resultatet + sökordet till HTML-sidan
     # search.html ansvarar för att visa listan
     return render_template("search.html", resultat=resultat, query=query)
