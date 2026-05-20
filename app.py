@@ -739,7 +739,7 @@ def upload_profile_image():
     return redirect(url_for("profile"))
     
 @app.route("/uppdatera-verksamhet", methods=["POST"])
-def uppdatera_verksamhet():
+def update_business():
 
     if "user" not in session:
         return redirect(url_for("logga_in"))
@@ -800,7 +800,7 @@ def uppdatera_verksamhet():
     
     
 @app.route("/skapa-verksamhet", methods=["GET", "POST"])
-def skapa_verksamhet():
+def create_business():
     """
     Visar sidan där företagaren kan skapa en verksamhet.
     """

@@ -44,7 +44,7 @@
 
         <h2>Du har ingen verksamhet ännu</h2>
 
-        <a href="{{ url_for('skapa_verksamhet') }}"
+        <a href="{{ url_for('create_business') }}"
             class="profile-top-btn">
             Skapa verksamhet
         </a>
@@ -66,7 +66,7 @@
 <div class="profile-edit-box">
     <h3>Redigera profilinformation</h3>
 
-    <form method="POST" action="{{ url_for('uppdatera_verksamhet') }}">
+    <form method="POST" action="{{ url_for('update_business') }}">
 
         <label for="verksamhetsnamn">Verksamhetsnamn</label>
         <input 
