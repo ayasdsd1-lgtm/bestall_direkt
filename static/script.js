@@ -179,11 +179,11 @@ if (registerForm) {
         document.querySelectorAll(".klient-fel").forEach(el => el.remove());
         document.querySelectorAll(".fel-border").forEach(el => el.classList.remove("fel-border"));
 
-        const name = document.getElementById("namn");
+        const name = document.getElementById("name");
         const personnummer = document.getElementById("personnummer");
         const email = document.getElementById("email");
         const tel = document.getElementById("tel");
-        const password = document.getElementById("losenord");
+        const password = document.getElementById("password");
 
         function showError(input, message) {
             input.classList.add("fel-border");
