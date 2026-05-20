@@ -146,17 +146,6 @@ def category(category_name):
 
     return render_template("kategori.html", namn=display_name, foretag=companies)
 
-
-@app.route("/alla-kategorier")
-def alla_kategorier():
-    """
-    Visar en sida med alla catering-kategorier.
-    Länken i HTML ska se ut: {{ url_for('alla_kategorier') }}
-    HTML-sida: alla_kategorier.html (ej byggd än)
-    """
-    return "<h1>Här listas alla våra catering-kategorier</h1>"
-
-
 # -------------------------------------------------------
 # VIEW
 # -------------------------------------------------------
