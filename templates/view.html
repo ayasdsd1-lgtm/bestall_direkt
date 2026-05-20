@@ -2,7 +2,7 @@
 <html lang="sv">
     <head>
         <meta charset="utf-8">
-        <title>Beställ Direkt - {{ foretag.namn }}</title> <!--DATABAS-->
+        <title>Beställ Direkt - {{ foretag.name }}</title> <!--DATABAS-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
@@ -44,7 +44,7 @@
 
         <main>
             <header class="view-header">
-                <h1>  {{ foretag.namn}} </h1> 
+                <h1>  {{ foretag.name}} </h1> 
                 <p> {{foretag.adress}} </p> 
                 </header>
 
@@ -54,12 +54,12 @@
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
                         {% for tjanst in foretag.tjanster %}
-                        <div class="view-card" data-namn="{{tjanst.namn}}">
+                        <div class="view-card" data-namn="{{tjanst.name}}">
                             {% if tjanst.bild_url %}
-                                <img src="{{ tjanst.bild_url }}" alt="{{ tjanst.namn }}" class="service-image">
+                                <img src="{{ tjanst.bild_url }}" alt="{{ tjanst.name }}" class="service-image">
                             {% endif %}
 
-                            <h3>{{ tjanst.namn }}</h3>
+                            <h3>{{ tjanst.name }}</h3>
 
                             <p class="card-service-desc">{{ tjanst.beskrivning }}</p>
                             <p class="card-pris"><span>{{ tjanst.pris }}</span> kr</p>
@@ -67,12 +67,12 @@
                             <div class="stepper-control">
                                 <button class="remove-btn-small" 
                                         data-pris="{{ tjanst.pris }}" 
-                                        data-namn="{{ tjanst.namn }}"
+                                        data-namn="{{ tjanst.name }}"
                                         data-index="{{ loop.index }}">-</button>
                                 <span class="item-count" id="count-{{ loop.index }}">0</span>
                                 <button class="add-btn-stepper" 
                                         data-pris="{{ tjanst.pris }}" 
-                                        data-namn="{{ tjanst.namn }}"
+                                        data-namn="{{ tjanst.name }}"
                                         data-index="{{ loop.index }}">+</button>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                 <div class="right-column">
                     <section class="logo-box">
                         {% if foretag.logo_url %}
-                            <img src="{{ foretag.logo_url }}" alt="{{ foretag.namn }} logo">
+                            <img src="{{ foretag.logo_url }}" alt="{{ foretag.name }} logo">
                         {% else %}
                             <p>Ingen profilbild uppladdad.</p>
                         {% endif %}
