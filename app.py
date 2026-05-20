@@ -122,7 +122,8 @@ def kategori(namn):
     "Middag-och-festmat": "Middag & festmat",
     "Bakverk-och-sott": "Bakverk & sött",
     "Buffe": "Buffé",
-    "Brunch": "Brunch"
+    "Brunch": "Brunch",
+    "Vegetariskt": "Vegetariskt"
 }
 
     visningsnamn = kategorier.get(namn, namn.replace("-", " "))
