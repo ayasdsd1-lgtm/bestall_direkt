@@ -25,11 +25,11 @@
             <nav class="category-nav">
                 <div class="nav-wrapper">
                     <ul class="category-list">
-                        <li><a href="{{ url_for('kategori', namn='Brunch') }}">Brunch</a></li>
-                        <li><a href="{{ url_for('kategori', namn='Smatt-och-mingel') }}">Smått & mingel</a></li>
-                        <li><a href="{{ url_for('kategori', namn='Middag-och-festmat') }}">Middag & festmat</a></li>
-                        <li><a href="{{ url_for('kategori', namn='Buffe') }}">Buffé</a></li>
-                        <li><a href="{{ url_for('kategori', namn='Bakverk-och-sott') }}">Bakverk & sött</a></li>
+                        <li><a href="{{ url_for('category', category_name='Brunch') }}">Brunch</a></li>
+                        <li><a href="{{ url_for('category', category_name='Smatt-och-mingel') }}">Smått & mingel</a></li>
+                        <li><a href="{{ url_for('category', category_name='Middag-och-festmat') }}">Middag & festmat</a></li>
+                        <li><a href="{{ url_for('category', category_name='Buffe') }}">Buffé</a></li>
+                        <li><a href="{{ url_for('category', category_name='Bakverk-och-sott') }}">Bakverk & sött</a></li>
                     </ul>
 
                     <form action="/search" method="GET">

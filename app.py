@@ -112,45 +112,39 @@ def search():
 # KATEGORIER
 # -------------------------------------------------------
 
-@app.route("/kategori/<namn>")
-def kategori(namn):
+@app.route("/kategori/<category_name>")
+def category(category_name):
     """
     Visar alla företag som tillhör en viss kategori.
     """
-    kategorier = {
+
+    categories = {
+    "Brunch": "Brunch",
     "Smatt-och-mingel": "Smått & mingel",
     "Middag-och-festmat": "Middag & festmat",
-    "Bakverk-och-sott": "Bakverk & sött",
     "Buffe": "Buffé",
-    "Brunch": "Brunch",
+    "Bakverk-och-sott": "Bakverk & sött",
     "Vegetariskt": "Vegetariskt"
 }
 
-    visningsnamn = kategorier.get(namn, namn.replace("-", " "))
+    display_name = categories.get(category_name, category_name.replace("-", " "))
 
     cursor = conn.cursor()
 
     try:
         cursor.execute(
             "SELECT * FROM public.verksamhet WHERE kategori = %s",
-            (visningsnamn,)
+            (display_name,)
         )
 
-        foretag = cursor.fetchall()
+        companies = cursor.fetchall()
 
     except Exception as e:
         conn.rollback()
         print("Fel vid kategori:", e)
-        foretag = []
-    
-    # Hårdkodad testdata för kategorin Sushi
-    if not foretag and visningsnamn == "Sushi":
-        foretag = [
-            (1, "Sushi Express"),
-            (4, "Sushi House")
-        ]
+        companies = []
 
-    return render_template("kategori.html", namn=visningsnamn, foretag=foretag)
+    return render_template("kategori.html", namn=display_name, foretag=companies)
 
 
 @app.route("/alla-kategorier")
