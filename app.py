@@ -258,11 +258,11 @@ Vänliga hälsningar, Beställ Direkt""")
         smtp.send_message(message)
 
 @app.route('/skapa_bestallning', methods=['POST'])
-def skapa_bestallning():
+def create_order():
     """
-    Tar emot kunduppgifter och orderdetaljer via POST och sparar dem i tabellen 'bestallningar'.
+    Tar emot kundens uppgifter och orderdetaljer via POST och sparar dem i tabellen 'bestallningar'.
     Returnerar JSON med success: True vid lyckad beställning, annars success: False och statuskod 500.
-    Formuläret i HTML ska ha method="POST" och action="{{ url_for('skapa_bestallning') }}".
+    Formuläret i HTML ska ha method="POST" och action="{{ url_for('create_order') }}".
     HTML-sida: view.html
     """
     
