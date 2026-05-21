@@ -8,6 +8,14 @@ body{
     background: #F7F3EE;
 }
 
+/* Global reset: formulärelement ärver inte font-family automatiskt */
+input,
+button,
+textarea,
+select {
+    font-family: inherit;
+}
+
 /*----------------------------Header----------------------------*/
 header{
     display: flex;
