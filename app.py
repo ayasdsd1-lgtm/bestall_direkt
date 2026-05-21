@@ -158,7 +158,7 @@ def view_company(company_id):
                 v.logo_url
             FROM public.verksamhet v
             JOIN public.foretagare f
-                ON v.foretagare_id = f.foretagare_id
+                ON v.company_id = f.company_id
             WHERE v.verksamhet_id = %s
         """, (company_id,))
                 
@@ -326,7 +326,7 @@ def login():
                 f.losenord
              FROM public.foretagare f
              LEFT JOIN public.verksamhet v
-                ON f.foretagare_id = v.foretagare_id
+                ON f.company_id = v.company_id
             WHERE f.email = %s
         """, (email,))
 
@@ -373,7 +373,6 @@ def login():
 
 @app.route("/registrering")
 def register_page():
-
     """
     Visar registreringssidan för företagare.
     Länken i HTML ska se ut: {{ url_for('registrera_sig') }}
@@ -382,7 +381,7 @@ def register_page():
     return render_template("register.html")
 
 
-@app.route("/register", methods=["POST"])
+@app.route("/registrera", methods=["POST"])
 def register():
     """
     Registrerar en ny företagare i databasen.
@@ -393,52 +392,55 @@ def register():
     Formuläret i HTML ska ha method="POST" och action="/register".
     HTML-sida: register.html
     """
-    name          = request.form.get("namn", "").strip()
-    personnummer  = request.form.get("personnummer", "").strip()
+
+    print("FORM DATA:", request.form)
+
+    name          = request.form.get("name", "").strip()
+    personal_identity_number  = request.form.get("personal_identity_number", "").strip()
     email         = request.form.get("email", "").strip()
-    tel           = request.form.get("tel", "").strip()
-    losenord      = request.form.get("losenord", "")
+    phone           = request.form.get("phone", "").strip()
+    password      = request.form.get("password", "")
 
     # Samla alla fältfel i en ordbok så HTML kan visa dem per fält
-    fel = {}
+    errors = {}
 
     # Namn
     if not name:
-        fel["name"] = "Namn är obligatoriskt."
+        errors["name"] = "Namn är obligatoriskt."
     elif len(name) < 2:
-        fel["name"] = "Namnet är för kort."
+        errors["name"] = "Namnet är för kort."
 
     # Personnummer – format YYYYMMDD-XXXX eller YYYYMMDDXXXX
-    if not personnummer:
-        fel["personnummer"] = "Personnummer är obligatoriskt."
-    elif not re.fullmatch(r"\d{8}-?\d{4}", personnummer):
-        fel["personnummer"] = "Ange personnummer i format YYYYMMDD-XXXX."
+    if not personal_identity_number:
+        errors["personal_identity_number"] = "Personnummer är obligatoriskt."
+    elif not re.fullmatch(r"\d{8}-?\d{4}", personal_identity_number):
+        errors["personal_identity_number"] = "Ange personnummer i format YYYYMMDD-XXXX."
 
     # E-post
     if not email:
-        fel["email"] = "E-postadress är obligatorisk."
+        errors["email"] = "E-postadress är obligatorisk."
     elif not re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", email):
-        fel["email"] = "Ange en giltig e-postadress."
+        errors["email"] = "Ange en giltig e-postadress."
 
     # Mobilnummer – 10 siffror, får börja med +46
-    if not tel:
-        fel["tel"] = "Mobilnummer är obligatoriskt."
-    elif not re.fullmatch(r"(\+46|0)\d{9}", tel.replace(" ", "").replace("-", "")):
-        fel["tel"] = "Ange ett giltigt mobilnummer (t.ex. 0701234567)."
+    if not phone:
+        errors["phone"] = "Mobilnummer är obligatoriskt."
+    elif not re.fullmatch(r"(\+46|0)\d{9}", phone.replace(" ", "").replace("-", "")):
+        errors["phone"] = "Ange ett giltigt mobilnummer (t.ex. 0701234567)."
 
     # Lösenord
-    if not losenord:
-        fel["losenord"] = "Lösenord är obligatoriskt."
-    elif len(losenord) < 8:
-        fel["losenord"] = "Lösenordet måste vara minst 8 tecken."
+    if not password:
+        errors["password"] = "Lösenord är obligatoriskt."
+    elif len(password) < 8:
+        errors["password"] = "Lösenordet måste vara minst 8 tecken."
 
     # Om valideringsfel finns – returnera sidan med alla felmeddelanden
-    if fel:
+    if errors:
         return render_template(
             "register.html",
-            fel=fel,
+            errors=errors,
             # Skicka tillbaka ifyllda värden så användaren inte behöver skriva om allt
-            prev={"name": name, "personnummer": personnummer, "email": email, "tel": tel}
+            prev={"name": name, "personal_identity_number": personal_identity_number, "email": email, "phone": phone}
         )
 
     cursor = conn.cursor()
@@ -446,25 +448,25 @@ def register():
     try:
         # Kolla om emailen redan är registrerad
         cursor.execute(
-            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
+            "SELECT company_id FROM public.foretagare WHERE email = %s",
             (email,)
         )
         if cursor.fetchone():
-            fel["email"] = "Den här e-postadressen är redan registrerad."
+            errors["email"] = "Den här e-postadressen är redan registrerad."
             return render_template(
                 "register.html",
-                fel=fel,
-                prev={"name": name, "personnummer": personnummer, "email": email, "tel": tel}
+                errors=errors,
+                prev={"name": name, "personal_identity_number": personal_identity_number, "email": email, "phone": phone}
             )
 
         # Hasha lösenordet innan det sparas i databasen
-        hashat_losenord = generate_password_hash(losenord)
+        hashat_losenord = generate_password_hash(password)
 
         cursor.execute(
             """INSERT INTO public.foretagare
-               (foretagsnamn, personnummer, email, phone, losenord)
+               (foretagsnamn, personnummer, email, telefon, losenord)
                VALUES (%s, %s, %s, %s, %s)""",
-            (name, personnummer, email, tel, hashat_losenord)
+            (name, personal_identity_number, email, phone, hashat_losenord)
         )
         conn.commit()
 
@@ -473,8 +475,8 @@ def register():
         print(f"Fel vid registrering: {e}")
         return render_template(
             "register.html",
-            fel={"general": "Något gick fel, försök igen."},
-            prev={"name": name, "personnummer": personnummer, "email": email, "tel": tel}
+            errors={"general": "Något gick fel, försök igen."},
+            prev={"name": name, "personal_identity_number": personal_identity_number, "email": email, "phone": phone}
         )
 
     # Skicka användaren till inloggningssidan efter lyckad registrering
@@ -509,9 +511,9 @@ def delete_account():
     cursor = conn.cursor()
 
     try:
-        # Hämta foretagare_id och verksamhet_id för kaskadradering
+        # Hämta company_id och verksamhet_id för kaskadradering
         cursor.execute(
-            "SELECT foretagare_id FROM public.foretagare WHERE email = %s",
+            "SELECT company_id FROM public.foretagare WHERE email = %s",
             (email,)
         )
         row = cursor.fetchone()
@@ -519,11 +521,11 @@ def delete_account():
             session.clear()
             return redirect(url_for("home"))
 
-        foretagare_id = row[0]
+        company_id = row[0]
 
         cursor.execute(
-            "SELECT verksamhet_id FROM public.verksamhet WHERE foretagare_id = %s",
-            (foretagare_id,)
+            "SELECT verksamhet_id FROM public.verksamhet WHERE company_id = %s",
+            (company_id,)
         )
         verksamhet_row = cursor.fetchone()
 
@@ -559,8 +561,8 @@ def delete_account():
 
         # Radera företagaren
         cursor.execute(
-            "DELETE FROM public.foretagare WHERE foretagare_id = %s",
-            (foretagare_id,)
+            "DELETE FROM public.foretagare WHERE company_id = %s",
+            (company_id,)
         )
 
         conn.commit()
@@ -615,7 +617,7 @@ def profile():
                 m.menynamn,
                 br.antal
             FROM public.foretagare f
-            JOIN public.verksamhet v ON f.foretagare_id = v.foretagare_id
+            JOIN public.verksamhet v ON f.company_id = v.company_id
             JOIN public.bestallningar b ON v.verksamhet_id = b.verksamhet_id
             JOIN public.kund k ON b.kund_id = k.kund_id
             JOIN public.bestallningsrad br ON b.bestallning_id = br.bestallning_id
@@ -637,8 +639,8 @@ def profile():
                 kategori,
                 email 
             FROM public.verksamhet   
-            WHERE foretagare_id = (
-                    SELECT foretagare_id
+            WHERE company_id = (
+                    SELECT company_id
                        FROM public.foretagare
                        WHERE email = %s
                     )
@@ -694,7 +696,7 @@ def upload_profile_image():
             UPDATE public.verksamhet v
             SET logo_url = %s
             FROM public.foretagare f
-            WHERE v.foretagare_id = f.foretagare_id
+            WHERE v.company_id = f.company_id
               AND f.email = %s
         """, (image_path, email))
 
@@ -723,9 +725,9 @@ def update_business():
     cursor = conn.cursor()
 
     try:
-        # Hämta foretagare_id för inloggad användare (SÄ-S-02)
+        # Hämta company_id för inloggad användare (SÄ-S-02)
         cursor.execute("""
-            SELECT foretagare_id
+            SELECT company_id
             FROM public.foretagare
             WHERE email = %s
         """, (session_email,))
@@ -735,7 +737,7 @@ def update_business():
         if not foretagare:
             return "Obehörig åtkomst", 403
 
-        foretagare_id = foretagare[0]
+        company_id = foretagare[0]
 
         # Verifiera att en verksamhet faktiskt tillhör den inloggade företagaren
         # innan UPDATE körs — förhindrar att session-manipulation når annan data (SÄ-S-02)
@@ -747,14 +749,14 @@ def update_business():
                 telefonnummer = %s,
                 kategori = %s,
                 email = %s
-            WHERE foretagare_id = %s
+            WHERE company_id = %s
         """, (
             verksamhetsnamn,
             beskrivning,
             telefonnummer,
             kategori,
             email,
-            foretagare_id
+            company_id
         ))
 
         conn.commit()
@@ -792,20 +794,20 @@ def create_business():
 
         try:
 
-            # Hämta foretagare_id från inloggad användare
+            # Hämta company_id från inloggad användare
             cursor.execute("""
-                SELECT foretagare_id
+                SELECT company_id
                 FROM public.foretagare
                 WHERE email = %s
             """, (email,))
 
-            foretagare_id = cursor.fetchone()[0]
+            company_id = cursor.fetchone()[0]
 
             # Skapa verksamheten
             cursor.execute("""
                 INSERT INTO public.verksamhet
                 (
-                    foretagare_id,
+                    company_id,
                     verksamhetsnamn,
                     adress,
                     telefonnummer,
@@ -816,7 +818,7 @@ def create_business():
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 RETURNING verksamhet_id
             """, (
-                foretagare_id,
+                company_id,
                 verksamhetsnamn,
                 adress,
                 telefonnummer,
@@ -889,8 +891,8 @@ def create_service():
         cursor.execute("""
             SELECT verksamhet_id
             FROM public.verksamhet
-            WHERE foretagare_id = (
-                SELECT foretagare_id
+            WHERE company_id = (
+                SELECT company_id
                 FROM public.foretagare
                 WHERE email = %s
             )
@@ -957,7 +959,7 @@ def admin_dashboard():
         return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
-    cursor.execute("SELECT foretagare_id, foretagsnamn, email, blockera FROM public.foretagare ORDER BY foretagare_id DESC")
+    cursor.execute("SELECT company_id, foretagsnamn, email, blockera FROM public.foretagare ORDER BY company_id DESC")
     foretagare = cursor.fetchall()
     return render_template("admin_dashboard.html", foretagare=foretagare)
 
@@ -966,7 +968,7 @@ def toggle_company_status(id):
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
-    cursor.execute("UPDATE public.foretagare SET blockera = NOT blockera WHERE foretagare_id = %s", (id,))
+    cursor.execute("UPDATE public.foretagare SET blockera = NOT blockera WHERE company_id = %s", (id,))
     conn.commit()
     return redirect(url_for("admin_dashboard"))
 
@@ -976,8 +978,8 @@ def delete_company(id):
     
     cursor = conn.cursor()
     try:
-        cursor.execute("DELETE FROM public.verksamhet WHERE foretagare_id = %s", (id,))
-        cursor.execute("DELETE FROM public.foretagare WHERE foretagare_id = %s", (id,))
+        cursor.execute("DELETE FROM public.verksamhet WHERE company_id = %s", (id,))
+        cursor.execute("DELETE FROM public.foretagare WHERE company_id = %s", (id,))
         conn.commit()
     except Exception as e:
         conn.rollback()

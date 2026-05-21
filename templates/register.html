@@ -27,40 +27,40 @@
                     
 
                     <!-- NY LAGT TILL: visas bara om ett felmeddelande skickas från app.py -->
-                    {% if fel and fel.general %}
-                        <p class="fel-general">{{ fel.general }}</p>
+                    {% if errors and errors.general %}
+                        <p class="fel-general">{{ errors.general }}</p>
                     {% endif %}
 
                     {% if success %}
                         <p class="success-message-register">{{ success }}</p>
                     {% endif %}
  
-                    <form class="register-form" action="/register" method="POST" id="register-form">
+                    <form class="register-form" action="{{ url_for('register') }}" method="POST" id="register-form">
  
                         <!-- Namn -->
                         <label for="name">Namn *</label>
                         <input  type="text"
                                 id="name"
-                                name="namn"
+                                name="name"
                                 placeholder="Ditt fullständiga namn"
-                                class="register-input {% if fel and fel.name %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.name %}fel-border{% endif %}"
                                 value="{{ prev.name if prev else '' }}"
                                 required>
-                        {% if fel and fel.name %}
-                            <span class="falt-fel">{{ fel.name }}</span>
+                        {% if errors and errors.name %}
+                            <span class="falt-fel">{{ errors.name }}</span>
                         {% endif %}
  
                         <!-- Personnummer -->
-                        <label for="personnummer">Personnummer *</label>
+                        <label for="personal_identity_number">Personnummer *</label>
                         <input  type="text"
-                                id="personnummer"
-                                name="personnummer"
+                                id="personal_identity_number"
+                                name="personal_identity_number"
                                 placeholder="YYYYMMDD-XXXX"
-                                class="register-input {% if fel and fel.personnummer %}fel-border{% endif %}"
-                                value="{{ prev.personnummer if prev else '' }}"
+                                class="register-input {% if errors and errors.personal_identity_number %}fel-border{% endif %}"
+                                value="{{ prev.personal_identity_number if prev else '' }}"
                                 required>
-                        {% if fel and fel.personnummer %}
-                            <span class="falt-fel">{{ fel.personnummer }}</span>
+                        {% if errors and errors.personal_identity_number %}
+                            <span class="falt-fel">{{ errors.personal_identity_number }}</span>
                         {% endif %}
  
                         <!-- E-post -->
@@ -69,36 +69,36 @@
                                 id="email"
                                 name="email"
                                 placeholder="E-postadress"
-                                class="register-input {% if fel and fel.email %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.email %}fel-border{% endif %}"
                                 value="{{ prev.email if prev else '' }}"
                                 required>
-                        {% if fel and fel.email %}
-                            <span class="falt-fel">{{ fel.email }}</span>
+                        {% if errors and errors.email %}
+                            <span class="falt-fel">{{ errors.email }}</span>
                         {% endif %}
  
                         <!-- Mobilnummer -->
-                        <label for="tel">Mobilnummer *</label>
-                        <input  type="tel"
-                                id="tel"
-                                name="tel"
+                        <label for="phone">Mobilnummer *</label>
+                        <input  type="phone"
+                                id="phone"
+                                name="phone"
                                 placeholder="0701234567"
-                                class="register-input {% if fel and fel.tel %}fel-border{% endif %}"
-                                value="{{ prev.tel if prev else '' }}"
+                                class="register-input {% if errors and errors.phone %}fel-border{% endif %}"
+                                value="{{ prev.phone if prev else '' }}"
                                 required>
-                        {% if fel and fel.tel %}
-                            <span class="falt-fel">{{ fel.tel }}</span>
+                        {% if errors and errors.phone %}
+                            <span class="falt-fel">{{ errors.phone }}</span>
                         {% endif %}
  
                         <!-- Lösenord -->
-                        <label for="losenord">Lösenord * <small>(minst 8 tecken)</small></label>
+                        <label for="password">Lösenord * <small>(minst 8 tecken)</small></label>
                         <input  type="password"
                                 id="password"
-                                name="losenord"
+                                name="password"
                                 placeholder="Lösenord"
-                                class="register-input {% if fel and fel.losenord %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.password %}fel-border{% endif %}"
                                 required>
-                        {% if fel and fel.losenord %}
-                            <span class="falt-fel">{{ fel.losenord }}</span>
+                        {% if errors and errors.password %}
+                            <span class="falt-fel">{{ errors.password }}</span>
                         {% endif %}
  
                         <button class="login-button" type="submit">Registrera</button>
