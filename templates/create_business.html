@@ -11,99 +11,88 @@
     </head>
     <body>
         <header>
-            <!-- titel -->
-             <a href="{{ url_for('home') }}">
-                    <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
-                </a>
-
-                <!-- länk till inlogg-->
-                <a id="for-foretag" href="{{ url_for('login_page') }}"> För företag</a>
-            </header>
-            <div class="create-business-wrapper">
-
-    <section class="create-business-card">
-
-        <div class="create-business-header">
-            <h1>Skapa verksamhet</h1>
-
-            <p>
-                Fyll i information om din verksamhet så att kunder
-                kan hitta och boka dina cateringtjänster.
-            </p>
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
+            </a>
+            <a id="for-foretag" href="{{ url_for('login_page') }}">För företag</a>
+        </header>
+ 
+        <div class="create-business-wrapper">
+            <section class="create-business-card">
+ 
+                <div class="create-business-header">
+                    <h1>Skapa verksamhet</h1>
+                    <p>
+                        Fyll i information om din verksamhet så att kunder
+                        kan hitta och boka dina cateringtjänster.
+                    </p>
+                </div>
+ 
+                <form
+                    action="{{ url_for('create_business') }}"
+                    method="POST"
+                    class="create-business-form"
+                >
+                    <div class="form-grid">
+ 
+                        <div class="form-group">
+                            <label>Verksamhetsnamn</label>
+                            <input
+                                type="text"
+                                name="company_name"
+                                placeholder="T.ex. Smakfull Catering AB"
+                                required
+                            >
+                        </div>
+ 
+                        <div class="form-group">
+                            <label>Kategori</label>
+                            <select name="category" required>
+                                <option value="">Välj kategori</option>
+                                <option>Brunch</option>
+                                <option>Smått & mingel</option>
+                                <option>Middag & festmat</option>
+                                <option>Buffé</option>
+                                <option>Bakverk & sött</option>
+                                <option>Vegetariskt</option>
+                            </select>
+                        </div>
+ 
+                        <div class="form-group">
+                            <label>Telefonnummer</label>
+                            <input
+                                type="text"
+                                name="phone"
+                                placeholder="T.ex. 070 123 45 67"
+                            >
+                        </div>
+ 
+                        <div class="form-group">
+                            <label>E-postadress</label>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="T.ex. kontakt@foretag.se"
+                            >
+                        </div>
+ 
+                    </div>
+ 
+                    <div class="form-group full-width">
+                        <label>Beskrivning</label>
+                        <textarea
+                            name="description"
+                            placeholder="Berätta om din verksamhet, vad ni erbjuder och vad som gör er unika..."
+                        ></textarea>
+                    </div>
+ 
+                    <button type="submit" class="create-business-btn">
+                        Skapa verksamhet
+                    </button>
+ 
+                </form>
+ 
+            </section>
         </div>
-
-        <form
-            action="{{ url_for('create_business') }}"
-            method="POST"
-            class="create-business-form"
-        >
-
-            <div class="form-grid">
-
-                <div class="form-group">
-                    <label>Verksamhetsnamn</label>
-
-                    <input
-                        type="text"
-                        name="verksamhetsnamn"
-                        placeholder="T.ex. Smakfull Catering AB"
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>Kategori</label>
-
-                   <select name="kategori" required>
-                        <option value="">Välj kategori</option>
-                        <option>Brunch</option>
-                        <option>Smått & mingel</option>
-                        <option>Middag & festmat</option>
-                        <option>Buffé</option>
-                        <option>Bakverk & sött</option>
-                        <option>Vegetariskt</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Telefonnummer</label>
-
-                    <input
-                        type="text"
-                        name="telefonnummer"
-                        placeholder="T.ex. 070 123 45 67"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>E-postadress</label>
-
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="T.ex. kontakt@foretag.se"
-                    >
-                </div>
-
-            </div>
-
-            <div class="form-group full-width">
-                <label>Beskrivning</label>
-
-                <textarea
-                    name="beskrivning"
-                    placeholder="Berätta om din verksamhet, vad ni erbjuder och vad som gör er unika..."
-                ></textarea>
-            </div>
-
-            <button type="submit" class="create-business-btn">
-                Skapa verksamhet
-            </button>
-
-        </form>
-
-    </section>
-
-</div>
-
     </body>
+</html>

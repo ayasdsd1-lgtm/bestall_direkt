@@ -14,211 +14,172 @@
                 <a href="{{ url_for('home') }}">
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 </a>
-
-                 {% if session.get('user') %} 
+                {% if session.get('user') %}
                     <a id="for-foretag" href="{{ url_for('profile') }}">Min profil</a>
                 {% else %}
-                <a id="for-foretag" href="{{ url_for('login_page') }}"> För företag</a>
+                    <a id="for-foretag" href="{{ url_for('login_page') }}">För företag</a>
                 {% endif %}
             </header>
-
-
-<!--Det finns redan en @app.route för sidan under  "profile sidan" i python-->
-<!--blocket nedan visar en beställningstabell så företag tar del av vilka som bokade deras tjänster och vad de har bokat. Du kan placera den vart du än vill :) -->
-
-{% if verksamhet %}
-    <div class="profile-header-content">
-
-        <h2 class="profile-title">Din verksamhet</h2>
-
-        <div class="profile-top-buttons">
-
-        <a href="{{ url_for('view_company', company_id=company_id) }}"
-            class="profile-top-btn">
-            Visa verksamhetssida
-        </a>
-
-    </div>
-
-    {% else %}
-
-        <h2>Du har ingen verksamhet ännu</h2>
-
-        <a href="{{ url_for('create_business') }}"
-            class="profile-top-btn">
-            Skapa verksamhet
-        </a>
-
-    {% endif %}
-
-    <a href="{{ url_for('logout') }}" 
-        class="profile-top-btn">
-        Logga ut
-    </a> 
-
-    <div class="profile-id-box">
-        <p><strong>Verksamhets-ID:</strong> #{{ verksamhet[0] }}</p>
-    </div>
-</div>
-
-<div class="profile-layout">
-
-<div class="profile-edit-box">
-    <h3>Redigera profilinformation</h3>
-
-    <form method="POST" action="{{ url_for('update_business') }}">
-
-        <label for="verksamhetsnamn">Verksamhetsnamn</label>
-        <input 
-            type="text" 
-            name="verksamhetsnamn"
-            value="{{ verksamhet[1] }}"
-            required
-            >
-
-        <label for="beskrivning">Beskrivning</label>
-        <textarea 
-            name="beskrivning"
-            rows="5"
-            required
-        >
-        {{ verksamhet[3] }}</textarea>
-
-        <label for="telefonnummer">Telefonnummer</label>
-        <input 
-            type="text"
-            name="telefonnummer"
-            value="{{ verksamhet[2] }}"
-            required>
-
-            <label for="email">E-postadress</label>
-            
-            <input
-            type="email"
-            name="email"
-            value="{{ verksamhet[5] }}"
-            required
-            >
-
-        <label>Kategori</label>
-
-<select name="kategori">
-
-    <option value="Brunch"{% if verksamhet[4] == "Brunch" %}selected{% endif %}>Brunch</option>
-
-    <option value="Smått & mingel"{% if verksamhet[4] == "Smått & mingel" %}selected{% endif %}>Smått & mingel</option>
-
-    <option value="Middag & festmat" {% if verksamhet[4] == "Middag & festmat" %}selected{% endif %}>Middag & festmat</option>
-
-    <option value="Buffé" {% if verksamhet[4] == "Buffé" %}selected{% endif %}>Buffé </option>
-
-    <option value="Bakverk & sött"{% if verksamhet[4] == "Bakverk & sött" %}selected{% endif %}>Bakverk & sött</option>
-
-    <option value="Vegetariskt" {% if verksamhet[4] == "Vegetariskt" %}selected{% endif %}>Vegetariskt</option>
-
-</select>
-
-        <button type="submit">
-            Spara ändringar
-        </button>
-
-    </form>
-
-    <form method="POST"
-        action="{{ url_for('upload_profile_image') }}"
-        enctype="multipart/form-data">
-
-        <label for="profile_image">Ladda upp profilbild</label>
-
-        <input
-            type="file"
-            name="profile_image"
-            id="profile_image"
-            accept=".jpg,.jpeg,.png"
-            required
-        >
-
-        <button type="submit">Ladda upp bild</button>
-    </form>
-</div>
-
-
-    <div class="profile-preview">
-
-        <div class="preview-card">
-
-            <h1>{{ verksamhet[1] }}</h1>
-
-            <p class="preview-description">
-                {{ verksamhet[3] }}
-            </p>
-
-            <div class="preview-contact">
-                <h4>Kontakt</h4>
-                <p>{{ verksamhet[2] }}</p>
-                <p>{{ verksamhet[5] }}</p>
-            </div>
-
+ 
+            <main>
+                {% if business %}
+                    <div class="profile-header-content">
+                        <h2 class="profile-title">Din verksamhet</h2>
+ 
+                        <div class="profile-top-buttons">
+                            <a href="{{ url_for('view_company', company_id=company_id) }}" class="profile-top-btn">
+                                Visa verksamhetssida
+                            </a>
+                        </div>
+                {% else %}
+                    <div class="profile-header-content">
+                        <h2>Du har ingen verksamhet ännu</h2>
+                        <a href="{{ url_for('create_business') }}" class="profile-top-btn">
+                            Skapa verksamhet
+                        </a>
+                {% endif %}
+ 
+                        <a href="{{ url_for('logout') }}" class="profile-top-btn">
+                            Logga ut
+                        </a>
+ 
+                        {% if business %}
+                            <div class="profile-id-box">
+                                <p><strong>Verksamhets-ID:</strong> #{{ business[0] }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+ 
+                <div class="profile-layout">
+ 
+                    <div class="profile-edit-box">
+                        <h3>Redigera profilinformation</h3>
+ 
+                        <form method="POST" action="{{ url_for('update_business') }}">
+ 
+                            <label for="company_name">Verksamhetsnamn</label>
+                            <input
+                                type="text"
+                                name="company_name"
+                                value="{{ business[1] if business else '' }}"
+                                required
+                            >
+ 
+                            <label for="description">Beskrivning</label>
+                            <textarea
+                                name="description"
+                                rows="5"
+                                required
+                            >{{ business[3] if business else '' }}</textarea>
+ 
+                            <label for="phone">Telefonnummer</label>
+                            <input
+                                type="text"
+                                name="phone"
+                                value="{{ business[2] if business else '' }}"
+                                required
+                            >
+ 
+                            <label for="email">E-postadress</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value="{{ business[5] if business else '' }}"
+                                required
+                            >
+ 
+                            <label>Kategori</label>
+                            <select name="category">
+                                <option value="Brunch" {% if business and business[4] == "Brunch" %}selected{% endif %}>Brunch</option>
+                                <option value="Smått & mingel" {% if business and business[4] == "Smått & mingel" %}selected{% endif %}>Smått & mingel</option>
+                                <option value="Middag & festmat" {% if business and business[4] == "Middag & festmat" %}selected{% endif %}>Middag & festmat</option>
+                                <option value="Buffé" {% if business and business[4] == "Buffé" %}selected{% endif %}>Buffé</option>
+                                <option value="Bakverk & sött" {% if business and business[4] == "Bakverk & sött" %}selected{% endif %}>Bakverk & sött</option>
+                                <option value="Vegetariskt" {% if business and business[4] == "Vegetariskt" %}selected{% endif %}>Vegetariskt</option>
+                            </select>
+ 
+                            <button type="submit">Spara ändringar</button>
+ 
+                        </form>
+ 
+                        <form method="POST" action="{{ url_for('upload_profile_image') }}" enctype="multipart/form-data">
+                            <label for="profile_image">Ladda upp profilbild</label>
+                            <input
+                                type="file"
+                                name="profile_image"
+                                id="profile_image"
+                                accept=".jpg,.jpeg,.png"
+                                required
+                            >
+                            <button type="submit">Ladda upp bild</button>
+                        </form>
+                    </div>
+ 
+                    <div class="profile-preview">
+ 
+                        <div class="preview-card">
+                            <h1>{{ business[1] if business else '' }}</h1>
+                            <p class="preview-description">{{ business[3] if business else '' }}</p>
+                            <div class="preview-contact">
+                                <h4>Kontakt</h4>
+                                <p>{{ business[2] if business else '' }}</p>
+                                <p>{{ business[5] if business else '' }}</p>
+                            </div>
+                        </div>
+ 
+                        <h3 class="service-title">Lägg till tjänst</h3>
+ 
+                        <form action="{{ url_for('create_service') }}" method="POST" enctype="multipart/form-data" class="service-form">
+                            <input type="text" name="item_name" placeholder="Tjänstens namn" required>
+                            <textarea name="description" placeholder="Beskrivning"></textarea>
+                            <input type="number" name="price" placeholder="Pris" required>
+                            <label for="service_image">Bild på tjänsten</label>
+                            <input type="file" name="service_image" id="service_image" accept=".jpg,.jpeg,.png">
+                            <button type="submit">Lägg till tjänst</button>
+                        </form>
+ 
+                        <div class="bookings-box">
+                            <h3>Era bokade tjänster</h3>
+                            {% if bookings %}
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Kund</th>
+                                            <th>Telefon</th>
+                                            <th>Datum</th>
+                                            <th>Tjänst</th>
+                                            <th>Antal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for booking in bookings %}
+                                            <tr>
+                                                <td>{{ booking[2] }}</td>
+                                                <td>{{ booking[3] }}</td>
+                                                <td>{{ booking[1].strftime('%Y-%m-%d %H:%M') }}</td>
+                                                <td>{{ booking[4] }}</td>
+                                                <td>{{ booking[5] }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p>Du har inga bokningar ännu.</p>
+                            {% endif %}
+                        </div>
+ 
+                        <div class="delete-account-box">
+                            <h3>Kontoinställningar</h3>
+                            <p>Radering av ditt konto är permanent och kan inte ångras. All din data tas bort enligt GDPR.</p>
+                            <form action="{{ url_for('delete_account') }}" method="POST"
+                                  onsubmit="return confirm('Är du säker? Detta raderar ditt konto och all data permanent.')">
+                                <button type="submit" class="delete-account-btn">Radera mitt konto</button>
+                            </form>
+                        </div>
+ 
+                    </div>
+                </div>
+            </main>
         </div>
-        
-        <h3 class="service-title">Lägg till tjänst</h3>
-
-        <form action="{{ url_for('create_service') }}" method="POST" enctype="multipart/form-data" class="service-form">
-        
-        <input type="text" name="menynamn" placeholder="Tjänstens namn" required>
-
-    <textarea name="beskrivning" placeholder="Beskrivning"></textarea>
-
-    <input type="number" name="pris" placeholder="Pris" required>
-
-    <label for="service_image">Bild på tjänsten</label>
-
-    <input type="file" name="service_image" id="service_image" accept=".jpg,.jpeg,.png">
-
-    <button type="submit">Lägg till tjänst</button>
-
-</form>
-
-
-<div class="bookings-box">
-    <h3>Era bokade tjänster</h3>
-    {% if bokningar %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Kund</th>
-                    <th>Telefon</th>
-                    <th>Datum</th>
-                    <th>Tjänst</th>
-                    <th>Antal</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for bokning in bokningar %}
-                <tr>
-                    <td>{{ bokning [2] }}</td>
-                    <td>{{ bokning [3] }}</td>
-                    <td>{{ bokning [1].strftime('%Y-%m-%d %H:%M') }}</td>
-                    <td>{{ bokning [4] }}</td>
-                    <td>{{ bokning [5] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        {% else %}
-            <p>Du har inga bokningar ännu.</p>
-        {% endif %}
-    </div>
-    <!-- Radera konto -->
-        <div class="delete-account-box">
-            <h3>Kontoinställningar</h3>
-            <p>Radering av ditt konto är permanent och kan inte ångras. All din data tas bort enligt GDPR.</p>
-            <form action="{{ url_for('delete_account') }}" method="POST"
-                  onsubmit="return confirm('Är du säker? Detta raderar ditt konto och all data permanent.')">
-                <button type="submit" class="delete-account-btn">Radera mitt konto</button>
-            </form>
-        </div>
-    </div>
-    </div>
-
+    </body>
+</html>

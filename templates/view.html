@@ -62,16 +62,16 @@
                             <h3>{{ service.name }}</h3>
 
                             <p class="card-service-desc">{{ service.description }}</p>
-                            <p class="card-pris"><span>{{ service.price }}</span> kr</p>
+                            <p class="card-price"><span>{{ service.price }}</span> kr</p>
 
                             <div class="stepper-control">
                                 <button class="remove-btn-small" 
-                                        data-pris="{{ service.price }}" 
+                                        data-price="{{ service.price }}" 
                                         data-namn="{{ service.name }}"
                                         data-index="{{ loop.index }}">-</button>
                                 <span class="item-count" id="count-{{ loop.index }}">0</span>
                                 <button class="add-btn-stepper" 
-                                        data-pris="{{ service.price }}" 
+                                        data-price="{{ service.price }}" 
                                         data-namn="{{ service.name }}"
                                         data-index="{{ loop.index }}">+</button>
                             </div>
@@ -119,8 +119,8 @@
                                 </div>
 
                                 <div class="input-group">
-                                <label for="hemadress">Hemadress</label>
-                                <input type="text" name="hemadress" placeholder="Hemadress" required>
+                                <label for="address">Hemadress</label>
+                                <input type="text" name="address" placeholder="Hemadress" required>
                                 </div>
 
                                 <div class="input-group">
@@ -129,12 +129,12 @@
                                 </div>
 
                                 <div class="input-group">
-                                <label for="telefonnummer">Telefonnummer</label>
-                                <input type="tel" name="telefonnummer" placeholder="Telefonnummer">
+                                <label for="phone">Telefonnummer</label>
+                                <input type="tel" name="phone" placeholder="Telefonnummer">
                                 </div>
 
                                 <input type="hidden" name="order_data" id="order_data_input">
-                                <input type="hidden" name="total_pris" id="total_pris_input">
+                                <input type="hidden" name="total_price" id="total_price_input">
 
                                 <div class="submit-container">
                                     <button type="submit" class="submit-btn">Beställ</button>

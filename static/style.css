@@ -1,3 +1,4 @@
+ · CSS
 /*----------------------------Body----------------------------*/
 body{
     width: 100%;
@@ -511,7 +512,7 @@ footer img{
     color: #333;
 }
 
-.card-pris {
+.card-price {
     margin: 0;
     font-weight: bold;
     color: #555;
@@ -1383,8 +1384,8 @@ footer img{
         min-height: 290px;
     }
 
-     /* Kategorisidorna (kategori.html) */
-    #kategori-nav{
+     /* Kategorisidorna (category.html) */
+    #category-nav{
         min-height: 290px;
     }
 
@@ -1496,14 +1497,14 @@ footer img{
         display: inline-block;
     }
 
-    /* Kategorisidorna (kategori.html) */
-    #kategori-nav {
+    /* Kategorisidorna (category.html) */
+    #category-nav {
         min-height: 180px;
         padding-top: 20px;
         padding-bottom: 20px;
     }
 
-    #kategori-nav {  /* Eventuellt lägga till kategori-main här som i startsidan */
+    #category-nav {  /* Eventuellt lägga till category-main här som i startsidan */
         padding-left: 40px;
         padding-right: 40px;
     }

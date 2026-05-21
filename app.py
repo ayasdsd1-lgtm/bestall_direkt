@@ -127,7 +127,7 @@ def category(category_name):
         print("Fel vid kategori:", e)
         companies = []
 
-    return render_template("kategori.html", name=display_name, companies=companies)
+    return render_template("category.html", name=display_name, companies=companies)
 
 # -------------------------------------------------------
 # VIEW
