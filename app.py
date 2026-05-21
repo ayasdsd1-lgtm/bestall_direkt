@@ -233,13 +233,13 @@ def send_order_confirmation_email(to_email, customer_name):
     message["To"] = to_email
 
     message.set_content(f"""Hej {customer_name}! Tack för din beställning hos Beställ Direkt. 
-Vi har tagit emot din beställning och verksamheten kommer att hantera den så snart som möjligt. 
-    
-Vänliga hälsningar, Beställ Direkt""")
+                        Vi har tagit emot din beställning och verksamheten kommer att hantera den så snart som möjligt. 
+                        Vänliga hälsningar, Beställ Direkt""")
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
         smtp.login(sender_email, sender_password)
         smtp.send_message(message)
+
 
 @app.route('/skapa_bestallning', methods=['POST'])
 def create_order():
