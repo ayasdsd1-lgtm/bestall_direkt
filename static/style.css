@@ -1,4 +1,3 @@
- · CSS
 /*----------------------------Body----------------------------*/
 body{
     width: 100%;
@@ -7,16 +6,6 @@ body{
     font-family: 'Rosarivo', serif;
     background: #F7F3EE;
 }
-
-/* Global reset: formulärelement ärver inte font-family automatiskt */
-input,
-button,
-textarea,
-select,
-h1, h2, h3, h4, h5, h6 {
-    font-family: inherit;
-} 
-
 
 /*----------------------------Header----------------------------*/
 header{
