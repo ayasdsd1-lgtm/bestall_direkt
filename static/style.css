@@ -1441,7 +1441,7 @@ footer img{
         min-width: 600px;
     }
 
-    /* Kategorisidan (Kategori.html) */
+    /* Kategorisidan (category.html) */
 
     #grid-cards {
         grid-template-columns: 1fr;
@@ -1454,7 +1454,7 @@ footer img{
     main {
         padding: 10px 20px;
     }
-    /* Search (Search.html) */
+    /* Search (search.html) */
 
     #search-nav{
         min-height: 290px;
