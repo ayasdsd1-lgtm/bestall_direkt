@@ -323,7 +323,7 @@ def login():
         cursor.execute("""
             SELECT 
                 v.verksamhet_id,
-                f.losenord
+                f.password
              FROM public.foretagare f
              LEFT JOIN public.verksamhet v
                 ON f.company_id = v.company_id
@@ -464,7 +464,7 @@ def register():
 
         cursor.execute(
             """INSERT INTO public.foretagare
-               (company_name, personnummer, email, telefon, losenord)
+               (company_name, personal_identity_number, email, phone, password)
                VALUES (%s, %s, %s, %s, %s)""",
             (name, personal_identity_number, email, phone, hashat_losenord)
         )
@@ -959,16 +959,16 @@ def admin_dashboard():
         return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
-    cursor.execute("SELECT company_id, company_name, email, blockera FROM public.foretagare ORDER BY company_id DESC")
+    cursor.execute("SELECT company_id, company_name, email, blocked FROM public.foretagare ORDER BY company_id DESC")
     foretagare = cursor.fetchall()
     return render_template("admin_dashboard.html", foretagare=foretagare)
 
-@app.route("/admin/blockera/<int:id>")
+@app.route("/admin/blocked/<int:id>")
 def toggle_company_status(id):
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
-    cursor.execute("UPDATE public.foretagare SET blockera = NOT blockera WHERE company_id = %s", (id,))
+    cursor.execute("UPDATE public.foretagare SET blocked = NOT blocked WHERE company_id = %s", (id,))
     conn.commit()
     return redirect(url_for("admin_dashboard"))
 
