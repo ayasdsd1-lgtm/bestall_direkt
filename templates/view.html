@@ -45,7 +45,7 @@
         <main>
             <header class="view-header">
                 <h1>  {{ company.name}} </h1> 
-                <p> {{company.adress}} </p> 
+                <p> {{company.address}} </p> 
                 </header>
 
             <div class="view-container">
@@ -55,23 +55,23 @@
                         <h2>Våra tjänster</h2>
                         {% for service in company.services %}
                         <div class="view-card" data-namn="{{service.name}}">
-                            {% if service.bild_url %}
-                                <img src="{{ service.bild_url }}" alt="{{ service.name }}" class="service-image">
+                            {% if service.image_url %}
+                                <img src="{{ service.image_url }}" alt="{{ service.name }}" class="service-image">
                             {% endif %}
 
                             <h3>{{ service.name }}</h3>
 
-                            <p class="card-service-desc">{{ service.beskrivning }}</p>
-                            <p class="card-pris"><span>{{ service.pris }}</span> kr</p>
+                            <p class="card-service-desc">{{ service.description }}</p>
+                            <p class="card-pris"><span>{{ service.price }}</span> kr</p>
 
                             <div class="stepper-control">
                                 <button class="remove-btn-small" 
-                                        data-pris="{{ service.pris }}" 
+                                        data-pris="{{ service.price }}" 
                                         data-namn="{{ service.name }}"
                                         data-index="{{ loop.index }}">-</button>
                                 <span class="item-count" id="count-{{ loop.index }}">0</span>
                                 <button class="add-btn-stepper" 
-                                        data-pris="{{ service.pris }}" 
+                                        data-pris="{{ service.price }}" 
                                         data-namn="{{ service.name }}"
                                         data-index="{{ loop.index }}">+</button>
                             </div>
@@ -92,12 +92,12 @@
                     <section>
                         <h3>Kontakt</h3>
                         <p>{{ company.phone }}</p>
-                        <p>{{ company.epost }}</p>
+                        <p>{{ company.email }}</p>
                     </section>
 
                     <section class="view-about-box">
                         <h3>Om oss</h3>
-                        <p>{{ company.beskrivning}}</p>
+                        <p>{{ company.description}}</p>
                     </section>
 
                     <section class="total-box">
@@ -114,8 +114,8 @@
                             <form action="{{ url_for('create_order') }}" method="POST" id="checkout-form">
                                 
                                 <div class="input-group">
-                                <label for="kund_namn">Fullständigt namn</label>
-                                <input type="text" name="kund_namn" placeholder="Fullständigt namn" required>
+                                <label for="customer_name">Fullständigt namn</label>
+                                <input type="text" name="customer_name" placeholder="Fullständigt namn" required>
                                 </div>
 
                                 <div class="input-group">
@@ -124,8 +124,8 @@
                                 </div>
 
                                 <div class="input-group">
-                                <label for="epost">E-postadress</label>
-                                <input type="email" name="epost" placeholder="E-postadress" required>
+                                <label for="email">E-postadress</label>
+                                <input type="email" name="email" placeholder="E-postadress" required>
                                 </div>
 
                                 <div class="input-group">

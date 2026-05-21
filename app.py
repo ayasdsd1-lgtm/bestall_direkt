@@ -139,7 +139,6 @@ def category(category_name):
 def view_company(company_id):
     """
     Visar företagssidan för ett specifikt företag baserat på company_id i URL:en.
-    OBS: Använder testdata tills företagstabellen i databasen är kopplad.
     HTML-sida: view.html
     """
 
@@ -175,11 +174,11 @@ def view_company(company_id):
         # Gör om databassvaret till dictionary
         company = {
             "name": company_data[0],
-            "adress": company_data[1],
+            "address": company_data[1],
             "phone": company_data[2],
-            "beskrivning": company_data[3],
-            "kategori": company_data[4],
-            "epost": company_data[5],
+            "description": company_data[3],
+            "category": company_data[4],
+            "email": company_data[5],
             "logo_url": company_data[6],
             "services": []
         }
@@ -195,16 +194,16 @@ def view_company(company_id):
             WHERE verksamhet_id = %s
         """, (company_id,))
 
-        meny = cursor.fetchall()
+        menu_items = cursor.fetchall()
 
         # Lägg till tjänster i listan
-        for item in meny:
+        for item in menu_items:
 
             company["services"].append({
                 "name": item[0],
-                "beskrivning": item[1],
-                "pris": item[2],
-                "bild_url": item[3]
+                "description": item[1],
+                "price": item[2],
+                "image_url": item[3]
             })
 
         return render_template(
@@ -222,7 +221,7 @@ def view_company(company_id):
 
 def send_order_confirmation_email(to_email, customer_name):
     """
-    Sends a confirmation email after a customer has placed an order.
+    Skickar ett orderbekräftelse via mejl efter en kund har lagt en beställning
     """
 
     sender_email = os.getenv("MAIL_USERNAME")
@@ -251,9 +250,9 @@ def create_order():
     HTML-sida: view.html
     """
     
-    name = request.form.get('kund_namn')
-    email = request.form.get('epost')
-    phone = request.form.get('telefonnummer')
+    name = request.form.get('customer_name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
 
     cursor = conn.cursor()
 
@@ -265,16 +264,16 @@ def create_order():
             RETURNING kund_id
         """, (name, email, phone))
 
-        kund_id = cursor.fetchone()[0]
+        customer_id = cursor.fetchone()[0]
 
         # skapa beställlning 
         cursor.execute("""
             INSERT INTO public.bestallningar (kund_id, verksamhet_id, status)
             VALUES (%s, %s, %s)
             RETURNING bestallning_id
-        """, (kund_id, 5, 'pending'))
+        """, (customer_id, 5, 'pending'))
 
-        bestallning_id = cursor.fetchone()[0]
+        order_id = cursor.fetchone()[0]
         
         conn.commit()
 
