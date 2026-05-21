@@ -464,7 +464,7 @@ def register():
 
         cursor.execute(
             """INSERT INTO public.foretagare
-               (foretagsnamn, personnummer, email, telefon, losenord)
+               (company_name, personnummer, email, telefon, losenord)
                VALUES (%s, %s, %s, %s, %s)""",
             (name, personal_identity_number, email, phone, hashat_losenord)
         )
@@ -959,7 +959,7 @@ def admin_dashboard():
         return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
-    cursor.execute("SELECT company_id, foretagsnamn, email, blockera FROM public.foretagare ORDER BY company_id DESC")
+    cursor.execute("SELECT company_id, company_name, email, blockera FROM public.foretagare ORDER BY company_id DESC")
     foretagare = cursor.fetchall()
     return render_template("admin_dashboard.html", foretagare=foretagare)
 
