@@ -334,7 +334,7 @@ def login():
 
         if user:
 
-            verksamhet_id = user[0]
+            company_id = user[0]
             stored_password = user[1]
 
             if check_password_hash(stored_password, password):
@@ -365,7 +365,6 @@ def login():
             fel="Något gick fel, försök igen"
         )
     
-
 # -------------------------------------------------------
 # REGISTRERING
 # -------------------------------------------------------
@@ -527,7 +526,7 @@ def delete_account():
         verksamhet_row = cursor.fetchone()
 
         if verksamhet_row:
-            verksamhet_id = verksamhet_row[0]
+            company_id = verksamhet_row[0]
 
             # Radera beställningsrader
             cursor.execute("""
@@ -536,24 +535,24 @@ def delete_account():
                     SELECT bestallning_id FROM public.bestallningar
                     WHERE verksamhet_id = %s
                 )
-            """, (verksamhet_id,))
+            """, (company_id,))
 
             # Radera beställningar
             cursor.execute(
                 "DELETE FROM public.bestallningar WHERE verksamhet_id = %s",
-                (verksamhet_id,)
+                (company_id,)
             )
 
             # Radera meny
             cursor.execute(
                 "DELETE FROM public.meny WHERE verksamhet_id = %s",
-                (verksamhet_id,)
+                (company_id,)
             )
 
             # Radera verksamhet
             cursor.execute(
                 "DELETE FROM public.verksamhet WHERE verksamhet_id = %s",
-                (verksamhet_id,)
+                (company_id,)
             )
 
         # Radera företagaren
@@ -650,14 +649,14 @@ def profile():
                 "profile.html", 
                 bokningar=bokningar, 
                 verksamhet=verksamhet,
-                verksamhet_id=verksamhet[0]
+                company_id=verksamhet[0]
             )
         else:
             return render_template(
                 "profile.html", 
                 bokningar=bokningar, 
                 verksamhet=None,
-                verksamhet_id=None
+                company_id=None
             )
 
     except Exception as e:
@@ -824,14 +823,14 @@ def create_business():
                 email
             ))
 
-            verksamhet_id = cursor.fetchone()[0]
+            company_id = cursor.fetchone()[0]
 
             conn.commit()
 
             return redirect(
                 url_for(
                     "view_company",
-                    company_id=verksamhet_id
+                    company_id=company_id
                 )
             )
 
@@ -898,7 +897,7 @@ def create_service():
         verksamhet_row = cursor.fetchone()
         if not verksamhet_row:
             return "Ingen verksamhet kopplad till kontot", 403
-        verksamhet_id = verksamhet_row[0]
+        company_id = verksamhet_row[0]
 
         cursor.execute("""
             INSERT INTO public.meny
@@ -911,7 +910,7 @@ def create_service():
             )
             VALUES (%s, %s, %s, %s, %s)
         """, (
-            verksamhet_id,
+            company_id,
             menynamn,
             beskrivning,
             pris,
