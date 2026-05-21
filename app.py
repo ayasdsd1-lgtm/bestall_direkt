@@ -299,7 +299,6 @@ def create_order():
 
 @app.route("/logga-in")
 def login_page():
-
     """
     Visar inloggningssidan för företagare
     Länken i HTML ska se ut: {{ url_for('login_page') }}
@@ -310,6 +309,9 @@ def login_page():
 
 @app.route("/login", methods=["POST"])
 def login():
+    """
+    Hanterar inloggning
+    """
 
     email = request.form["email"]
     password = request.form["password"]
