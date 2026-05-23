@@ -15,7 +15,7 @@
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 </a>
 
-                <a id="for-foretag" href="{{ url_for('login_page') }}"> För företag</a>
+                <a class="for-company" href="{{ url_for('login_page') }}"> För företag</a>
             </header>
 
             <nav class="nav">     
@@ -62,7 +62,7 @@
                     </p>
                 </section>
                 
-                <section id="om-oss">
+                <section id="about-us">
                     <h2>Om Beställ Direkt</h2>
                     <p>
                         Idén till Beställ Direkt föddes ur ett växande problem: svårigheten att hitta bra catering via sociala medier.
@@ -92,7 +92,7 @@
             <section class="footer_box">
                 <p><a href="{{ url_for('login_page') }}">Företagsinloggning</a></p>
                 <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
-                <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+                <p><a href="{{ url_for('info', _anchor='about-us') }}">Om Beställ Direkt</a></p>
                 <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
                 <p><a href="{{ url_for('admin_login') }}">Admin</a></p>
             </section>

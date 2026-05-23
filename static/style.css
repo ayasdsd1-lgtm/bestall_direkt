@@ -19,7 +19,7 @@ header a img{
     width: auto;
 }
 
-#for-foretag{
+.for-company{
     margin-left: auto;
     text-decoration: none;
     color: #462009;
@@ -297,7 +297,7 @@ footer img{
     height: 50px;
 }
 
-#lank-till-registrering{
+.link-register{
     background-color: #746a63;
     border: 1px solid #462009;
     color: white;
@@ -307,7 +307,7 @@ footer img{
     transition: background-color 0.3s ease;
 }
 
-#lank-till-registrering:hover {
+.link-register:hover {
     background-color: #a79b92;
     cursor: pointer;
 }
@@ -511,7 +511,7 @@ footer img{
     color: #333;
 }
 
-.card-pris {
+.card-price {
     margin: 0;
     font-weight: bold;
     color: #555;
@@ -539,14 +539,13 @@ footer img{
     display: block;
 }
 
-
-#produkt-lista{
+#product-list{
     list-style: none;
     padding: 0;
     margin: 15px o;
 }
 
-#produkt-lista li{
+#product-list li{
     padding: 10px 0;
     display: flex;
     justify-content: space-between;
@@ -554,7 +553,7 @@ footer img{
     color: #555;
 }
 
-.summering {
+#sum {
     margin-top: 10px;
     padding-top: 10px;
 }
@@ -574,7 +573,7 @@ footer img{
     line-height: 1.4;
 }
 
-#produkt-lista {
+#product-list {
     list-style: none;
     padding: 0;
     margin: 20px 0;
@@ -582,7 +581,7 @@ footer img{
     overflow-y: auto;
 }
 
-#produkt-lista li:last-child {
+#product-list li:last-child {
     border-bottom: none;
 }
 
@@ -769,13 +768,13 @@ footer img{
     padding-top: 20px;
 }
 
-#om-oss p{
+#about-us p{
     padding-left: 50px;
     margin-top: 0;
     margin-bottom: 15px;
 }
 
-#om-oss h2{
+#about-us h2{
     padding-top: 30px;
 }
 
@@ -789,7 +788,6 @@ footer img{
 }
 
 /*------------------------------------- Profil Sidan ------------------------------------------*/
-
 
 .profile-layout{
     display: grid;
@@ -1362,7 +1360,7 @@ footer img{
         gap: 10px; 
     }
 
-    #for-foretag {
+    .for-company{
         margin: 0;
     }
 
@@ -1383,8 +1381,8 @@ footer img{
         min-height: 290px;
     }
 
-     /* Kategorisidorna (kategori.html) */
-    #kategori-nav{
+     /* Kategorisidorna (category.html) */
+    #category-nav{
         min-height: 290px;
     }
 
@@ -1440,7 +1438,7 @@ footer img{
         min-width: 600px;
     }
 
-    /* Kategorisidan (Kategori.html) */
+    /* Kategorisidan (category.html) */
 
     #grid-cards {
         grid-template-columns: 1fr;
@@ -1453,7 +1451,7 @@ footer img{
     main {
         padding: 10px 20px;
     }
-    /* Search (Search.html) */
+    /* Search (search.html) */
 
     #search-nav{
         min-height: 290px;
@@ -1490,20 +1488,20 @@ footer img{
     }
 
     /* Inloggsidan (log_in.html) */
-    #lank-till-registrering {
+    .link-register {
         padding: 8px 16px;
         font-size: 0.9rem;
         display: inline-block;
     }
 
-    /* Kategorisidorna (kategori.html) */
-    #kategori-nav {
+    /* Kategorisidorna (category.html) */
+    #category-nav {
         min-height: 180px;
         padding-top: 20px;
         padding-bottom: 20px;
     }
 
-    #kategori-nav {  /* Eventuellt lägga till kategori-main här som i startsidan */
+    #category-nav {  /* Eventuellt lägga till category-main här som i startsidan */
         padding-left: 40px;
         padding-right: 40px;
     }

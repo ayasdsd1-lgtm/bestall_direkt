@@ -2,7 +2,7 @@
 <html lang="sv">
     <head>
         <meta charset="utf-8">
-        <title>Beställ Direkt - {{ foretag.name }}</title> <!--DATABAS-->
+        <title>Beställ Direkt - {{ company.name }}</title> <!--DATABAS-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ url_for('static', filename='style.css') }}" type="text/css" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=search">
@@ -16,9 +16,9 @@
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 </a>
                 {% if session.get('user') %} 
-                    <a id="for-foretag" href="{{ url_for('profile') }}">Min profil</a>
+                    <a class="for-company" href="{{ url_for('profile') }}">Min profil</a>
                 {% else %}
-                <a id="for-foretag" href="{{ url_for('login_page') }}"> För företag</a>
+                <a class="for-company" href="{{ url_for('login_page') }}"> För företag</a>
                 {% endif %}
             </header>
 
@@ -44,8 +44,8 @@
 
         <main>
             <header class="view-header">
-                <h1>  {{ foretag.name}} </h1> 
-                <p> {{foretag.adress}} </p> 
+                <h1>  {{ company.name}} </h1> 
+                <p> {{company.address}} </p> 
                 </header>
 
             <div class="view-container">
@@ -53,26 +53,26 @@
 
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
-                        {% for tjanst in foretag.tjanster %}
-                        <div class="view-card" data-namn="{{tjanst.name}}">
-                            {% if tjanst.bild_url %}
-                                <img src="{{ tjanst.bild_url }}" alt="{{ tjanst.name }}" class="service-image">
+                        {% for service in company.services %}
+                        <div class="view-card" data-name="{{service.name}}">
+                            {% if service.image_url %}
+                                <img src="{{ service.image_url }}" alt="{{ service.name }}" class="service-image">
                             {% endif %}
 
-                            <h3>{{ tjanst.name }}</h3>
+                            <h3>{{ service.name }}</h3>
 
-                            <p class="card-service-desc">{{ tjanst.beskrivning }}</p>
-                            <p class="card-pris"><span>{{ tjanst.pris }}</span> kr</p>
+                            <p class="card-service-desc">{{ service.description }}</p>
+                            <p class="card-price"><span>{{ service.price }}</span> kr</p>
 
                             <div class="stepper-control">
                                 <button class="remove-btn-small" 
-                                        data-pris="{{ tjanst.pris }}" 
-                                        data-namn="{{ tjanst.name }}"
+                                        data-price="{{ service.price }}" 
+                                        data-name="{{ service.name }}"
                                         data-index="{{ loop.index }}">-</button>
                                 <span class="item-count" id="count-{{ loop.index }}">0</span>
                                 <button class="add-btn-stepper" 
-                                        data-pris="{{ tjanst.pris }}" 
-                                        data-namn="{{ tjanst.name }}"
+                                        data-price="{{ service.price }}" 
+                                        data-name="{{ service.name }}"
                                         data-index="{{ loop.index }}">+</button>
                             </div>
                         </div>
@@ -82,8 +82,8 @@
 
                 <div class="right-column">
                     <section class="logo-box">
-                        {% if foretag.logo_url %}
-                            <img src="{{ foretag.logo_url }}" alt="{{ foretag.name }} logo">
+                        {% if company.logo_url %}
+                            <img src="{{ company.logo_url }}" alt="{{ company.name }} logo">
                         {% else %}
                             <p>Ingen profilbild uppladdad.</p>
                         {% endif %}
@@ -91,22 +91,22 @@
 
                     <section>
                         <h3>Kontakt</h3>
-                        <p>{{ foretag.phone }}</p>
-                        <p>{{ foretag.epost }}</p>
+                        <p>{{ company.phone }}</p>
+                        <p>{{ company.email }}</p>
                     </section>
 
                     <section class="view-about-box">
                         <h3>Om oss</h3>
-                        <p>{{ foretag.beskrivning}}</p>
+                        <p>{{ company.description}}</p>
                     </section>
 
                     <section class="total-box">
                         <h3>Prisöversikt</h3>
-                        <ul id="produkt-lista"></ul>
+                        <ul id="product-list"></ul>
 
-                        <div class="summering">
-                            <p>Antal varor: <span id="antal-produkter">0</span> st</p>
-                            <p><strong>Totalt:</strong> <span id="total-summa">0</span> kr</p>
+                        <div id="sum">
+                            <p>Antal varor: <span id="num-products">0</span> st</p>
+                            <p><strong>Totalt:</strong> <span id="total-sum">0</span> kr</p>
                         </div>
 
                         <div id="order-form-container" class="order-form-box">
@@ -114,27 +114,27 @@
                             <form action="{{ url_for('create_order') }}" method="POST" id="checkout-form">
                                 
                                 <div class="input-group">
-                                <label for="kund_namn">Fullständigt namn</label>
-                                <input type="text" name="kund_namn" placeholder="Fullständigt namn" required>
+                                <label for="customer_name">Fullständigt namn</label>
+                                <input type="text" name="customer_name" placeholder="Fullständigt namn" required>
                                 </div>
 
                                 <div class="input-group">
-                                <label for="hemadress">Hemadress</label>
-                                <input type="text" name="hemadress" placeholder="Hemadress" required>
+                                <label for="address">Hemadress</label>
+                                <input type="text" name="address" placeholder="Hemadress" required>
                                 </div>
 
                                 <div class="input-group">
-                                <label for="epost">E-postadress</label>
-                                <input type="email" name="epost" placeholder="E-postadress" required>
+                                <label for="email">E-postadress</label>
+                                <input type="email" name="email" placeholder="E-postadress" required>
                                 </div>
 
                                 <div class="input-group">
-                                <label for="telefonnummer">Telefonnummer</label>
-                                <input type="tel" name="telefonnummer" placeholder="Telefonnummer">
+                                <label for="phone">Telefonnummer</label>
+                                <input type="tel" name="phone" placeholder="Telefonnummer">
                                 </div>
 
                                 <input type="hidden" name="order_data" id="order_data_input">
-                                <input type="hidden" name="total_pris" id="total_pris_input">
+                                <input type="hidden" name="total_price" id="total_price_input">
 
                                 <div class="submit-container">
                                     <button type="submit" class="submit-btn">Beställ</button>
@@ -157,7 +157,7 @@
             <section class="footer_box">
                 <p><a href="{{ url_for('login_page') }}">Företagsinloggning</a></p>
                 <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
-                <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+                <p><a href="{{ url_for('info', _anchor='about-us') }}">Om Beställ Direkt</a></p>
                 <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
                 <p><a href="{{ url_for('admin_login') }}">Admin</a></p>
             </section>
