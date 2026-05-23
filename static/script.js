@@ -176,9 +176,9 @@ if (registerForm) {
         document.querySelectorAll(".error-border").forEach(el => el.classList.remove("error-border"));
  
         const name = document.getElementById("name");
-        const personnummer = document.getElementById("personal_identity_number");
+        const personalIdentityNumber = document.getElementById("personal_identity_number");
         const email = document.getElementById("email");
-        const tel = document.getElementById("phone");
+        const phone = document.getElementById("phone");
         const password = document.getElementById("password");
  
         function showError(input, message) {

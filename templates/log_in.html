@@ -26,8 +26,8 @@
                 <h2>Logga in</h2>
 
                 <!-- ← LAGT TILL: visas bara om ett felmeddelande skickas från app.py -->
-                {% if fel %}
-                    <p class="fel-meddelande">{{ fel }}</p>
+                {% if error %}
+                    <p class="error-meddelande">{{ error }}</p>
                 {% endif %}
 
                 <form class="login-form" action="/login" method="POST">
