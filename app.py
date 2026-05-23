@@ -353,12 +353,12 @@ def login():
             else:
                 return render_template(
                     "log_in.html",
-                    fel="Fel lösenord"
+                    error ="Fel lösenord"
                 )
         else:
             return render_template(
                 "log_in.html",
-                fel="Användare finns inte"
+                error="Användare finns inte"
             )
         
     except Exception as e:
@@ -366,7 +366,7 @@ def login():
         print("FEL:", e)
         return render_template(
             "log_in.html",
-            fel="Något gick fel, försök igen"
+            error="Något gick fel, försök igen"
         )
     
 # -------------------------------------------------------
@@ -843,7 +843,7 @@ def create_business():
 
             return render_template(
                 "create_business.html",
-                fel="Kunde inte skapa verksamheten"
+                error="Kunde inte skapa verksamheten"
             )
 
     return render_template("create_business.html")
@@ -946,7 +946,7 @@ def admin_login():
             session["admin_logged_in"] = True
             return redirect(url_for("admin_dashboard"))
         else:
-            return render_template("admin_login.html", fel="Felaktiga admin-uppgifter")
+            return render_template("admin_login.html", error="Felaktiga admin-uppgifter")
             
     return render_template("admin_login.html")
 
