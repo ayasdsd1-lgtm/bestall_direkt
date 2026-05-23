@@ -1,4 +1,6 @@
+# används import email?
 import email
+# används from sqlite3 import Cursor?
 from sqlite3 import Cursor
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,6 +9,7 @@ import psycopg2
 import os
 import re      # Används för formatvalidering vid registrering
 from flask import jsonify
+# används import json?
 import json
 # orderbekräftelse funktion
 import smtplib
@@ -63,6 +66,8 @@ def search():  # route behålls /search — redan engelska
     2. Söker i databasen efter företag som matchar sökordet
     3. Skickar resultatet till search.html för visning
     """
+    
+    # behöver ändra försiktigt med databas
 
     query = request.args.get("q", "").strip()
 
@@ -100,6 +105,8 @@ def category(category_name):
     """
     Visar alla företag som tillhör en viss kategori.
     """
+
+    # behöver ändra försiktigt med databas
 
     categories = {
     "Brunch": "Brunch",
@@ -139,6 +146,8 @@ def view_company(company_id):
     Visar företagssidan för ett specifikt företag baserat på company_id i URL:en.
     HTML-sida: view.html
     """
+
+    # behöver ändra försiktigt med databas
 
     cursor = conn.cursor()
 
