@@ -54,7 +54,7 @@
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
                         {% for service in company.services %}
-                        <div class="view-card" data-namn="{{service.name}}">
+                        <div class="view-card" data-name="{{service.name}}">
                             {% if service.image_url %}
                                 <img src="{{ service.image_url }}" alt="{{ service.name }}" class="service-image">
                             {% endif %}
@@ -67,12 +67,12 @@
                             <div class="stepper-control">
                                 <button class="remove-btn-small" 
                                         data-price="{{ service.price }}" 
-                                        data-namn="{{ service.name }}"
+                                        data-name="{{ service.name }}"
                                         data-index="{{ loop.index }}">-</button>
                                 <span class="item-count" id="count-{{ loop.index }}">0</span>
                                 <button class="add-btn-stepper" 
                                         data-price="{{ service.price }}" 
-                                        data-namn="{{ service.name }}"
+                                        data-name="{{ service.name }}"
                                         data-index="{{ loop.index }}">+</button>
                             </div>
                         </div>
@@ -102,11 +102,11 @@
 
                     <section class="total-box">
                         <h3>Prisöversikt</h3>
-                        <ul id="produkt-lista"></ul>
+                        <ul id="product-list"></ul>
 
                         <div class="summering">
-                            <p>Antal varor: <span id="antal-produkter">0</span> st</p>
-                            <p><strong>Totalt:</strong> <span id="total-summa">0</span> kr</p>
+                            <p>Antal varor: <span id="num-products">0</span> st</p>
+                            <p><strong>Totalt:</strong> <span id="total-sum">0</span> kr</p>
                         </div>
 
                         <div id="order-form-container" class="order-form-box">

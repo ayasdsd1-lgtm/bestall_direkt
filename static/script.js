@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let totalItems = 0;
     const cart = {};
  
-    const totalDisplay = document.getElementById('total-summa');
-    const itemCountDisplay = document.getElementById('antal-produkter');
-    const productListDisplay = document.getElementById('produkt-lista');
+    const totalDisplay = document.getElementById('total-sum');
+    const itemCountDisplay = document.getElementById('num-products');
+    const productListDisplay = document.getElementById('product-list');
  
     const checkoutForm = document.getElementById('checkout-form');
     const orderDataInput = document.getElementById('order_data_input');
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.add-btn-stepper').forEach(button => {
         button.addEventListener('click', function() {
             const price = parseFloat(this.getAttribute('data-price'));
-            const name = this.getAttribute('data-namn');
+            const name = this.getAttribute('data-name');
             const index = this.getAttribute('data-index');
             addItem(name, price, index);
         });
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // minus knappen för tjänstekort//
     document.querySelectorAll('.remove-btn-small').forEach(button => {
         button.addEventListener('click', function() {
-            const name = this.getAttribute('data-namn');
+            const name = this.getAttribute('data-name');
             removeItem(name);
         });
     });
