@@ -19,7 +19,7 @@
                 <!-- lägg till profil nedan-->
 
                 <!-- länk till inlogg-->
-                <a id="for-foretag" href="{{ url_for('login_page') }}"> För företag</a>
+                <a class="for-company" href="{{ url_for('login_page') }}"> För företag</a>
             </header>
             <main class="login-wrapper">
                 <div class="login-box">
@@ -107,14 +107,14 @@
 
 
                     <h3>Har du redan ett konto?</h3>
-                    <a id="lank-till-registrering" href="{{ url_for('login_page') }}"> Logga in</a>
+                    <a class="link-register" href="{{ url_for('login_page') }}"> Logga in</a>
                 </div>
             </main>
             <footer>
             <section class="footer_box">
                 <p><a href="{{ url_for('login_page') }}">Företagsinloggning</a></p>
                 <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
-                <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+                <p><a href="{{ url_for('info', _anchor='about-us') }}">Om Beställ Direkt</a></p>
                 <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
                 <p><a href="{{ url_for('admin_login') }}">Admin</a></p>
             </section>

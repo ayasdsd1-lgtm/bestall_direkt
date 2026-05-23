@@ -14,7 +14,7 @@
                 <a href="{{ url_for('home') }}">
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="logo">
                 </a>
-                <a id="for-foretag" href="{{ url_for('login_page') }}">För företag</a>
+                <a class="for-company" href="{{ url_for('login_page') }}">För företag</a>
             </header>
  
             <nav class="nav" id="search-nav">
@@ -53,7 +53,7 @@
                 <section class="footer_box">
                     <p><a href="{{ url_for('login_page') }}">Företagsinloggning</a></p>
                     <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
-                    <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+                    <p><a href="{{ url_for('info', _anchor='about-us') }}">Om Beställ Direkt</a></p>
                     <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
                     <p><a href="{{ url_for('admin_login') }}">Admin</a></p>
                 </section>

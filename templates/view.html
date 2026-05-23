@@ -16,9 +16,9 @@
                     <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
                 </a>
                 {% if session.get('user') %} 
-                    <a id="for-foretag" href="{{ url_for('profile') }}">Min profil</a>
+                    <a class="for-company" href="{{ url_for('profile') }}">Min profil</a>
                 {% else %}
-                <a id="for-foretag" href="{{ url_for('login_page') }}"> För företag</a>
+                <a class="for-company" href="{{ url_for('login_page') }}"> För företag</a>
                 {% endif %}
             </header>
 
@@ -104,7 +104,7 @@
                         <h3>Prisöversikt</h3>
                         <ul id="product-list"></ul>
 
-                        <div class="summering">
+                        <div id="sum">
                             <p>Antal varor: <span id="num-products">0</span> st</p>
                             <p><strong>Totalt:</strong> <span id="total-sum">0</span> kr</p>
                         </div>
@@ -157,7 +157,7 @@
             <section class="footer_box">
                 <p><a href="{{ url_for('login_page') }}">Företagsinloggning</a></p>
                 <p><a href="{{ url_for('info', _anchor='policy') }}">Policy</a></p>
-                <p><a href="{{ url_for('info', _anchor='om-oss') }}">Om Beställ Direkt</a></p>
+                <p><a href="{{ url_for('info', _anchor='about-us') }}">Om Beställ Direkt</a></p>
                 <p><a href="{{ url_for('info', _anchor='support') }}">Support</a></p>
                 <p><a href="{{ url_for('admin_login') }}">Admin</a></p>
             </section>
