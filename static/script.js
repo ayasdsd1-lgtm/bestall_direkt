@@ -1,4 +1,6 @@
-//-----------------------------------View.html-----------------------------------//
+
+
+//--------------------------------------------------View.html-------------------------------------------------//
  
 //=========== Prisöversikt och lägg till knapparna ===========//
 document.addEventListener('DOMContentLoaded', function() {
@@ -163,15 +165,15 @@ document.addEventListener('DOMContentLoaded', function() {
 });
  
  
-//-----------------------------------register.html-----------------------------------//
+//-----------------------------------------------------register.html------------------------------------------------------//
 const registerForm = document.getElementById("register-form");
  
 if (registerForm) {
     registerForm.addEventListener("submit", function(e) {
         let hasError = false;
  
-        document.querySelectorAll(".klient-fel").forEach(el => el.remove());
-        document.querySelectorAll(".fel-border").forEach(el => el.classList.remove("fel-border"));
+        document.querySelectorAll(".client-error").forEach(el => el.remove());
+        document.querySelectorAll(".error-border").forEach(el => el.classList.remove("error-border"));
  
         const name = document.getElementById("name");
         const personnummer = document.getElementById("personal_identity_number");
@@ -180,9 +182,9 @@ if (registerForm) {
         const password = document.getElementById("password");
  
         function showError(input, message) {
-            input.classList.add("fel-border");
+            input.classList.add("error-border");
             const span = document.createElement("span");
-            span.className = "falt-fel klient-fel";
+            span.className = "field-error client-error";
             span.textContent = message;
             input.insertAdjacentElement("afterend", span);
             hasError = true;

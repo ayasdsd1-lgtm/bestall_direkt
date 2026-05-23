@@ -43,11 +43,11 @@
                                 id="name"
                                 name="name"
                                 placeholder="Ditt fullständiga namn"
-                                class="register-input {% if errors and errors.name %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.name %}error-border{% endif %}"
                                 value="{{ prev.name if prev else '' }}"
                                 required>
                         {% if errors and errors.name %}
-                            <span class="falt-fel">{{ errors.name }}</span>
+                            <span class="field-error">{{ errors.name }}</span>
                         {% endif %}
  
                         <!-- Personnummer -->
@@ -56,11 +56,11 @@
                                 id="personal_identity_number"
                                 name="personal_identity_number"
                                 placeholder="YYYYMMDD-XXXX"
-                                class="register-input {% if errors and errors.personal_identity_number %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.personal_identity_number %}error-border{% endif %}"
                                 value="{{ prev.personal_identity_number if prev else '' }}"
                                 required>
                         {% if errors and errors.personal_identity_number %}
-                            <span class="falt-fel">{{ errors.personal_identity_number }}</span>
+                            <span class="field-error">{{ errors.personal_identity_number }}</span>
                         {% endif %}
  
                         <!-- E-post -->
@@ -69,11 +69,11 @@
                                 id="email"
                                 name="email"
                                 placeholder="E-postadress"
-                                class="register-input {% if errors and errors.email %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.email %}error-border{% endif %}"
                                 value="{{ prev.email if prev else '' }}"
                                 required>
                         {% if errors and errors.email %}
-                            <span class="falt-fel">{{ errors.email }}</span>
+                            <span class="field-error">{{ errors.email }}</span>
                         {% endif %}
  
                         <!-- Mobilnummer -->
@@ -82,11 +82,11 @@
                                 id="phone"
                                 name="phone"
                                 placeholder="0701234567"
-                                class="register-input {% if errors and errors.phone %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.phone %}error-border{% endif %}"
                                 value="{{ prev.phone if prev else '' }}"
                                 required>
                         {% if errors and errors.phone %}
-                            <span class="falt-fel">{{ errors.phone }}</span>
+                            <span class="field-error">{{ errors.phone }}</span>
                         {% endif %}
  
                         <!-- Lösenord -->
@@ -95,10 +95,10 @@
                                 id="password"
                                 name="password"
                                 placeholder="Lösenord"
-                                class="register-input {% if errors and errors.password %}fel-border{% endif %}"
+                                class="register-input {% if errors and errors.password %}error-border{% endif %}"
                                 required>
                         {% if errors and errors.password %}
-                            <span class="falt-fel">{{ errors.password }}</span>
+                            <span class="field-error">{{ errors.password }}</span>
                         {% endif %}
  
                         <button class="login-button" type="submit">Registrera</button>
