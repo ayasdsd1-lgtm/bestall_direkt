@@ -157,21 +157,20 @@ def view_company(company_id):
         # Hämta verksamhetsinformation
         cursor.execute("""
             SELECT
-              v.company_name,
-              v.address,
-              v.phone,
-              v.description,
-              v.category,
-              v.email,
-                v.logo_url
-            FROM public.company_business v
-            JOIN public.company_owner f
-                ON v.company_id = f.company_id
-            WHERE v.company_business_id = %s
+                company_name,
+                address,
+                phone,
+                description,
+                category,
+                email,
+                logo_url
+            FROM public.company_business
+            WHERE company_business_id = %s
         """, (company_id,))
-                
-        
+
         company_data = cursor.fetchone()
+        print("Resultat från databasen:", company_data)
+        print("company_business_id från URL:", company_id)
 
         print("Verksamhet:", company_data)  
 
@@ -673,11 +672,12 @@ def profile():
         services = cursor.fetchall()
 
         if business:
+            print("business =", business)
             return render_template(
                 "profile.html", 
                 bookings=bookings, 
                 business=business,
-                company_id=business[7],
+                company_id=business[0],
                 is_active=business[8]
             )
         else:
@@ -688,7 +688,7 @@ def profile():
                 company_id=None,
                 is_active=True
             )
-
+        
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
         return "Ett fel uppstod", 500
