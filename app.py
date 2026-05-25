@@ -2,6 +2,7 @@
 import email
 # används from sqlite3 import Cursor?
 from sqlite3 import Cursor
+import traceback
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -648,7 +649,8 @@ def profile():
                 category,
                 email,
                 logo_url,
-                company_id 
+                company_id,
+                address 
             FROM public.company_business   
             WHERE company_id = (
                     SELECT company_id
@@ -659,12 +661,27 @@ def profile():
 
         business = cursor.fetchone()
 
+        cursor.execute("""
+            SELECT
+                menu_item_id,
+                item_name,
+                description,
+                price,
+                image_url
+            FROM public.menu_item
+            WHERE company_business_id = %s
+            ORDER BY menu_item_id DESC
+        """, (business[0],))
+
+        services = cursor.fetchall()
+
         if business:
             return render_template(
                 "profile.html", 
                 bookings=bookings, 
                 business=business,
-                company_id=business[7]
+                company_id=business[0],
+                services=services
             )
         else:
             return render_template(
@@ -672,7 +689,7 @@ def profile():
                 bookings=bookings, 
                 business=None,
                 company_id=None
-            )
+            )   
 
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
@@ -732,6 +749,7 @@ def update_business():
     phone = request.form.get("phone")
     category = request.form.get("category")
     email = request.form.get("email")
+    address = request.form.get("address")
 
     cursor = conn.cursor()
 
@@ -759,7 +777,8 @@ def update_business():
                 description = %s,
                 phone = %s,
                 category = %s,
-                email = %s
+                email = %s,
+                address = %s
             WHERE company_id = %s
         """, (
             company_name,
@@ -767,6 +786,7 @@ def update_business():
             phone,
             category,
             email,
+            address,
             company_id
         ))
 
@@ -940,6 +960,117 @@ def create_service():
         print(e)
 
         return "Kunde inte skapa tjänst", 500
+    
+
+@app.route("/update-service/<int:service_id>", methods=["POST"])
+def update_service(service_id):
+
+    if "user" not in session:
+        return redirect(url_for("login_page"))
+
+    item_name = request.form.get("item_name")
+    description = request.form.get("description")
+    price = request.form.get("price")
+
+    service_image = request.files.get("service_image")
+
+    cursor = conn.cursor()
+
+    try:
+
+        image_path = None
+
+        if (
+            service_image
+            and service_image.filename != ""
+            and allowed_file(service_image.filename)
+        ):
+
+            original_filename = secure_filename(service_image.filename)
+
+            file_extension = original_filename.rsplit(".", 1)[1].lower()
+
+            unique_filename = f"{uuid.uuid4()}.{file_extension}"
+
+            service_image.save(
+                os.path.join(
+                    app.config["UPLOAD_FOLDER"],
+                    unique_filename
+                )
+            )
+
+            image_path = url_for(
+                "static",
+                filename=f"uploads/{unique_filename}"
+            )
+
+            cursor.execute("""
+                UPDATE public.menu_item
+                SET
+                    item_name = %s,
+                    description = %s,
+                    price = %s,
+                    image_url = %s
+                WHERE menu_item_id = %s
+            """, (
+                item_name,
+                description,
+                price,
+                image_path,
+                service_id
+            ))
+
+        else:
+
+            cursor.execute("""
+                UPDATE public.menu_item
+                SET
+                    item_name = %s,
+                    description = %s,
+                    price = %s
+                WHERE menu_item_id = %s
+            """, (
+                item_name,
+                description,
+                price,
+                service_id
+            ))
+
+        conn.commit()
+
+        return redirect(url_for("profile"))
+
+    except Exception:
+        conn.rollback()
+        traceback.print_exc()
+        return "Kunde inte uppdatera tjänst", 500
+    
+@app.route("/delete-service/<int:service_id>")
+def delete_service(service_id):
+
+    if "user" not in session:
+        return redirect(url_for("login_page"))
+
+    cursor = conn.cursor()
+
+    try:
+
+        cursor.execute("""
+            DELETE FROM public.menu_item
+            WHERE menu_item_id = %s
+        """, (service_id,))
+
+        conn.commit()
+
+        return redirect(url_for("profile"))
+
+    except Exception as e:
+
+        conn.rollback()
+
+        print("Fel vid radering:", e)
+
+        return "Kunde inte radera tjänst", 500
 
 # -------------------------------------------------------
 # Admin
