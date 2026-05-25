@@ -648,6 +648,7 @@ def profile():
                 v.category,
                 v.email,
                 v.logo_url,
+                v.address,
                 v.company_id,
                 f.is_active 
             FROM public.company_business v
@@ -670,13 +671,16 @@ def profile():
         """, (business[0],))
 
         services = cursor.fetchall()
+        print("Services:", services)
 
         if business:
             print("business =", business)
+
             return render_template(
                 "profile.html", 
                 bookings=bookings, 
                 business=business,
+                services=services,
                 company_id=business[0],
                 is_active=business[8]
             )

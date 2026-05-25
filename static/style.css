@@ -589,14 +589,11 @@ footer img{
     border-bottom: none;
 }
 
-.service-image {
-    width: 100%;
-    max-width: 300px;
-    height: 200px;
+.service-image  {
+    width: 200px;
+    height: 120px;
     object-fit: cover;
     border-radius: 8px;
-    margin-bottom: 15px;
-    flex-shrink: 0;
 }
 
 /*-knappar för lägg till och ta bort-*/

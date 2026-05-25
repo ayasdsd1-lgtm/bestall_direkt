@@ -90,10 +90,10 @@
 
                             <label for="address">Adress</label>
                             <input
-                            type="text"
-                            name="address"
-                            value="{{ business[8] if business else '' }}"
-                            placeholder="Ange adress"
+                                type="text"
+                                 name="address"
+                                value="{{ business[7] if business else '' }}"
+                                placeholder="Ange adress"
                             >
  
                             <label>Kategori</label>
@@ -151,7 +151,7 @@
                         {% for service in services %}
                         <form action="{{ url_for('update_service', service_id=service[0]) }}" method="POST" enctype="multipart/form-data"class="service-form">
                               {% if service[4] %}
-                              <img src="{{ service[4] }}" alt="{{ service[1] }}" class="service-preview-image">
+                              <img src="{{ service[4] }}" alt="{{ service[1] }}" class="service-image">
                             
                               {% endif %}
                               <input
