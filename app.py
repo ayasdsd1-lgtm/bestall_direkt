@@ -641,21 +641,19 @@ def profile():
         # Hämta verksamhetsinformation
         cursor.execute("""
             SELECT
-                company_business_id,
-                company_name,
-                phone,
-                description,
-                category,
-                email,
-                logo_url,
-                company_id 
-            FROM public.company_business   
-            WHERE company_id = (
-                    SELECT company_id
-                       FROM public.company_owner
-                       WHERE email = %s
-                    )
-                       """, (email,))
+                v.company_business_id,
+                v.company_name,
+                v.phone,
+                v.description,
+                v.category,
+                v.email,
+                v.logo_url,
+                v.company_id,
+                f.is_active 
+            FROM public.company_business v
+            JOIN public.company_owner f ON v.company_id = f.company_id   
+            WHERE f.email = %s
+        """, (email,))
 
         business = cursor.fetchone()
 
@@ -664,20 +662,48 @@ def profile():
                 "profile.html", 
                 bookings=bookings, 
                 business=business,
-                company_id=business[7]
+                company_id=business[7],
+                is_active=business[8]
             )
         else:
             return render_template(
                 "profile.html", 
                 bookings=bookings, 
                 business=None,
-                company_id=None
+                company_id=None,
+                is_active=True
             )
 
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
         return "Ett fel uppstod", 500
     
+
+@app.route('/toggle-status', methods=['POST'])
+def toggle_status():
+    """
+    Är till för att företag ska kunna aktivera/avaktivera sina verksamheter
+    """
+    user_email = session.get('user')
+    if not user_email:
+        return redirect(url_for('login_page'))
+    
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            UPDATE public.company_owner
+            SET is_active = NOT is_active
+            WHERE email = %s
+        """, (user_email,))
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print("Det gick inte att ändra status. Vänligen försök senare")
+
+    return redirect(url_for('profile'))
+
+
+
 @app.route("/upload-profile-image", methods=["POST"])
 def upload_profile_image():
     if "user" not in session:
@@ -940,6 +966,9 @@ def create_service():
         print(e)
 
         return "Kunde inte skapa tjänst", 500
+
+
+
 
 # -------------------------------------------------------
 # Admin

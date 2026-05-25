@@ -170,6 +170,24 @@
  
                         <div class="delete-account-box">
                             <h3>Kontoinställningar</h3>
+                            {% if business %}
+                                <div class="status-toggle-section">
+                                    <h4>Företagssidans status</h4>
+                                    {% if is_active == false %}
+                                        <p>Din verksamhetssida är just nu <strong>inaktiv</strong> för kunder </p>
+                                        <form action="{{ url_for('toggle_status') }}" method="POST">
+                                            <button type="submit" class="status-btn btn-activate"> Aktivera Företagssidan </button>
+                                        </form>
+                                    {% else %}
+                                        <p>Din verksamhetssida är just nu <strong>aktiv</strong> för kunder </p>
+                                        <form action="{{ url_for('toggle_status') }}" method="POST">
+                                            <button type="submit" class="status-btn btn-deactivate"> Inaktivera Företagssidan </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+
                             <p>Radering av ditt konto är permanent och kan inte ångras. All din data tas bort enligt GDPR.</p>
                             <form action="{{ url_for('delete_account') }}" method="POST"
                                   onsubmit="return confirm('Är du säker? Detta raderar ditt konto och all data permanent.')">
