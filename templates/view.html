@@ -60,26 +60,27 @@
                         <h2>Våra tjänster</h2>
                         {% for service in company.services %}
                         <div class="view-card" data-name="{{service.name}}">
+                            <div class="card-content"> 
+                                <h3>{{ service.name }}</h3>
+
+                                <p class="card-service-desc">{{ service.description }}</p>
+                                <p class="card-price"><span>{{ service.price }}</span> kr</p>
+
+                                <div class="stepper-control">
+                                    <button class="remove-btn-small" 
+                                            data-price="{{ service.price }}" 
+                                            data-name="{{ service.name }}"
+                                            data-index="{{ loop.index }}">-</button>
+                                    <span class="item-count" id="count-{{ loop.index }}">0</span>
+                                    <button class="add-btn-stepper" 
+                                            data-price="{{ service.price }}" 
+                                            data-name="{{ service.name }}"
+                                            data-index="{{ loop.index }}">+</button>
+                                </div>
+                            </div>
                             {% if service.image_url %}
                                 <img src="{{ service.image_url }}" alt="{{ service.name }}" class="service-image">
                             {% endif %}
-
-                            <h3>{{ service.name }}</h3>
-
-                            <p class="card-service-desc">{{ service.description }}</p>
-                            <p class="card-price"><span>{{ service.price }}</span> kr</p>
-
-                            <div class="stepper-control">
-                                <button class="remove-btn-small" 
-                                        data-price="{{ service.price }}" 
-                                        data-name="{{ service.name }}"
-                                        data-index="{{ loop.index }}">-</button>
-                                <span class="item-count" id="count-{{ loop.index }}">0</span>
-                                <button class="add-btn-stepper" 
-                                        data-price="{{ service.price }}" 
-                                        data-name="{{ service.name }}"
-                                        data-index="{{ loop.index }}">+</button>
-                            </div>
                         </div>
                         {% endfor %}
                     </section>

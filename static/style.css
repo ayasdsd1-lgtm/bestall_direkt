@@ -498,7 +498,25 @@ footer img{
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease;
+    
+    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
 }
+
+.card-content {
+    flex: 1;
+}
+
+.service-image
+
+
+
+
+
 
 .view-card:hover {
     transform: translateY(-3px);
@@ -591,8 +609,8 @@ footer img{
     height: 200px;
     object-fit: cover;
     border-radius: 8px;
-    display: block;
     margin-bottom: 15px;
+    flex-shrink: 0;
 }
 
 
