@@ -44,8 +44,13 @@
 
         <main>
             <header class="view-header">
-                <h1>  {{ company.name}} </h1> 
-                <p> {{company.address}} </p> 
+                <h1>  {{ company.name }} </h1> 
+                <p> {{ company.address }} </p> 
+                <section class="view-about-box">
+                    <h3>Om oss</h3>
+                    <p>{{ company.description}}</p>
+                </section>
+
                 </header>
 
             <div class="view-container">
@@ -93,11 +98,6 @@
                         <h3>Kontakt</h3>
                         <p>{{ company.phone }}</p>
                         <p>{{ company.email }}</p>
-                    </section>
-
-                    <section class="view-about-box">
-                        <h3>Om oss</h3>
-                        <p>{{ company.description}}</p>
                     </section>
 
                     <section class="total-box">
