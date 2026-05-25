@@ -87,6 +87,14 @@
                                 value="{{ business[5] if business else '' }}"
                                 required
                             >
+
+                            <label for="address">Adress</label>
+                            <input
+                            type="text"
+                            name="address"
+                            value="{{ business[8] if business else '' }}"
+                            placeholder="Ange adress"
+                            >
  
                             <label>Kategori</label>
                             <select name="category">
@@ -137,6 +145,49 @@
                             <input type="file" name="service_image" id="service_image" accept=".jpg,.jpeg,.png">
                             <button type="submit">Lägg till tjänst</button>
                         </form>
+
+                        <h3 class="service-title">Mina tjänster</h3>
+
+                        {% for service in services %}
+                        <form action="{{ url_for('update_service', service_id=service[0]) }}" method="POST" enctype="multipart/form-data"class="service-form">
+                              {% if service[4] %}
+                              <img src="{{ service[4] }}" alt="{{ service[1] }}" class="service-preview-image">
+                            
+                              {% endif %}
+                              <input
+                              type="text"
+                              name="item_name"
+                              value="{{ service[1] }}"
+                              placeholder="Tjänstens namn"
+                              required
+                           >
+                        
+                           <textarea name="description" placeholder="Beskrivning">{{ service[2] }}</textarea>
+                             <input
+                                    type="number"
+                                    name="price"
+                                    value="{{ service[3] }}"
+                                    placeholder="Pris"
+                                    required
+                                >
+
+                            <input
+                                   type="file"
+                                   name="service_image"
+                                   accept=".jpg,.jpeg,.png"
+                                >
+
+                                <div class="service-actions">
+                                    <button type="submit">Spara ändringar</button>
+
+                                        <a href="{{ url_for('delete_service', service_id=service[0]) }}" class="delete-service-btn" onclick="return confirm('Vill du verkligen radera tjänsten?')">Radera tjänst</a>
+                                
+                                </div>
+
+                        </form>
+                        {% endfor %}
+
+
  
                         <div class="bookings-box">
                             <h3>Era bokade tjänster</h3>
