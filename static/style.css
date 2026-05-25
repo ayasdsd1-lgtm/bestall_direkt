@@ -1069,6 +1069,49 @@ footer img{
     border-color: #462009;
 }
 
+/*Aktivera/avaktivera knappen*/
+.status-toggle-section {
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.status-toggle-section h4 {
+    margin-bottom: 10px;
+    color: #462009;
+}
+
+.status-btn {
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    margin-top: 5px;
+    transition: background-color 0.2s;
+}
+
+.btn-activate {
+    background-color: #6c9d7f;
+}
+
+.btn-actiivate:hover {
+    background-color: #1e6639;
+}
+
+.btn-deactivate {
+    background-color: #8f512b;
+}
+
+.btn-deactivate:hover {
+    background-color: #703f21;
+}
+
+
+
 /* Formulär för att lägga till tjänst */
 .service-title {
     font-size: 1.7rem;
