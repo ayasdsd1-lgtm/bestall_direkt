@@ -144,11 +144,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
 
+            const phoneInput = inputs.phone.el;
+            const phoneRegex = /^[+]?[0-9\s-]{8,15}$/;
+
+            if (phoneInput && !phoneInput.classList.contains('input-error')) {
+                if (!phoneRegex.test(phoneInput.value.trim())) {
+                    hasErrors = true;
+                    phoneInput.classList.add('input-error');
+
+                    const errorSpan = document.createElement('span');
+                    errorSpan.className = 'field-error-msg';
+                    errorSpan.textContent = "Ange ett giltigt telefonnummer";
+                    phoneInput.parentNode.appendChild(errorSpan);
+                }
+            }
 
             if (hasErrors) {
                 const firstError = document.querySelector('.input-error');
                 if (firstError) {
-                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center'});
                 }
                 return;
             }
