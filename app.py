@@ -646,7 +646,9 @@ def profile():
                 phone,
                 description,
                 category,
-                email 
+                email,
+                logo_url,
+                company_id 
             FROM public.company_business   
             WHERE company_id = (
                     SELECT company_id
@@ -662,7 +664,7 @@ def profile():
                 "profile.html", 
                 bookings=bookings, 
                 business=business,
-                company_id=business[0]
+                company_id=business[7]
             )
         else:
             return render_template(
