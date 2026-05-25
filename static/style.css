@@ -673,6 +673,20 @@ footer img{
 }
 
 /*-formulär boxen-*/
+
+.input-group input.input-error {
+    border: 2px solid #e11d48;
+    background-color: #fff5f5;
+}
+
+.field-error-msg {
+    color: #e11d48;
+    font-size: 13px;
+    margin-top: 5px;
+    display: block;
+    font-weight: 500;
+}
+
 .order-form-box{
     margin-top: 25px;
     padding-top: 20px;

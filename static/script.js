@@ -111,11 +111,48 @@ document.addEventListener('DOMContentLoaded', function() {
         checkoutForm.addEventListener('submit', function(e) {
             e.preventDefault();
  
+            const inputs = {
+                customer_name: { el: document.getElementById('customer_name'), msg: "Du måste fylla i ditt namn"},
+                address: { el: document.getElementById('address'), msg: "Du måste fylla i din adress"},
+                email: { el: document.getElementById('email'), msg: "Du måste fylla i din e-postadress"},
+                phone: { el: document.getElementById('phone'), msg: "Du måste fylla i ditt telefonnummer"}
+            };
+
+            let hasErrors = false
+
+            document.querySelectorAll('.field-error-msg').forEach(el => el.remove());
+            Object.values(inputs).forEach(item => {
+                if (item.el) item.el.classList.remove('input-error');
+            });
+
             if (Object.keys(cart).length === 0) {
-                alert("Din Varukorg är tom!");
+                alert("Din varukorg är tom!");
                 return;
             }
- 
+
+            Object.values(inputs).forEach(item => {
+                if (item.el && !item.el.value.trim()) {
+                    hasErrors = true;
+                    
+                    item.el.classList.add('input-error');
+                    
+                    const errorSpan = document.createElement('span');
+                    errorSpan.className = 'field-error-msg';
+                    errorSpan.textContent = item.msg;
+                    
+                    item.el.parentNode.appendChild(errorSpan);
+                }
+            });
+
+
+            if (hasErrors) {
+                const firstError = document.querySelector('.input-error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
             let cartDataText = "";
             for (const [name, data] of Object.entries(cart)) {
                 cartDataText += `${name} (${data.quantity} st), `;
@@ -140,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                 } else {
-                    alert("Ett fel uppstod");
+                    alert("Ett fel uppstod på servern.");
                 }
             })
             .catch(error => {
