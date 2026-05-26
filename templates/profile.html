@@ -134,7 +134,8 @@
                                 <p>{{ business[5] if business else '' }}</p>
                             </div>
                         </div>
- 
+
+                        {% if business %}
                         <h3 class="service-title">Lägg till tjänst</h3>
  
                         <form action="{{ url_for('create_service') }}" method="POST" enctype="multipart/form-data" class="service-form">
@@ -146,7 +147,8 @@
                             <button type="submit">Lägg till tjänst</button>
                         </form>
 
-                        <h3 class="service-title">Mina tjänster</h3>
+                        <div class="services-box">
+                            <h3>Mina tjänster</h3>
 
                         {% for service in services %}
                         <form action="{{ url_for('update_service', service_id=service[0]) }}" method="POST" enctype="multipart/form-data"class="service-form">
@@ -159,8 +161,7 @@
                               name="item_name"
                               value="{{ service[1] }}"
                               placeholder="Tjänstens namn"
-                              required
-                           >
+                              required>
                         
                            <textarea name="description" placeholder="Beskrivning">{{ service[2] }}</textarea>
                              <input
@@ -168,14 +169,12 @@
                                     name="price"
                                     value="{{ service[3] }}"
                                     placeholder="Pris"
-                                    required
-                                >
+                                    required>
 
                             <input
                                    type="file"
                                    name="service_image"
-                                   accept=".jpg,.jpeg,.png"
-                                >
+                                   accept=".jpg,.jpeg,.png">
 
                                 <div class="service-actions">
                                     <button type="submit">Spara ändringar</button>
@@ -186,6 +185,13 @@
 
                         </form>
                         {% endfor %}
+                        </div>
+
+                        {% else %}
+                        <div class="notice-box">
+                            <p>Du måste skapa en verksamhet innan du kan lägga till tjänster.</p>
+                        </div>
+                        {% endif %}
 
 
  
