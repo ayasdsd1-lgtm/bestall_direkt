@@ -849,13 +849,19 @@ def create_business():
         try:
 
             # Hämta company_id från inloggad användare
+
+            session_email = session["user"]
             cursor.execute("""
                 SELECT company_id
                 FROM public.company_owner
                 WHERE email = %s
-            """, (email,))
+            """, (session_email,))
 
-            company_id = cursor.fetchone()[0]
+            owner = cursor.fetchone()
+
+            if not owner:
+                return "Ingen företagare kopplad till kontot", 403
+            company_id = owner[0]
 
             # Skapa verksamheten
             cursor.execute("""
@@ -887,7 +893,7 @@ def create_business():
 
             return redirect(
                 url_for(
-                    "view_company",
+                    "profile",
                     company_id=company_id
                 )
             )
@@ -895,6 +901,9 @@ def create_business():
         except Exception as e:
 
             conn.rollback()
+
+            import traceback
+            traceback.print_exc()
 
             print("Fel vid skapande av verksamhet:", e)
 
