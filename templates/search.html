@@ -39,6 +39,10 @@
                                     <a href="{{ url_for('view_company', company_id=company[0]) }}">
                                         <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ company[1] }}">
                                         <h3>{{ company[1] }}</h3>
+
+                                        {% if company[2] %}
+                                            <p class="card-description">{{ company[2] }}</p>
+                                        {% endif %}
                                     </a>
                                 </article>
                             {% endfor %}

@@ -120,7 +120,7 @@ main{
 
 #grid-cards{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
 }
 
@@ -128,6 +128,8 @@ main{
     background: transparent;
     transition: transform 0.2s ease;
     justify-items: stretch;
+    min-width: 0;
+    overflow: hidden;
 }
 
 /* gör hela kortet klickbart */
@@ -135,6 +137,8 @@ main{
     text-decoration: none;
     color: black;
     display: block;
+    width: 100%;
+    overflow: hidden;
 }
 
 /* bild */
@@ -143,6 +147,18 @@ main{
     height: 200px;
     object-fit: cover;
     border-radius: 12px;
+    display: block;
+}
+
+.card-description {
+    margin-top: 5px;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* rubrik i card */
