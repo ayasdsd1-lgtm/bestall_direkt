@@ -657,23 +657,21 @@ def profile():
         """, (email,))
 
         business = cursor.fetchone()
-
-        cursor.execute("""
-            SELECT
-                menu_item_id,
-                item_name,
-                description,
-                price,
-                image_url
-            FROM public.menu_item
-            WHERE company_business_id = %s
-            ORDER BY menu_item_id DESC
-        """, (business[0],))
-
-        services = cursor.fetchall()
-        print("Services:", services)
-
         if business:
+            cursor.execute("""
+                SELECT
+                    menu_item_id,
+                    item_name,
+                    description,
+                    price,
+                    image_url
+                FROM public.menu_item
+                WHERE company_business_id = %s
+                ORDER BY menu_item_id DESC
+            """, (business[0],))
+
+            services = cursor.fetchall()
+            print("Services:", services)        
             print("business =", business)
 
             return render_template(
@@ -683,7 +681,7 @@ def profile():
                 services=services,
                 company_id=business[0],
                 is_active=business[8]
-            )
+                )
         else:
             return render_template(
                 "profile.html", 
