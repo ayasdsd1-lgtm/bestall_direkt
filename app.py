@@ -455,6 +455,8 @@ def register():
     cursor = conn.cursor()
 
     try:
+
+        
         # Kolla om emailen redan är registrerad
         cursor.execute(
             "SELECT company_id FROM public.company_owner WHERE email = %s",
@@ -466,6 +468,30 @@ def register():
                 "register.html",
                 errors=errors,
                 prev={"name": name, "personal_identity_number": personal_identity_number, "email": email, "phone": phone}
+            )
+        
+        # Kolla om personnumret redan är registrerat
+        cursor.execute(
+            """
+            SELECT company_id
+            FROM public.company_owner
+            WHERE personal_identity_number = %s
+            """,
+            (personal_identity_number,)
+        )
+
+        if cursor.fetchone():
+            errors["personal_identity_number"] = "Detta personnummer är redan registrerat."
+
+            return render_template(
+                "register.html",
+                errors=errors,
+                prev={
+                    "name": name,
+                    "personal_identity_number": personal_identity_number,
+                    "email": email,
+                    "phone": phone
+                }
             )
 
         # Hasha lösenordet innan det sparas i databasen
