@@ -664,7 +664,7 @@ footer img{
 .field-error-msg {
     color: #e11d48;
     font-size: 13px;
-    margin-top: 5px;
+    margin-top: 1px;
     margin-bottom: 8px;
     display: block;
     font-weight: 500;
