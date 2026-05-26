@@ -47,7 +47,7 @@
                                 value="{{ prev.name if prev else '' }}"
                                 required>
                         {% if errors and errors.name %}
-                            <span class="field-error">{{ errors.name }}</span>
+                            <span class="field-error-msg">{{ errors.name }}</span>
                         {% endif %}
  
                         <!-- Personnummer -->
@@ -60,7 +60,7 @@
                                 value="{{ prev.personal_identity_number if prev else '' }}"
                                 required>
                         {% if errors and errors.personal_identity_number %}
-                            <span class="field-error">{{ errors.personal_identity_number }}</span>
+                            <span class="field-error-msg">{{ errors.personal_identity_number }}</span>
                         {% endif %}
  
                         <!-- E-post -->
@@ -73,7 +73,7 @@
                                 value="{{ prev.email if prev else '' }}"
                                 required>
                         {% if errors and errors.email %}
-                            <span class="field-error">{{ errors.email }}</span>
+                            <span class="field-error-msg">{{ errors.email }}</span>
                         {% endif %}
  
                         <!-- Mobilnummer -->
@@ -86,7 +86,7 @@
                                 value="{{ prev.phone if prev else '' }}"
                                 required>
                         {% if errors and errors.phone %}
-                            <span class="field-error">{{ errors.phone }}</span>
+                            <span class="field-error-msg">{{ errors.phone }}</span>
                         {% endif %}
  
                         <!-- Lösenord -->
@@ -98,7 +98,7 @@
                                 class="register-input {% if errors and errors.password %}error-border{% endif %}"
                                 required>
                         {% if errors and errors.password %}
-                            <span class="field-error">{{ errors.password }}</span>
+                            <span class="field-error-msg">{{ errors.password }}</span>
                         {% endif %}
  
                         <button class="login-button" type="submit">Registrera</button>
