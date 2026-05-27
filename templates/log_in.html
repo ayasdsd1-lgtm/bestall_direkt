@@ -9,17 +9,16 @@
         <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
     </head>
     <body>
-        <header>
-            <!-- titel -->
-            <a href="{{ url_for('home') }}">
-                <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
-            </a>
-            <!-- lägg till profil nedan-->
+        <header class="header-border">
+                <!-- titel -->
+                <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
+                </a>
+                <!-- lägg till profil nedan-->
 
-            <!-- länk till inlogg-->
-            <a class="for-company" href="{{ url_for('login_page') }}"> För företag</a>
+                <!-- länk till inlogg-->
+                <a class="for-company" href="{{ url_for('login_page') }}"> För företag</a>
         </header>
-
         <!--Logga in form-->
         <main class="login-wrapper">
             <div class="login-box">

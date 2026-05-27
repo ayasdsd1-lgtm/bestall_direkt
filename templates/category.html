@@ -26,6 +26,7 @@
         <nav class="nav" id="category-nav">
             <form action="/search" method="GET">
                 <div class="search">
+                    <span class="search-icon material-symbols-outlined">search</span>
                     <input class="search-input" type="search" name="q" placeholder="Vad vill du boka idag?">
                 </div>
             </form>
@@ -45,7 +46,7 @@
                                     <h3>{{ company[1] }}</h3>
 
                                     {% if company[2] %}
-                                        <p>{{ company[2] }}</p>
+                                        <p class="card-description">{{ company[2] }}</p>
                                     {% endif %}
                                 </a>
                             </article>

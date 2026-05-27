@@ -77,7 +77,7 @@ def search():  # route behålls /search — redan engelska
     try:
         cursor.execute(
             """
-           SELECT DISTINCT v.company_business_id, v.company_name, v.category
+           SELECT DISTINCT v.company_business_id, v.company_name, v.description
             FROM public.company_business v
             LEFT JOIN public.menu_item m ON m.company_business_id = v.company_business_id
             WHERE v.company_name ILIKE %s
@@ -455,6 +455,8 @@ def register():
     cursor = conn.cursor()
 
     try:
+
+        
         # Kolla om emailen redan är registrerad
         cursor.execute(
             "SELECT company_id FROM public.company_owner WHERE email = %s",
@@ -466,6 +468,30 @@ def register():
                 "register.html",
                 errors=errors,
                 prev={"name": name, "personal_identity_number": personal_identity_number, "email": email, "phone": phone}
+            )
+        
+        # Kolla om personnumret redan är registrerat
+        cursor.execute(
+            """
+            SELECT company_id
+            FROM public.company_owner
+            WHERE personal_identity_number = %s
+            """,
+            (personal_identity_number,)
+        )
+
+        if cursor.fetchone():
+            errors["personal_identity_number"] = "Detta personnummer är redan registrerat."
+
+            return render_template(
+                "register.html",
+                errors=errors,
+                prev={
+                    "name": name,
+                    "personal_identity_number": personal_identity_number,
+                    "email": email,
+                    "phone": phone
+                }
             )
 
         # Hasha lösenordet innan det sparas i databasen
@@ -849,13 +875,19 @@ def create_business():
         try:
 
             # Hämta company_id från inloggad användare
+
+            session_email = session["user"]
             cursor.execute("""
                 SELECT company_id
                 FROM public.company_owner
                 WHERE email = %s
-            """, (email,))
+            """, (session_email,))
 
-            company_id = cursor.fetchone()[0]
+            owner = cursor.fetchone()
+
+            if not owner:
+                return "Ingen företagare kopplad till kontot", 403
+            company_id = owner[0]
 
             # Skapa verksamheten
             cursor.execute("""
@@ -887,7 +919,7 @@ def create_business():
 
             return redirect(
                 url_for(
-                    "view_company",
+                    "profile",
                     company_id=company_id
                 )
             )
@@ -895,6 +927,9 @@ def create_business():
         except Exception as e:
 
             conn.rollback()
+
+            import traceback
+            traceback.print_exc()
 
             print("Fel vid skapande av verksamhet:", e)
 
