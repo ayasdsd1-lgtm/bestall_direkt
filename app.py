@@ -265,6 +265,10 @@ def create_order():
     email = request.form.get('email')
     phone = request.form.get('phone')
 
+    company_business_id = request.form.get('company_business_id')
+    if not company_business_id:
+        return jsonify({"success": False, "message": "Verksamhetens ID saknas. "}), 400
+
     cursor = conn.cursor()
 
     try:
@@ -282,7 +286,7 @@ def create_order():
             INSERT INTO public.orders (customer_id, company_business_id, status)
             VALUES (%s, %s, %s)
             RETURNING order_id
-        """, (customer_id, 5, 'pending'))
+        """, (customer_id, company_business_id, 'pending'))
 
         order_id = cursor.fetchone()[0]
         
@@ -883,7 +887,7 @@ def create_business():
 
             if not owner:
                 return "Ingen företagare kopplad till kontot", 403
-            company_id = owner[0]
+            owner_id = owner[0]
 
             # Skapa verksamheten
             cursor.execute("""
@@ -900,7 +904,7 @@ def create_business():
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 RETURNING company_business_id
             """, (
-                company_id,
+                owner_id,
                 company_name,
                 address,
                 phone,
@@ -909,24 +913,15 @@ def create_business():
                 email
             ))
 
-            company_id = cursor.fetchone()[0]
-
+            new_business_id = cursor.fetchone()[0]
             conn.commit()
 
-            return redirect(
-                url_for(
-                    "profile",
-                    company_id=company_id
-                )
-            )
+            return redirect(url_for("profile"))
 
         except Exception as e:
-
             conn.rollback()
-
             import traceback
             traceback.print_exc()
-
             print("Fel vid skapande av verksamhet:", e)
 
             return render_template(
