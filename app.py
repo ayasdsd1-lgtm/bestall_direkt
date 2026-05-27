@@ -643,28 +643,6 @@ def profile():
     cursor = conn.cursor()
 
     try:
-        query = """
-            SELECT
-                b.order_id,
-                b.date,
-                k.name AS customer_name,
-                k.phone,
-                m.item_name,
-                br.amount
-            FROM public.company_owner f
-            JOIN public.company_business v ON f.company_id = v.company_id
-            JOIN public.orders b ON v.company_business_id = b.company_business_id
-            JOIN public.customer k ON b.customer_id = k.customer_id
-            JOIN public.order_item br ON b.order_id = br.order_id
-            JOIN public.menu_item m ON br.menu_item_id = m.menu_item_id
-            WHERE f.email = %s
-            ORDER BY b.date DESC
-        """
-
-        cursor.execute(query, (email, ))
-        bookings = cursor.fetchall()
-
-        # Hämta verksamhetsinformation
         cursor.execute("""
             SELECT
                 v.company_business_id,
@@ -681,9 +659,36 @@ def profile():
             JOIN public.company_owner f ON v.company_id = f.company_id   
             WHERE f.email = %s
         """, (email,))
-
         business = cursor.fetchone()
-        if business:
+
+        bookings = []
+        services = []
+        company_id = None
+        is_active = True
+
+        if business: 
+            company_id = business[0]
+            is_active = business[9]
+
+            query_bookings = """
+                SELECT
+                    b.order_id,
+                    b.date,
+                    k.name AS customer_name,
+                    k.phone,
+                    m.item_name,
+                    br.amount
+                FROM public.orders b
+                JOIN public.customer k ON b.customer_id = k.customer_id
+                JOIN public.order_item br ON b.order_id = br.order_id
+                JOIN public.menu_item m ON br.menu_item_id = m.menu_item_id
+                WHERE b.company_business_id = %s
+                ORDER BY b.date DESC
+            """
+            cursor.execute(query_bookings, (company_id, ))
+            bookings = cursor.fetchall()
+
+
             cursor.execute("""
                 SELECT
                     menu_item_id,
@@ -694,33 +699,24 @@ def profile():
                 FROM public.menu_item
                 WHERE company_business_id = %s
                 ORDER BY menu_item_id DESC
-            """, (business[0],))
-
+            """, (company_id,))
             services = cursor.fetchall()
-            print("Services:", services)        
-            print("business =", business)
 
             return render_template(
                 "profile.html", 
                 bookings=bookings, 
                 business=business,
                 services=services,
-                company_id=business[0],
-                is_active=business[9]
+                company_id=company_id,
+                is_active=is_active
                 )
-        else:
-            return render_template(
-                "profile.html", 
-                bookings=bookings, 
-                business=None,
-                company_id=None,
-                is_active=True
-            )
         
     except Exception as e:
         print(f"Gick inte att ladda upp profilsidan: {e}")
         return "Ett fel uppstod", 500
     
+
+
 
 @app.route('/toggle-status', methods=['POST'])
 def toggle_status():
