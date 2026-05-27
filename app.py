@@ -980,6 +980,10 @@ def create_service():
     service_image = request.files.get("service_image")
     image_path = None
 
+    if service_image and service_image.filename != "" and not allowed_file(service_image.filename):
+        session["service_error"] = "Endast PNG, JPG och JPEG-filer är tillåtna."
+        return redirect(url_for("profile"))
+
     if service_image and service_image.filename != "" and allowed_file(service_image.filename):
 
         original_filename = secure_filename(service_image.filename)

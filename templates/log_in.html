@@ -26,7 +26,7 @@
 
                 <!-- ← LAGT TILL: visas bara om ett felmeddelande skickas från app.py -->
                 {% if error %}
-                    <p class="error-meddelande">{{ error }}</p>
+                    <p class="error-message">{{ error }}</p>
                 {% endif %}
 
                 <form class="login-form" action="/login" method="POST">
