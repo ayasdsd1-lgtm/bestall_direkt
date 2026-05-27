@@ -1238,7 +1238,9 @@ footer img{
 .service-form input[type="file"]::file-selector-button:hover{
     background-color: #6a3416;
 }
-
+.services-box .service-form {
+    margin-bottom: 25px; 
+}
 /*------------------------------------- Create Business --------------------------------------*/
 
 .create-business-wrapper{
