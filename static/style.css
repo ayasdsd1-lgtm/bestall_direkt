@@ -7,6 +7,10 @@ body{
     background: #F7F3EE;
 }
 
+button, input, select, textarea {
+    font-family: inherit;
+}
+
 /*----------------------------Header----------------------------*/
 header{
     display: flex;
@@ -368,6 +372,17 @@ footer img{
 #design{
     height: 500px;
     width: auto;
+}
+.error-meddelande {
+    color: #e11d48;
+    background-color: #fff5f5;
+    border: 1px solid #fca5a5;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 /*-------------------------------------View--------------------------------------*/
@@ -1142,6 +1157,33 @@ footer img{
     display: flex;
     flex-direction: column;
     gap: 18px;
+}
+.service-actions {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.service-actions .delete-service-btn {
+ 
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-sizing: border-box;
+    text-decoration: none;
+    
+    background-color: #5b2500;
+    color: white;
+    border: none;
+    display: inline-block;
+}
+
+.service-actions .delete-service-btn:hover {
+    background-color: #7b3a12;
 }
 
 .service-form input,
