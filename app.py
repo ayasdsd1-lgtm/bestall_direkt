@@ -77,7 +77,7 @@ def search():  # route behålls /search — redan engelska
     try:
         cursor.execute(
             """
-           SELECT DISTINCT v.company_business_id, v.company_name, v.category
+           SELECT DISTINCT v.company_business_id, v.company_name, v.description
             FROM public.company_business v
             LEFT JOIN public.menu_item m ON m.company_business_id = v.company_business_id
             WHERE v.company_name ILIKE %s
