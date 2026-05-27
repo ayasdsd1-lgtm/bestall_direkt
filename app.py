@@ -215,7 +215,8 @@ def view_company(company_id):
 
         return render_template(
             "view.html",
-            company=company
+            company=company,
+            company_id=company_id
         )
 
     except Exception as e:
