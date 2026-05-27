@@ -145,6 +145,9 @@
                             <input type="number" name="price" placeholder="Pris" required>
                             <label for="service_image">Bild på tjänsten</label>
                             <input type="file" name="service_image" id="service_image" accept=".jpg,.jpeg,.png">
+                            {% if service_error %}
+                                <p class="error-message">{{ service_error }}</p>
+                            {% endif %}
                             <button type="submit">Lägg till tjänst</button>
                         </form>
 
