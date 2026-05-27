@@ -307,7 +307,7 @@ def create_order():
             order_items = json.loads(order_data)
             for item in order_items:
                 cursor.execute("""
-                    INSERT INTO public.order.item
+                    INSERT INTO public.order_item
                     (
                         order_id,
                         menu_item_id,
