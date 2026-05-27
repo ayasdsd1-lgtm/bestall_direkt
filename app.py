@@ -706,7 +706,7 @@ def profile():
                 business=business,
                 services=services,
                 company_id=business[0],
-                is_active=business[8]
+                is_active=business[9]
                 )
         else:
             return render_template(
