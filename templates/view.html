@@ -58,7 +58,7 @@
                     <section class="view-service-box">
                         <h2>Våra tjänster</h2>
                         {% for service in company.services %}
-                        <div class="view-card" data-name="{{service.name}}">
+                        <div class="view-card" data-name="{{service.name}}" data-menu-id="{{ service.menu_item_id }}">
                             <div class="card-content"> 
                                 <h3>{{ service.name }}</h3>
 
@@ -121,7 +121,7 @@
 
                                 <div class="input-group">
                                 <label for="address">Hemadress</label>
-                                <input type="text" name="address" id=""address placeholder="Hemadress" required>
+                                <input type="text" name="address" id="address" placeholder="Hemadress" required>
                                 </div>
 
                                 <div class="input-group">

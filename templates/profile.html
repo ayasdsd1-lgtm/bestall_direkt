@@ -22,28 +22,30 @@
             </header>
  
             <main>
-                {% if business %}
-                    <div class="profile-header-content">
+                <div class="profile-header-content">
+                    {% if business %}
                         <h2 class="profile-title">Din verksamhet</h2>
  
                         <div class="profile-top-buttons">
                             <a href="{{ url_for('view_company', company_id=company_id) }}" class="profile-top-btn">
                                 Visa verksamhetssida
                             </a>
+                            <a href="{{ url_for('logout') }}" class="profile-top-btn">
+                                Logga ut
+                            </a>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="profile-header-content">
+                    {% else %}
                         <h2>Du har ingen verksamhet ännu</h2>
-                        <a href="{{ url_for('create_business') }}" class="profile-top-btn">
-                            Skapa verksamhet
-                        </a>
-                {% endif %}
- 
-                        <a href="{{ url_for('logout') }}" class="profile-top-btn">
-                            Logga ut
-                        </a>
- 
+                        <div class="profile-top-buttons">
+                            <a href="{{ url_for('create_business') }}" class="profile-top-btn">
+                                Skapa verksamhet
+                            </a>
+                            <a href="{{ url_for('logout') }}" class="profile-top-btn">
+                                Logga ut
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
                         {% if business %}
                             <div class="profile-id-box">
                                 <p><strong>Verksamhets-ID:</strong> #{{ business[0] }}</p>

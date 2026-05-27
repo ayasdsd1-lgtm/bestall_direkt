@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const orderDataInput = document.getElementById('order_data_input');
     const totalPriceInput = document.getElementById('total_price_input');
  
-    function addItem(name, price, index) {
+    function addItem(name, price, index, menuItemId) {
         totalAmount += price;
         totalItems += 1;
  
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
             cart[name] = {
                 quantity: 1,
                 price: price,
-                index: index
+                index: index,
+                menu_item_id: menuItemId
             };
         }
         updateCart();
@@ -58,7 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const price = parseFloat(this.getAttribute('data-price'));
             const name = this.getAttribute('data-name');
             const index = this.getAttribute('data-index');
-            addItem(name, price, index);
+            const card = this.closest('.view-card');
+            const menuItemId = card.getAttribute('data-menu-id');
+            addItem(name, price, index, menuItemId);
         });
     });
  
@@ -167,11 +170,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            let cartDataText = "";
+            const orderItems = [];
             for (const [name, data] of Object.entries(cart)) {
-                cartDataText += `${name} (${data.quantity} st), `;
+                orderItems.push({
+                    menu_item_id: data.menu_item_id,
+                    amount: data.quantity
+                });
             }
-            orderDataInput.value = cartDataText;
+            orderDataInput.value = JSON.stringify(orderItems);
             totalPriceInput.value = totalAmount;
  
             const formData = new FormData(this);

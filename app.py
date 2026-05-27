@@ -38,8 +38,15 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Databasanslutning via miljövariabel - Supabase kräver SSL
-conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
+#Läste att det är farligt att använda conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
+def get_db_connection():
+    return psycopg2.connect(
+        os.getenv("DATABASE_URL"),
+        sslmode="require"
+    )
 
+conn = get_db_connection()
+cursor = conn.cursor()
 
 # -------------------------------------------------------
 # STARTSIDAN
@@ -196,7 +203,8 @@ def view_company(company_id):
                 item_name,
                 description,
                 price,
-                image_url
+                image_url,
+                menu_item_id
             FROM public.menu_item
             WHERE company_business_id = %s
         """, (company_id,))
@@ -210,7 +218,8 @@ def view_company(company_id):
                 "name": item[0],
                 "description": item[1],
                 "price": item[2],
-                "image_url": item[3]
+                "image_url": item[3],
+                "menu_item_id" : item[4]
             })
 
         return render_template(
@@ -265,6 +274,7 @@ def create_order():
     name = request.form.get('customer_name')
     email = request.form.get('email')
     phone = request.form.get('phone')
+    order_data = request.form.get("order_data")
 
     company_business_id = request.form.get('company_business_id')
     if not company_business_id:
@@ -284,13 +294,32 @@ def create_order():
 
         # skapa beställlning 
         cursor.execute("""
-            INSERT INTO public.order_item (customer_id, company_business_id, status)
+            INSERT INTO public.orders(customer_id, company_business_id, status)
             VALUES (%s, %s, %s)
             RETURNING order_id
         """, (customer_id, company_business_id, 'pending'))
 
+
+
         order_id = cursor.fetchone()[0]
         
+        if order_data:
+            order_items = json.loads(order_data)
+            for item in order_items:
+                cursor.execute("""
+                    INSERT INTO public.order.item
+                    (
+                        order_id,
+                        menu_item_id,
+                        amount
+                    )
+                    VALUES (%s, %s, %s)                
+                """, (
+                    order_id,
+                    item["menu_item_id"],
+                    item["amount"]
+                ))
+
         conn.commit()
 
         send_order_confirmation_email(email, name)
@@ -679,7 +708,7 @@ def profile():
             query_bookings = """
                 SELECT
                     b.order_id,
-                    o.date,
+                    b.date,
                     k.name AS customer_name,
                     k.phone,
                     m.item_name,
@@ -1068,12 +1097,22 @@ def update_service(service_id):
                     price = %s,
                     image_url = %s
                 WHERE menu_item_id = %s
+                AND company_business_id = (
+                    SELECT company_business_id
+                    FROM public.compnay_business
+                    WHERE company_id = (
+                        SELECT company_id
+                        FROM public.company_owner
+                        WHERE email = %s
+                    )
+                )
             """, (
                 item_name,
                 description,
                 price,
                 image_path,
-                service_id
+                service_id,
+                session["user"]
             ))
 
         else:
@@ -1114,7 +1153,16 @@ def delete_service(service_id):
         cursor.execute("""
             DELETE FROM public.menu_item
             WHERE menu_item_id = %s
-        """, (service_id,))
+            AND company_business_id = (
+                SELECT company_business_id
+                FROM public.compnay_business
+                WHERE company_id = (
+                    SELECT company_id
+                    FROM public.company_owner
+                    WHERE email = %s
+                )
+            )                       
+        """, (service_id, session["user"]))
 
         conn.commit()
 
