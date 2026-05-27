@@ -284,7 +284,7 @@ def create_order():
 
         # skapa beställlning 
         cursor.execute("""
-            INSERT INTO public.orders (customer_id, company_business_id, status)
+            INSERT INTO public.order_item (customer_id, company_business_id, status)
             VALUES (%s, %s, %s)
             RETURNING order_id
         """, (customer_id, company_business_id, 'pending'))
@@ -666,6 +666,7 @@ def profile():
         """, (email,))
         business = cursor.fetchone()
 
+        
         bookings = []
         services = []
         company_id = None
@@ -678,7 +679,7 @@ def profile():
             query_bookings = """
                 SELECT
                     b.order_id,
-                    b.date,
+                    o.date,
                     k.name AS customer_name,
                     k.phone,
                     m.item_name,
@@ -707,17 +708,19 @@ def profile():
             """, (company_id,))
             services = cursor.fetchall()
 
-            return render_template(
+        return render_template(
                 "profile.html", 
                 bookings=bookings, 
                 business=business,
                 services=services,
                 company_id=company_id,
                 is_active=is_active
-                )
+        )
         
     except Exception as e:
+        conn.rollback()
         print(f"Gick inte att ladda upp profilsidan: {e}")
+        traceback.print_exc()
         return "Ett fel uppstod", 500
     
 
