@@ -386,6 +386,7 @@ def login():
             stored_password = user[1]
             is_blocked = user[2]
 
+            # Meddelar användaren om kontot är spärrat
             if is_blocked is True:
                 return render_template(
                     "log_in.html",
