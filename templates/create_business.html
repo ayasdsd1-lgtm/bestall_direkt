@@ -14,7 +14,11 @@
             <a href="{{ url_for('home') }}">
                 <img src="{{ url_for('static', filename='images/bestall_direkt_logo.png') }}" alt="sidans_logo">
             </a>
-            <a class="for-company" href="{{ url_for('login_page') }}">För företag</a>
+            {% if session.get('user') %}
+                <a class="for-company" href="{{ url_for('profile') }}">Min profil</a>
+            {% else %}
+                <a class="for-company" href="{{ url_for('login_page') }}">För företag</a>
+            {% endif %}
         </header>
  
         <div class="create-business-wrapper">
@@ -27,7 +31,9 @@
                         kan hitta och boka dina cateringtjänster.
                     </p>
                 </div>
- 
+                     {% if success %}
+                        <p class="success-message-register">{{ success }}</p>
+                    {% endif %}
                 <form
                     action="{{ url_for('create_business') }}"
                     method="POST"
