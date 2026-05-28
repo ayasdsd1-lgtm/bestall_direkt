@@ -122,6 +122,15 @@ main{
 
 /*----------------------------kort i main----------------------------*/
 
+.company-card-logo {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background-color: #f9f9f9;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 #grid-cards{
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
