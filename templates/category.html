@@ -42,7 +42,13 @@
                         {% for company in companies %}
                             <article class="card">
                                 <a href="{{ url_for('view_company', company_id=company[0]) }}">
-                                    <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ company[1] }}">
+
+                                    {% if company[3] %}
+                                        <img src="{{ company[3] }}" alt="{{ company[1] }} logotyp" class="company-card-logo">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='images/background.jpg') }}" alt="{{ company[1] }}">
+                                    {% endif %}
+
                                     <h3>{{ company[1] }}</h3>
 
                                     {% if company[2] %}
@@ -53,9 +59,7 @@
                         {% endfor %}
 
                     {% else %}
-
                         <p>Det finns inga verksamheter i denna kategori ännu.</p>
-
                     {% endif %}
                 </div>
             </section>
