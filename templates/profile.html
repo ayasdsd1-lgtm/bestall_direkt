@@ -33,6 +33,7 @@
                             <a href="{{ url_for('logout') }}" class="profile-top-btn">
                                 Logga ut
                             </a>
+                            <span class="profile-id-box"><strong>Verksamhets-ID:</strong> #{{ business[0] }}</span>
                         </div>
                     {% else %}
                         <h2>Du har ingen verksamhet ännu</h2>
@@ -46,12 +47,6 @@
                         </div>
                     {% endif %}
                 </div>
-                        {% if business %}
-                            <div class="profile-id-box">
-                                <p><strong>Verksamhets-ID:</strong> #{{ business[0] }}</p>
-                            </div>
-                        {% endif %}
-                    </div>
  
                 <div class="profile-layout">
  
