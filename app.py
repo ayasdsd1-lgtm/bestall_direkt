@@ -957,7 +957,7 @@ def create_business():
             new_business_id = cursor.fetchone()[0]
             conn.commit()
 
-            return redirect(url_for("profile"))
+            return render_template("create_business.html", success="Verksamheten har skapats!")
 
         except Exception as e:
             conn.rollback()

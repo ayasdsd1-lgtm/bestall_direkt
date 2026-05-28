@@ -27,7 +27,9 @@
                         kan hitta och boka dina cateringtjänster.
                     </p>
                 </div>
- 
+                     {% if success %}
+                        <p class="success-message-register">{{ success }}</p>
+                    {% endif %}
                 <form
                     action="{{ url_for('create_business') }}"
                     method="POST"
