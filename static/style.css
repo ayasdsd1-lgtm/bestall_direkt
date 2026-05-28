@@ -7,6 +7,10 @@ body{
     background: #F7F3EE;
 }
 
+button, input, select, textarea {
+    font-family: inherit;
+}
+
 /*----------------------------Header----------------------------*/
 header{
     display: flex;
@@ -120,7 +124,7 @@ main{
 
 #grid-cards{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
 }
 
@@ -128,6 +132,8 @@ main{
     background: transparent;
     transition: transform 0.2s ease;
     justify-items: stretch;
+    min-width: 0;
+    overflow: hidden;
 }
 
 /* gör hela kortet klickbart */
@@ -135,6 +141,8 @@ main{
     text-decoration: none;
     color: black;
     display: block;
+    width: 100%;
+    overflow: hidden;
 }
 
 /* bild */
@@ -143,6 +151,19 @@ main{
     height: 200px;
     object-fit: cover;
     border-radius: 12px;
+    display: block;
+}
+
+.card-description {
+    margin-top: 5px;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 /* rubrik i card */
@@ -352,6 +373,17 @@ footer img{
 #design{
     height: 500px;
     width: auto;
+}
+.error-message {
+    color: #e11d48;
+    background-color: #fff5f5;
+    border: 1px solid #fca5a5;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 /*-------------------------------------View--------------------------------------*/
@@ -1127,6 +1159,33 @@ footer img{
     flex-direction: column;
     gap: 18px;
 }
+.service-actions {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.service-actions .delete-service-btn {
+ 
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.2s ease;
+    box-sizing: border-box;
+    text-decoration: none;
+    
+    background-color: #5b2500;
+    color: white;
+    border: none;
+    display: inline-block;
+}
+
+.service-actions .delete-service-btn:hover {
+    background-color: #7b3a12;
+}
 
 .service-form input,
 .service-form textarea,
@@ -1196,7 +1255,9 @@ footer img{
 .service-form input[type="file"]::file-selector-button:hover{
     background-color: #6a3416;
 }
-
+.services-box .service-form {
+    margin-bottom: 25px; 
+}
 /*------------------------------------- Create Business --------------------------------------*/
 
 .create-business-wrapper{
@@ -1310,24 +1371,6 @@ footer img{
     box-shadow: 0 8px 20px rgba(70,32,9,0.18);
 }
 
-/*---------------- RESPONSIVE ----------------*/
-
-@media (max-width: 768px){
-
-    .create-business-card{
-        padding: 30px;
-    }
-
-    .form-grid{
-        grid-template-columns: 1fr;
-    }
-
-    .create-business-header h1{
-        font-size: 2.2rem;
-    }
-
-}
-
 /*------------------------------------------ Admin dashboard -------------------------------------------------*/
 .admin-table {
     width: 100%;
@@ -1399,7 +1442,6 @@ footer img{
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding: 0 10px;
     }
     
     header {
@@ -1505,7 +1547,44 @@ footer img{
     #search-nav{
         min-height: 290px;
     }
+
+    /* Skapa verksamhet (create_business.html) */
+
+    .create-business-card{
+        padding: 30px;
+    }
+
+    .form-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .create-business-header h1{
+        font-size: 2.2rem;
+    }
     
+    /* Admin (admin_dashboard.html) */
+    .admin-content {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    .admin-content .title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+
+    .admin-table {
+        min-width: 600px;
+        margin-bottom: 0;  
+    }
 }
 /*-------------- Mobila enheter --------------*/
 
@@ -1575,13 +1654,22 @@ footer img{
     }
 
     .profile-top-buttons {
-    flex-direction: column;
-    align-items: stretch;
+        display: flex;
+        align-items: stretch;
+        width: 100%;
     }
 
-    .profile-top-btn {
+    .profile-top-btn,
+    .profile-header-content > a {
         width: 100%;
         text-align: center;
+        box-sizing: border-box;
+        display: block;         
+        text-align: center;
+    }
+
+    .profile-header-content > .profile-top-btn {
+        margin-top: 20px; 
     }
 
     .profile-title {
