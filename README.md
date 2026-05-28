@@ -1,6 +1,7 @@
 # bestall_direkt
 
-## Länk till kod, version 1.3
+## Länk till kod, version 1.4
+https://github.com/ayasdsd1-lgtm/bestall_direkt/releases/tag/v.1.4 
 
 
 ## Hur man öppnar projektet lokalt
