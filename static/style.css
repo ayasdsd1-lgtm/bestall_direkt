@@ -122,6 +122,15 @@ main{
 
 /*----------------------------kort i main----------------------------*/
 
+.company-card-logo {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background-color: #f9f9f9;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 #grid-cards{
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -854,7 +863,6 @@ footer img{
     max-width: 1200px;
     margin: 40px auto;
     padding: 0 15px;
-    box-sizing: border-box;
 }
 
 .profile-header-content{
@@ -977,9 +985,6 @@ footer img{
     border-radius: 20px;
     border: 1px solid #eee;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .preview-card h1{
@@ -1011,8 +1016,6 @@ footer img{
     border-radius: 20px;
     border: 1px solid #eee;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    width: 100%;
-    box-sizing: border-box;
     overflow-x: auto;
 }
 
@@ -1164,9 +1167,6 @@ footer img{
     display: flex;
     flex-direction: column;
     gap: 18px;
-
-    width: 100%;
-    box-sizing: border-box;
 }
 .service-actions {
     display: flex;
@@ -1266,30 +1266,6 @@ footer img{
 }
 .services-box .service-form {
     margin-bottom: 25px; 
-}
-
-.profile-edit-box input,
-.profile-edit-box textarea,
-.profile-edit-box select,
-.service-form input,
-.service-form textarea,
-.service-form select {
-    box-sizing: border-box !important;
-    max-width: 100%;
-}
-
-.profile-layout > div {
-    min-width: 0;
-}
-
-.profile-top-buttons {
-    flex-wrap: wrap !important;
-}
-
-.bookings-box table {
-    width: 100%;
-    table-layout: fixed;
-    word-wrap: break-word;
 }
 /*------------------------------------- Create Business --------------------------------------*/
 
@@ -1465,30 +1441,6 @@ footer img{
 }
 
 /*------------------------------------- Responsiv design --------------------------------------*/
-@media (max-width: 1000px) and (min-width: 769px) {
-
-    /* viewsidan (view.html) */
-    .view-card {
-        width: 100%;
-        box-sizing: border-box;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .service-image {
-        width: 220px;       
-        max-width: 100%;
-        height: 140px;      
-        object-fit: cover;  
-        border-radius: 8px;
-        align-self: center;
-        margin-top: 10px;   
-    }
-
-    .stepper-control {
-        max-width: 100%;
-    }
-}
 
 /*-------- Surfplattor och mindre skärmar --------*/
 
@@ -1536,8 +1488,8 @@ footer img{
 
     /* viewsidan (view.html) */
     .view-container {
-        display: grid;
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         align-items: center;
         padding: 10px;
         gap: 20px;
@@ -1553,34 +1505,6 @@ footer img{
         list-style: none;
     }
 
-    .left-column, .right-column {
-        display: contents; 
-    }
-
-    .logo-box {
-        order: 1;
-        width: fit-content;     
-        padding: 15px 20px;      
-        display: flex;
-        justify-content: center;
-    }
-
-    .right-column section:nth-child(2) {
-        order: 2;
-        width: fit-content;     
-        min-width: 250px;
-        padding: 20px;      
-    }
-
-    .view-service-box {
-        order: 3;
-        width: 100%;
-    }
-
-    .total-box {
-        order: 4;
-    }
-
     .nav-wrapper {
         display: flex;
         flex-direction: column;
@@ -1588,57 +1512,17 @@ footer img{
         padding: 0 15px;
     }
 
-    .view-service-box {
-        order: 3;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .view-card {
-        width: 100%;
-        box-sizing: border-box;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .service-image {
-        width: 220px;
-        height: 140px;
-        object-fit: cover;
-        border-radius: 8px;
-        align-self: center;
-        margin-top: 10px;
-    }
-
-    .stepper-control {
-        max-width: 100%;
-    }
-
     /* Verksamhetssidan (Profile.html) */
 
     .profile-layout {
-        display: flex;
-        flex-direction: column;
-        padding: 0 15px;
+        grid-template-columns: 1fr;
+        padding: 0 20px;
         gap: 20px;
     }
 
-    .preview-card {
-        order: 1;
-    }
-
     .profile-edit-box {
-        order: 2;
         position: relative;
         top: auto;
-    }
-
-    .service-title,
-    .service-form,
-    .services-box,
-    .bookings-box,
-    .delete-account-box {
-        order: 3;
     }
 
     .profile-top-buttons {
@@ -1754,7 +1638,7 @@ footer img{
         padding-bottom: 20px;
     }
 
-    #category-nav {  
+    #category-nav {  /* Eventuellt lägga till category-main här som i startsidan */
         padding-left: 40px;
         padding-right: 40px;
     }

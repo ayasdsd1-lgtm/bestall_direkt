@@ -78,13 +78,12 @@ def search():  # route behålls /search — redan engelska
     # behöver ändra försiktigt med databas
 
     query = request.args.get("q", "").strip()
-
     cursor = conn.cursor()
 
     try:
         cursor.execute(
             """
-           SELECT DISTINCT v.company_business_id, v.company_name, v.description
+           SELECT DISTINCT v.company_business_id, v.company_name, v.description, v.logo_url
             FROM public.company_business v
             LEFT JOIN public.menu_item m ON m.company_business_id = v.company_business_id
             WHERE v.company_name ILIKE %s
@@ -131,7 +130,11 @@ def category(category_name):
 
     try:
         cursor.execute(
-            "SELECT * FROM public.company_business WHERE category = %s",
+            """
+            SELECT company_business_id, company_name, description, logo_url 
+            FROM public.company_business 
+            WHERE category = %s
+            """,
             (display_name,)
         )
 
