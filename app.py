@@ -368,7 +368,8 @@ def login():
         cursor.execute("""
             SELECT 
                 v.company_business_id,
-                f.password
+                f.password,
+                f.blocked
              FROM public.company_owner f
              LEFT JOIN public.company_business v
                 ON f.company_id = v.company_id
@@ -383,6 +384,13 @@ def login():
 
             company_id = user[0]
             stored_password = user[1]
+            is_blocked = user[2]
+
+            if is_blocked is True:
+                return render_template(
+                    "log_in.html",
+                    error="Detta företagskonto har blivit spärrat på grund av brott mot plattformens regler och villkor."
+                )
 
             if check_password_hash(stored_password, password):
 
@@ -1213,7 +1221,7 @@ def admin_dashboard():
     company_owner = cursor.fetchall()
     return render_template("admin_dashboard.html", company_owner=company_owner)
 
-@app.route("/admin/blocked/<int:id>")
+@app.route("/admin/blocked/<string:id>")
 def toggle_company_status(id):
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
@@ -1222,7 +1230,7 @@ def toggle_company_status(id):
     conn.commit()
     return redirect(url_for("admin_dashboard"))
 
-@app.route("/admin/delete/<int:id>")
+@app.route("/admin/delete/<string:id>")
 def delete_company(id):
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
