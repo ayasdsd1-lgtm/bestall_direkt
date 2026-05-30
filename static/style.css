@@ -340,6 +340,18 @@ footer img{
     cursor: pointer;
 }
 
+.error-message {
+    color: #e11d48;
+    background-color: #fff5f5;
+    border: 1px solid #fca5a5;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
 /*---------------------------------registreringssidan--------------------------------*/
 .container{
     width: 100%;
@@ -382,17 +394,6 @@ footer img{
 #design{
     height: 500px;
     width: auto;
-}
-.error-message {
-    color: #e11d48;
-    background-color: #fff5f5;
-    border: 1px solid #fca5a5;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    margin-bottom: 20px;
-    text-align: left;
 }
 
 /*-------------------------------------View--------------------------------------*/
@@ -1438,6 +1439,18 @@ footer img{
 .admin-table td div {
     display: flex;
     gap: 10px;
+}
+
+.error-general{
+    color: #e11d48;
+    background-color: #fff5f5;
+    border: 1px solid #fca5a5;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: left;
 }
 
 /*------------------------------------- Responsiv design --------------------------------------*/
