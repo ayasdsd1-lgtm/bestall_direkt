@@ -1,5 +1,3 @@
-# används import email?
-import email
 # används from sqlite3 import Cursor?
 from sqlite3 import Cursor
 import traceback
