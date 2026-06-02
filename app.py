@@ -33,11 +33,14 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
 def allowed_file(filename):
+    """Kontrollerar om filens ändelse är tillåten (jpg, jpeg, png)."""
+
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Databasanslutning via miljövariabel - Supabase kräver SSL
 #Läste att det är farligt att använda conn = psycopg2.connect(os.getenv("DATABASE_URL"), sslmode="require")
 def get_db_connection():
+    """Skapar och returnerar en anslutning till databasen via SSL."""
     return psycopg2.connect(
         os.getenv("DATABASE_URL"),
         sslmode="require"
