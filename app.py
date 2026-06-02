@@ -792,6 +792,8 @@ def toggle_status():
 
 @app.route("/upload-profile-image", methods=["POST"])
 def upload_profile_image():
+    """Laddar upp och sparar en profilbild för inloggad företagare."""
+
     if "user" not in session:
         return redirect(url_for("login_page"))
 
@@ -833,6 +835,7 @@ def upload_profile_image():
     
 @app.route("/update-business", methods=["POST"])
 def update_business():
+    """Uppdaterar verksamhetsinformation för inloggad företagare."""
 
     if "user" not in session:
         return redirect(url_for("login_page"))
@@ -977,6 +980,7 @@ def create_business():
 
 @app.route("/create-service", methods=["POST"])
 def create_service():
+    """Skapar en ny tjänst kopplad till inloggad företagares verksamhet."""
 
     if "user" not in session:
         return redirect(url_for("login_page"))
@@ -1063,6 +1067,7 @@ def create_service():
 
 @app.route("/update-service/<int:service_id>", methods=["POST"])
 def update_service(service_id):
+    """Uppdaterar en befintlig tjänst baserat på service_id."""
 
     if "user" not in session:
         return redirect(url_for("login_page"))
@@ -1156,6 +1161,7 @@ def update_service(service_id):
     
 @app.route("/delete-service/<int:service_id>")
 def delete_service(service_id):
+    """Raderar en tjänst baserat på service_id."""
 
     if "user" not in session:
         return redirect(url_for("login_page"))
@@ -1201,6 +1207,8 @@ ADMIN_PASS = os.getenv("ADMIN_PASS")
 
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
+    """Visar och hanterar inloggning för administratör."""
+
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
@@ -1215,6 +1223,8 @@ def admin_login():
 
 @app.route("/admin/dashboard")
 def admin_dashboard():
+    """Visar adminpanelen med lista över alla registrerade företagare."""
+
     if not session.get("admin_logged_in"):
         return redirect(url_for("admin_login"))
     
@@ -1225,6 +1235,8 @@ def admin_dashboard():
 
 @app.route("/admin/blocked/<string:id>")
 def toggle_company_status(id):
+    """Växlar spärrstatus för ett företagskonto."""
+
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
@@ -1234,6 +1246,8 @@ def toggle_company_status(id):
 
 @app.route("/admin/delete/<string:id>")
 def delete_company(id):
+    """Raderar ett företagskonto och tillhörande verksamhetsdata."""
+
     if not session.get("admin_logged_in"): return redirect(url_for("admin_login"))
     
     cursor = conn.cursor()
@@ -1249,6 +1263,8 @@ def delete_company(id):
 
 @app.route("/admin/logout")
 def admin_logout():
+    """Loggar ut administratören och rensar adminsessionen."""
+
     session.pop("admin_logged_in", None)
     return redirect(url_for("home"))
 
