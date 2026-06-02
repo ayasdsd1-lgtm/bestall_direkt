@@ -1121,7 +1121,7 @@ def update_service(service_id):
                 WHERE menu_item_id = %s
                 AND company_business_id = (
                     SELECT company_business_id
-                    FROM public.compnay_business
+                    FROM public.company_business
                     WHERE company_id = (
                         SELECT company_id
                         FROM public.company_owner
@@ -1178,7 +1178,7 @@ def delete_service(service_id):
             WHERE menu_item_id = %s
             AND company_business_id = (
                 SELECT company_business_id
-                FROM public.compnay_business
+                FROM public.company_business
                 WHERE company_id = (
                     SELECT company_id
                     FROM public.company_owner
