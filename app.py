@@ -82,14 +82,18 @@ def search():  # route behålls /search — redan engelska
     try:
         cursor.execute(
             """
-           SELECT DISTINCT v.company_business_id, v.company_name, v.description, v.logo_url
+            SELECT DISTINCT v.company_business_id, v.company_name, v.description, v.logo_url
             FROM public.company_business v
+            JOIN public.company_owner f ON f.company_id = v.company_id
             LEFT JOIN public.menu_item m ON m.company_business_id = v.company_business_id
-            WHERE v.company_name ILIKE %s
-                OR v.category    ILIKE %s
+            WHERE f.blocked = FALSE
+            AND (
+                v.company_name ILIKE %s
+                OR v.category ILIKE %s
                 OR v.description ILIKE %s
-                OR m.item_name   ILIKE %s
+                OR m.item_name ILIKE %s
                 OR m.description ILIKE %s
+            )
             """,
             (f"%{query}%", f"%{query}%", f"%{query}%", f"%{query}%", f"%{query}%")
         )
@@ -130,9 +134,12 @@ def category(category_name):
     try:
         cursor.execute(
             """
-            SELECT company_business_id, company_name, description, logo_url 
-            FROM public.company_business 
-            WHERE category = %s
+            SELECT v.company_business_id, v.company_name, v.description, v.logo_url
+            FROM public.company_business v
+            JOIN public.company_owner f 
+                ON f.company_id = v.company_id
+            WHERE v.category = %s
+            AND f.blocked = FALSE
             """,
             (display_name,)
         )
