@@ -87,6 +87,7 @@ def search():  # route behålls /search — redan engelska
             JOIN public.company_owner f ON f.company_id = v.company_id
             LEFT JOIN public.menu_item m ON m.company_business_id = v.company_business_id
             WHERE f.blocked = FALSE
+            AND f.is_active = TRUE
             AND (
                 v.company_name ILIKE %s
                 OR v.category ILIKE %s
@@ -140,6 +141,7 @@ def category(category_name):
                 ON f.company_id = v.company_id
             WHERE v.category = %s
             AND f.blocked = FALSE
+            AND f.is_active = TRUE
             """,
             (display_name,)
         )
