@@ -366,7 +366,11 @@ def login_page():
 @app.route("/login", methods=["POST"])
 def login():
     """
-    Hanterar inloggning
+    Hanterar inloggning för företagare.
+
+    Tar emot e-postadress och lösenord från formuläret,
+    kontrollerar uppgifterna mot databasen och skapar en
+    session vid lyckad autentisering.
     """
 
     email = request.form["email"]
@@ -845,7 +849,12 @@ def upload_profile_image():
     
 @app.route("/update-business", methods=["POST"])
 def update_business():
-    """Uppdaterar verksamhetsinformation för inloggad företagare."""
+    """
+    Uppdaterar verksamhetsinformation för inloggad företagare.
+    Hämtar de nya uppgifterna från formuläret och sparar dem
+    i databasen för den verksamhet som är kopplad till den
+    aktuella användaren.
+    """
 
     if "user" not in session:
         return redirect(url_for("login_page"))
@@ -990,7 +999,11 @@ def create_business():
 
 @app.route("/create-service", methods=["POST"])
 def create_service():
-    """Skapar en ny tjänst kopplad till inloggad företagares verksamhet."""
+    """
+    Skapar en ny tjänst kopplad till inloggad företagares verksamhet.
+    Tar emot information från formuläret, hanterar eventuell
+    bilduppladdning och sparar tjänsten i databasen.
+    """
 
     if "user" not in session:
         return redirect(url_for("login_page"))
