@@ -19,7 +19,7 @@ https://github.com/ayasdsd1-lgtm/bestall_direkt/releases/tag/v.1.4
 
 Projektet använder **Supabase** (PostgreSQL) som databas.
 
-### Alternativ A – Kör mot vår Supabase-instans (rekommenderas)
+### Kör mot vår Supabase-instans
 
 Fyll i följande värden i din `.env`-fil (se `.env.example`):
 
